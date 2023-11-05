@@ -3,10 +3,8 @@
 import { AppBar, Avatar, Badge, Box, IconButton, InputBase, Menu, MenuItem, Toolbar, Tooltip, Typography, alpha, styled } from '@mui/material'
 import Image from 'next/image'
 import React from 'react'
-
-const pages = ['Products', 'Pricing', 'Blog'];
-const settings = ['Profile', 'Logout'];
-
+import avataar from '../../assets/images/ertugul.jpg'
+import logo from '../../assets/images/myUride.png'
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -160,8 +158,8 @@ const Header = () => {
       <AppBar position="static" sx={{ background: "#fff", color: "#000" }}>
         <Toolbar>
           <Box sx={{ display: { xs: 'none', sm: 'none', md: 'flex' }, }}>
-            <img
-              src="/myUride.png"
+            <Image
+              src={logo}
               width={150}
               height={60}
               alt="Picture of the author"
@@ -171,7 +169,7 @@ const Header = () => {
             noWrap
             sx={{
               mr: 2,
-              display: { xs: 'none', sm: 'none', lg:'flex' },
+              display: { xs: 'none', sm: 'none', lg: 'flex' },
               fontWeight: 400,
               fontSize: "1.5rem",
               // letterSpacing: '.3rem',
@@ -195,8 +193,8 @@ const Header = () => {
               <i className="ri-menu-line"></i>
             </IconButton>
             <Box sx={{ display: { xs: 'none', sm: 'flex', md: 'none' }, }}>
-              <img
-                src="/myUride.png"
+              <Image
+                src={logo}
                 width={150}
                 height={60}
                 alt="Picture of the author"
@@ -220,7 +218,7 @@ const Header = () => {
           <Box sx={{ flexGrow: 0, width: "270px", display: { xs: 'none', md: 'flex' }, justifyContent: "space-between", alignItems: 'center' }}>
             <Tooltip title="Open settings">
               <Box sx={{ display: "flex", alignItems: "center" }}>
-                <Avatar alt="John" src="/ertugul.jpg" />
+                <Avatar alt="John" src="/ertugul.jpg" id="avatar" />
                 <Typography sx={{ color: "#000", fontWeight: 400, ml: "0.875rem", display: { xs: 'none', sm: 'block' } }}>John</Typography>
                 <IconButton onClick={handleProfileMenuOpen} sx={{ p: 0, ml: "5px" }}>
                   <i className="ri-arrow-down-s-line"></i>
