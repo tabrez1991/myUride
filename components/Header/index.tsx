@@ -160,7 +160,7 @@ const Header = () => {
       <AppBar position="static" sx={{ background: "#fff", color: "#000" }}>
         <Toolbar>
           <Box sx={{ display: { xs: 'none', sm: 'none', md: 'flex' }, }}>
-            <Image
+            <img
               src="/myUride.png"
               width={150}
               height={60}
@@ -195,7 +195,7 @@ const Header = () => {
               <i className="ri-menu-line"></i>
             </IconButton>
             <Box sx={{ display: { xs: 'none', sm: 'flex', md: 'none' }, }}>
-              <Image
+              <img
                 src="/myUride.png"
                 width={150}
                 height={60}
