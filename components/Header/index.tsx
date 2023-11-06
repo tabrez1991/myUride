@@ -155,7 +155,7 @@ const Header = () => {
 
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static" sx={{ background: "#fff", color: "#000" }}>
+      <AppBar position="absolute" sx={{ background: "#fff", color: "#000", left: 0 }}>
         <Toolbar>
           <Box sx={{ display: { xs: 'none', sm: 'none', md: 'flex' }, }}>
             <Image
