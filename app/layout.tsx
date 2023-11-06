@@ -8,7 +8,6 @@ import '@fontsource/roboto/700.css';
 
 import 'remixicon/fonts/remixicon.css';
 import React from 'react';
-import Layout from '@/components/Layout';
 import NavBar from '@/components/navbar';
 import Header from '@/components/Header';
 
