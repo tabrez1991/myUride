@@ -1,6 +1,7 @@
 "use client";
 
 import { Box, Card, Drawer, List, ListItem, ListItemButton, ListItemText, Typography } from '@mui/material'
+import { useRouter } from 'next/navigation';
 import React from 'react'
 
 interface NavProps {
@@ -8,6 +9,8 @@ interface NavProps {
 
 const NavBar = (props: NavProps) => {
   const [active, setActive] = React.useState<string>('dashboard');
+
+  const router = useRouter();
 
   const activeIcon = {
     color: '#fff',
@@ -30,6 +33,44 @@ const NavBar = (props: NavProps) => {
     marginRight: '10px'
   }
 
+  const handleRoute = (menu: string) => {
+    setActive(menu);
+    switch (menu) {
+      case "dashboard":
+        router.push('/');
+        break;
+      case "user":
+        router.push('/user-management');
+        break;
+      case "driver":
+        router.push('/driver-management');
+        break;
+      case "ride":
+        router.push('/ride-management');
+        break;
+      case "payments":
+        router.push('/payments');
+        break;
+      case "notifications":
+        router.push('/notifications');
+        break;
+      case "settings":
+        router.push('/settings');
+        break;
+      case "marketing":
+        router.push('/promotion-marketing');
+        break;
+      case "support":
+        router.push('/support');
+        break;
+      case "feedback":
+        router.push('/feedback');
+        break;
+      default:
+        router.push('/');
+        break;
+    }
+  }
   return (
     <Card sx={{ marginTop: '64px', width: '270px', height: '93vh' }}>
       <List>
@@ -39,7 +80,7 @@ const NavBar = (props: NavProps) => {
           </ListItemButton>
         </ListItem>
         <ListItem>
-          <ListItemButton onClick={() => setActive('dashboard')}>
+          <ListItemButton onClick={() => handleRoute("dashboard")}>
             <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: "100%" }}>
               <Box sx={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'center' }}>
                 <Typography sx={active === 'dashboard' ? activeIcon : inactiveIcon}><i className="ri-dashboard-fill"></i></Typography>
@@ -50,7 +91,7 @@ const NavBar = (props: NavProps) => {
           </ListItemButton>
         </ListItem>
         <ListItem>
-          <ListItemButton onClick={() => setActive('user')}>
+          <ListItemButton onClick={() => handleRoute('user')}>
             <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: "100%" }}>
               <Box sx={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'center' }}>
                 <Typography sx={active === 'user' ? activeIcon : inactiveIcon}><i className="ri-user-add-line"></i></Typography>
@@ -61,7 +102,7 @@ const NavBar = (props: NavProps) => {
           </ListItemButton>
         </ListItem>
         <ListItem>
-          <ListItemButton onClick={() => setActive('driver')}>
+          <ListItemButton onClick={() => handleRoute('driver')}>
             <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: "100%" }}>
               <Box sx={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'center' }}>
                 <Typography sx={active === 'driver' ? activeIcon : inactiveIcon}><i className="ri-user-settings-line"></i></Typography>
@@ -72,7 +113,7 @@ const NavBar = (props: NavProps) => {
           </ListItemButton>
         </ListItem>
         <ListItem>
-          <ListItemButton onClick={() => setActive('ride')}>
+          <ListItemButton onClick={() => handleRoute('ride')}>
             <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: "100%" }}>
               <Box sx={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'center' }}>
                 <Typography sx={active === 'ride' ? activeIcon : inactiveIcon}><i className="ri-phone-lock-line"></i></Typography>
@@ -83,7 +124,7 @@ const NavBar = (props: NavProps) => {
           </ListItemButton>
         </ListItem>
         <ListItem>
-          <ListItemButton onClick={() => setActive('payments')}>
+          <ListItemButton onClick={() => handleRoute('payments')}>
             <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: "100%" }}>
               <Box sx={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'center' }}>
                 <Typography sx={active === 'payments' ? activeIcon : inactiveIcon}><i className="ri-bank-card-line"></i></Typography>
@@ -94,7 +135,7 @@ const NavBar = (props: NavProps) => {
           </ListItemButton>
         </ListItem>
         <ListItem>
-          <ListItemButton onClick={() => setActive('notifications')}>
+          <ListItemButton onClick={() => handleRoute('notifications')}>
             <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: "100%" }}>
               <Box sx={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'center' }}>
                 <Typography sx={active === 'notifications' ? activeIcon : inactiveIcon}><i className="ri-notification-4-line"></i></Typography>
@@ -105,7 +146,7 @@ const NavBar = (props: NavProps) => {
           </ListItemButton>
         </ListItem>
         <ListItem>
-          <ListItemButton onClick={() => setActive('settings')}>
+          <ListItemButton onClick={() => handleRoute('settings')}>
             <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: "100%" }}>
               <Box sx={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'center' }}>
                 <Typography sx={active === 'settings' ? activeIcon : inactiveIcon}><i className="ri-settings-2-line"></i></Typography>
@@ -116,7 +157,7 @@ const NavBar = (props: NavProps) => {
           </ListItemButton>
         </ListItem>
         <ListItem>
-          <ListItemButton onClick={() => setActive('marketing')}>
+          <ListItemButton onClick={() => handleRoute('marketing')}>
             <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: "100%" }}>
               <Box sx={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'center' }}>
                 <Typography sx={active === 'marketing' ? activeIcon : inactiveIcon}><i className="ri-megaphone-line"></i></Typography>
@@ -127,7 +168,7 @@ const NavBar = (props: NavProps) => {
           </ListItemButton>
         </ListItem>
         <ListItem>
-          <ListItemButton onClick={() => setActive('support')}>
+          <ListItemButton onClick={() => handleRoute('support')}>
             <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: "100%" }}>
               <Box sx={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'center' }}>
                 <Typography sx={active === 'support' ? activeIcon : inactiveIcon}><i className="ri-customer-service-2-line"></i></Typography>
@@ -138,7 +179,7 @@ const NavBar = (props: NavProps) => {
           </ListItemButton>
         </ListItem>
         <ListItem>
-          <ListItemButton onClick={() => setActive('feedback')}>
+          <ListItemButton onClick={() => handleRoute('feedback')}>
             <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: "100%" }}>
               <Box sx={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'center' }}>
                 <Typography sx={active === 'feedback' ? activeIcon : inactiveIcon}><i className="ri-feedback-line"></i></Typography>
