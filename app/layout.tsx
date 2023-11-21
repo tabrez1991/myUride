@@ -1,5 +1,5 @@
-import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
+"use client"; // This is a client component
+
 import './globals.css'
 import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
@@ -10,31 +10,27 @@ import 'remixicon/fonts/remixicon.css';
 import React from 'react';
 import NavBar from '@/components/navbar';
 import Header from '@/components/Header';
-
-const inter = Inter({ subsets: ['latin'] })
-
-export const metadata: Metadata = {
-  title: 'myUride',
-  description: 'myUride',
-}
+import { Box } from '@mui/material';
 
 export default function RootLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
+  const [openNav, setOpenNav] = React.useState<boolean>(true);
+
   return (
     <html lang="en">
-      <body className={inter.className}>
-        <div style={{ display: 'flex' }}>
-          <NavBar/>
-          <div style={{ flexGrow: 0 }}>
-            <Header />
+      <body>
+        <Box style={{ display: 'flex' }}>
+          {openNav && <NavBar />}
+          <Box style={{ flexGrow: 0 }}>
+            <Header handleNavBar={() => setOpenNav(!openNav)} />
             <main style={{ padding: '20px' }}>
               {children}
             </main>
-          </div>
-          </div>
+          </Box>
+        </Box>
       </body>
     </html>
   )
