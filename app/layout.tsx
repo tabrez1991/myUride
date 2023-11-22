@@ -24,9 +24,9 @@ export default function RootLayout({
       <body>
         <Box style={{ display: 'flex' }}>
           {openNav && <NavBar />}
-          <Box style={{ flexGrow: 0 }}>
+          <Box style={{ flexGrow: 1 }}>
             <Header handleNavBar={() => setOpenNav(!openNav)} />
-            <main style={{ padding: '20px' }}>
+            <main style={{ padding: '20px', marginTop: "65px", background: "#eee" }}>
               {children}
             </main>
           </Box>

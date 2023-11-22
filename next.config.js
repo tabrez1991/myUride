@@ -3,7 +3,10 @@ const nextConfig = {
     reactStrictMode: true,
     swcMinify: true,
     output: 'export',
-    images: { unoptimized: true }
+    images: { unoptimized: true },
+    experimental: {
+        esmExternals: 'loose',
+    }
 }
 
 module.exports = nextConfig
