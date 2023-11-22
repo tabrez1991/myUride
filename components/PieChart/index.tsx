@@ -9,7 +9,7 @@ const data = [
         "id": "java",
         "label": "java",
         "value": 510,
-        "color": "hsl(129, 70%, 50%)"
+        "color": "hsl(231, 62%, 34%, 1)"
     },
     {
         "id": "rust",
