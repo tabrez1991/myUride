@@ -72,7 +72,7 @@ const NavBar = (props: NavProps) => {
     }
   }
   return (
-    <Card sx={{ marginTop: '64px', width: '270px', height: '93vh', boxShadow:"none" }}>
+    <Card sx={{ marginTop: '64px', width: '270px', height: '100vh', boxShadow: "none", overflowY: "scroll" }}>
       <List>
         <ListItem>
           <ListItemButton>
