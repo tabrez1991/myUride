@@ -85,7 +85,7 @@ const UserManagement = () => {
   }, []);
 
   return (
-    <Box>
+    <Box sx={{ height: "100vh", overflowY: "scroll" }}>
       <Typography variant='h5'>User Management</Typography>
       <Box sx={{ mt: 2 }}>
         <SearchBox placeholder='Search...' value={searchValue} onChange={handleSearch} autoFocus={true} />
