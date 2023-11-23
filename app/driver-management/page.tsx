@@ -43,7 +43,7 @@ const DriverManagement = () => {
 			flex: 1.5,
 			renderCell: (params) => (
 				<div style={{ display: 'flex', alignItems: 'center' }}>
-					<Avatar alt="John" src="/ertugul.jpg" id="avatar" sx={{ mr: 2 }} />
+					<Avatar alt="John" src="https://media.licdn.com/dms/image/D5612AQHQjCIhei3GqA/article-cover_image-shrink_720_1280/0/1658755011921?e=2147483647&v=beta&t=cIOOsE4lON2tHucBa2lron2obdN0sGbaynuXnK_mq4k" id="avatar" sx={{ mr: 2 }} />
 					{params.row.driver}
 				</div>
 			),
