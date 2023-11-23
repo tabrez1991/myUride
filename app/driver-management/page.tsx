@@ -129,6 +129,7 @@ const DriverManagement = () => {
 	React.useEffect(() => {
 		getDriversDetails()
 	}, []);
+	
 
 	return (
 		<Box sx={{ height: "100vh", overflowY: "scroll" }}>
@@ -140,6 +141,7 @@ const DriverManagement = () => {
 				<DataTable columns={columns} rows={rows} page={page} pageSize={pageSize} loader={loader} checkboxEnables={false} />
 			</Box>
 		</Box>
+		
 	)
 }
 
