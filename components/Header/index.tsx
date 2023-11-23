@@ -153,7 +153,7 @@ const Header = (props: any) => {
       </MenuItem>
     </Menu>
   );
-
+  console.log(`${process.env.NEXT_PUBLIC_BASE_PATH}/ertugul.jpg`)
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="absolute" sx={{ background: "#fff", color: "#000", left: 0 }}>
