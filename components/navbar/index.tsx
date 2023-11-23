@@ -71,6 +71,11 @@ const NavBar = (props: NavProps) => {
         break;
     }
   }
+
+  React.useEffect(()=>{
+    setActive(window.location.pathname.split('-')[0].replace('/',''))
+  },[])
+
   return (
     <Card sx={{ marginTop: '64px', width: '270px', height: '100vh', boxShadow: "none", overflowY: "scroll" }}>
       <List>

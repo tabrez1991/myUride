@@ -147,7 +147,7 @@ const Header = (props: any) => {
           aria-haspopup="true"
           color="inherit"
         >
-          <Avatar alt="John" src="/ertugul.jpg" />
+          <Avatar alt="John" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRQ3HtlVi9cQRsMJTtkiVl8uKl_amljJNVJFw&usqp=CAU" />
         </IconButton>
         <p>Profile</p>
       </MenuItem>
