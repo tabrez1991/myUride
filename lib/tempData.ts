@@ -1,6 +1,7 @@
 const userData = Array.from({ length: 30 }, (_, index) => ({
     id: index + 1,
     username: `user${index + 1}`,
+    avatar: getRandomAvatar(),
     fullName: getRandomFullName(),
     email: `user${index + 1}@example.com`,
     mobile: getRandomMobile(),
@@ -31,9 +32,18 @@ function getRandomDate() {
 function getRandomMobile() {
     const prefix = '+91'; // Assuming a country code for simplicity
     const randomNumbers = Math.floor(1000000000 + Math.random() * 9000000000); // Generates a 10-digit number
-  
+
     return `${prefix}${randomNumbers}`;
-  }
-  
+}
+
+function getRandomSeed() {
+    return Math.floor(Math.random() * 50);
+}
+
+// Function to generate a random avatar URL
+function getRandomAvatar() {
+    const seed = getRandomSeed();
+    return `https://mighty.tools/mockmind-api/content/human/${seed}.jpg`;
+}
 
 export const tempUserData = userData;

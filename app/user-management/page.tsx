@@ -42,7 +42,7 @@ const UserManagement = () => {
       field: 'fullName', headerName: 'Full Name', flex: 1.5,
       renderCell: (params) => (
         <div style={{ display: 'flex', alignItems: 'center' }}>
-          <Avatar alt="John" src="/ertugul.jpg" id="avatar" sx={{ mr: 2 }} />
+          <Avatar alt="John" src={params.row.avatar} id="avatar" sx={{ mr: 2 }} />
           {params.row.fullName}
         </div>
       ),
