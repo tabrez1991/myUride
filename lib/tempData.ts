@@ -30,6 +30,15 @@ export const tempPaymentRider = Array.from({ length: 30 }, (_, index) => ({
 }));
 
 
+export const tempNotifications = Array.from({ length: 30 }, (_, index) => ({
+    id: index + 1,
+    driver: getRandomFullName(),
+    avatar: getRandomAvatar(),
+    date: getRandomNotificationsDate(),
+    content: getRandomContent(),
+}));
+
+
 function getRandomAddress() {
     const randomPair = statesList[Math.floor(Math.random() * statesList.length)];
     return randomPair.capital + ", " + randomPair.name + ", " + "India"
@@ -74,6 +83,30 @@ function getRandomFullName() {
     return `${randomFirstName} ${randomLastName}`;
 }
 
+function getRandomContent() {
+    const firstNames = [
+        "The quick brown fox jumps over the lazy dog.",
+        "A journey of a thousand miles begins with a single step.",
+        "Tomorrow is a new day with no mistakes in it yet.",
+        "The sunsets are proof that no matter what happens, every day can end beautifully.",
+        "Life is what happens when you're busy making other plans.",
+        "Happiness is not something ready-made. It comes from your own actions.",
+        "The only way to do great work is to love what you do.",
+        "Every accomplishment starts with the decision to try.",
+        "Be the change that you wish to see in the world.",
+        "Time you enjoy wasting is not wasted time.",
+        "Success is not final, failure is not fatal: It is the courage to continue that counts.",
+        "The greatest glory in living lies not in never falling, but in rising every time we fall.",
+        "The only limit to our realization of tomorrow will be our doubts of today.",
+        "Life is really simple, but we insist on making it complicated.",
+        "Your time is limited, don't waste it living someone else's life."
+    ];
+
+    const randomFirstName = firstNames[Math.floor(Math.random() * firstNames.length)];
+
+    return `${randomFirstName}`;
+}
+
 function getRandomDate() {
     const currentDate = new Date();
     const randomDaysAgo = Math.floor(Math.random() * 365); // Random number of days ago
@@ -82,6 +115,16 @@ function getRandomDate() {
 
     return pastDate.toLocaleDateString();
 }
+
+function getRandomNotificationsDate() {
+    const currentDate = new Date();
+    const randomDaysAgo = Math.floor(Math.random() * 10); // Random number of days ago
+    const pastDate = new Date(currentDate);
+    pastDate.setDate(currentDate.getDate() - randomDaysAgo);
+
+    return pastDate.toLocaleDateString();
+}
+
 
 function getRandomMobile() {
     const prefix = '+91'; // Assuming a country code for simplicity
