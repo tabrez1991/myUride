@@ -1,3 +1,5 @@
+import { statesList } from "./statesList";
+
 const userData = Array.from({ length: 30 }, (_, index) => ({
     id: index + 1,
     username: `user${index + 1}`,
@@ -9,6 +11,58 @@ const userData = Array.from({ length: 30 }, (_, index) => ({
     dateCreated: getRandomDate(),
     lastLogin: getRandomDate(),
 }));
+
+export const tempPaymentRider = Array.from({ length: 30 }, (_, index) => ({
+    id: index + 1,
+    sNo: index + 1,
+    transactionId: getTransactionId(),
+    paymentDate: getRandomDate(),
+    rider: getRandomFullName(),
+    driver: getRandomFullName(),
+    avatar: getRandomAvatar(),
+    amount: getRandomAmount(),
+    source: getRandomAddress(),
+    destination: getRandomAddress(),
+    fare: getRandomFare(),
+    conenience: getRandomCon(),
+    rating: getRandomRating(),
+    paymentType: index % 3 === 0 ? 'Cash' : 'Online',
+}));
+
+
+function getRandomAddress() {
+    const randomPair = statesList[Math.floor(Math.random() * statesList.length)];
+    return randomPair.capital + ", " + randomPair.name + ", " + "India"
+}
+
+function getTransactionId() {
+    const prefix = 'T';
+    const randomNumbers = Math.floor(10000000000000 + Math.random() * 9000000000);
+    return `${prefix}${randomNumbers}`;
+}
+
+function getRandomAmount() {
+    const prefix = '₹';
+    const randomNumbers = Math.floor(1000 + Math.random() * 900);
+    return `${prefix}${randomNumbers}`;
+}
+
+function getRandomFare() {
+    const prefix = '₹';
+    const randomNumbers = Math.floor(100 + Math.random() * 90);
+    return `${prefix}${randomNumbers}`;
+}
+
+function getRandomCon() {
+    const prefix = '₹';
+    const randomNumbers = Math.floor(10 + Math.random() * 10);
+    return `${prefix}${randomNumbers}`;
+}
+
+function getRandomRating() {
+    const randomNumber = Math.floor(1 + Math.random() * 5);
+    return randomNumber;
+}
 
 function getRandomFullName() {
     const firstNames = ['John', 'Alice', 'Bob', 'Emma', 'David', 'Sophia', 'Michael', 'Olivia', 'William', 'Ella'];

@@ -1,6 +1,6 @@
 "use client";
 
-import { Box, Card, Drawer, List, ListItem, ListItemButton, ListItemText, Typography } from '@mui/material'
+import { Box, Card, Collapse, Drawer, List, ListItem, ListItemButton, ListItemText, MenuItem, Typography } from '@mui/material'
 import { useRouter } from 'next/navigation';
 import React from 'react'
 
@@ -9,6 +9,7 @@ interface NavProps {
 
 const NavBar = (props: NavProps) => {
   const [active, setActive] = React.useState<string>('dashboard');
+  const [open, setOpen] = React.useState(false);
 
   const router = useRouter();
 
@@ -33,6 +34,10 @@ const NavBar = (props: NavProps) => {
     marginRight: '10px'
   }
 
+  const handleToggle = () => {
+    setOpen(!open);
+  };
+
   const handleRoute = (menu: string) => {
     setActive(menu);
     switch (menu) {
@@ -48,8 +53,11 @@ const NavBar = (props: NavProps) => {
       case "ride":
         router.push('/ride-management');
         break;
-      case "payments":
-        router.push('/payments');
+      case "payments-rider":
+        router.push('/payments-rider');
+        break;
+      case "payments-driver":
+        router.push('/payments-driver');
         break;
       case "notifications":
         router.push('/notifications');
@@ -72,9 +80,9 @@ const NavBar = (props: NavProps) => {
     }
   }
 
-  React.useEffect(()=>{
-    setActive(window.location.pathname.split('-')[0].replace('/',''))
-  },[])
+  React.useEffect(() => {
+    setActive(window.location.pathname.split('-')[0].replace('/', ''))
+  }, [])
 
   return (
     <Card sx={{ marginTop: '64px', width: '270px', height: '100vh', boxShadow: "none", overflowY: "scroll" }}>
@@ -129,16 +137,26 @@ const NavBar = (props: NavProps) => {
           </ListItemButton>
         </ListItem>
         <ListItem>
-          <ListItemButton onClick={() => handleRoute('payments')}>
+          <ListItemButton onClick={handleToggle}>
             <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: "100%" }}>
               <Box sx={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'center' }}>
                 <Typography sx={active === 'payments' ? activeIcon : inactiveIcon}><i className="ri-bank-card-line"></i></Typography>
                 <Typography sx={active === 'payments' ? { fontSize: '0.875rem', fontWeight: 400 } : { fontSize: '0.875rem', color: '#989393' }}>Payments</Typography>
               </Box>
-              <Typography sx={{ color: '#21328d', fontSize: '1.5rem', }}><i className="ri-arrow-right-s-line"></i></Typography>
+              <Typography sx={{ color: '#21328d', fontSize: '1.5rem', }}>{open ? <i className="ri-arrow-down-s-line"></i> : <i className="ri-arrow-right-s-line"></i>}</Typography>
             </Box>
           </ListItemButton>
         </ListItem>
+        <Collapse in={open} timeout="auto" unmountOnExit sx={{}}>
+          <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+            <MenuItem onClick={() => handleRoute('payments-rider')}>
+              <Typography>Rider</Typography>
+            </MenuItem>
+            <MenuItem onClick={() => handleRoute('payments-driver')}>
+              <Typography>Driver</Typography>
+            </MenuItem>
+          </Box>
+        </Collapse>
         <ListItem>
           <ListItemButton onClick={() => handleRoute('notifications')}>
             <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: "100%" }}>
