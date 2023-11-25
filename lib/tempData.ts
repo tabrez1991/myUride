@@ -47,3 +47,146 @@ function getRandomAvatar() {
 }
 
 export const tempUserData = userData;
+
+export const tempRideData = [
+    {
+        "tripId": "TRPAA01",
+        "status": "Assigned",
+        "country": "India",
+        "source": "New Delhi, Delhi, India",
+        "destination": "Agra, U.P., India"
+    },
+    {
+        "tripId": "TRPAA02",
+        "status": "Not Assigned",
+        "country": "India",
+        "source": "Mumbai, Maharashtra, India",
+        "destination": "Pune, Maharashtra, India"
+    },
+    {
+        "tripId": "TRPAA03",
+        "status": "Assigned",
+        "country": "India",
+        "source": "Kolkata, West Bengal, India",
+        "destination": "Darjeeling, West Bengal, India"
+    },
+    {
+        "tripId": "TRPAA04",
+        "status": "Not Assigned",
+        "country": "India",
+        "source": "Chennai, Tamil Nadu, India",
+        "destination": "Madurai, Tamil Nadu, India"
+    },
+    {
+        "tripId": "TRPAA05",
+        "status": "Assigned",
+        "country": "India",
+        "source": "Jaipur, Rajasthan, India",
+        "destination": "Udaipur, Rajasthan, India"
+    },
+    {
+        "tripId": "TRPAA06",
+        "status": "Not Assigned",
+        "country": "India",
+        "source": "Bengaluru, Karnataka, India",
+        "destination": "Mysuru, Karnataka, India"
+    },
+    {
+        "tripId": "TRPAA07",
+        "status": "Assigned",
+        "country": "India",
+        "source": "Hyderabad, Telangana, India",
+        "destination": "Visakhapatnam, Andhra Pradesh, India"
+    },
+    {
+        "tripId": "TRPAA08",
+        "status": "Not Assigned",
+        "country": "India",
+        "source": "Ahmedabad, Gujarat, India",
+        "destination": "Surat, Gujarat, India"
+    },
+    {
+        "tripId": "TRPAA09",
+        "status": "Assigned",
+        "country": "India",
+        "source": "Lucknow, U.P., India",
+        "destination": "Kanpur, U.P., India"
+    },
+    {
+        "tripId": "TRPAA10",
+        "status": "Not Assigned",
+        "country": "India",
+        "source": "Chandigarh, Punjab, India",
+        "destination": "Amritsar, Punjab, India"
+    },
+    {
+        "tripId": "TRPAA11",
+        "status": "Assigned",
+        "country": "India",
+        "source": "Bhopal, Madhya Pradesh, India",
+        "destination": "Indore, Madhya Pradesh, India"
+    },
+    {
+        "tripId": "TRPAA12",
+        "status": "Not Assigned",
+        "country": "India",
+        "source": "Guwahati, Assam, India",
+        "destination": "Shillong, Meghalaya, India"
+    },
+    {
+        "tripId": "TRPAA13",
+        "status": "Assigned",
+        "country": "India",
+        "source": "Patna, Bihar, India",
+        "destination": "Gaya, Bihar, India"
+    },
+    {
+        "tripId": "TRPAA14",
+        "status": "Not Assigned",
+        "country": "India",
+        "source": "Thiruvananthapuram, Kerala, India",
+        "destination": "Kochi, Kerala, India"
+    },
+    {
+        "tripId": "TRPAA15",
+        "status": "Assigned",
+        "country": "India",
+        "source": "Raipur, Chhattisgarh, India",
+        "destination": "Bilaspur, Chhattisgarh, India"
+    },
+    {
+        "tripId": "TRPAA16",
+        "status": "Not Assigned",
+        "country": "India",
+        "source": "Ranchi, Jharkhand, India",
+        "destination": "Jamshedpur, Jharkhand, India"
+    },
+    {
+        "tripId": "TRPAA17",
+        "status": "Assigned",
+        "country": "India",
+        "source": "Dehradun, Uttarakhand, India",
+        "destination": "Haridwar, Uttarakhand, India"
+    },
+    {
+        "tripId": "TRPAA18",
+        "status": "Not Assigned",
+        "country": "India",
+        "source": "Bhubaneswar, Odisha, India",
+        "destination": "Cuttack, Odisha, India"
+    },
+    {
+        "tripId": "TRPAA19",
+        "status": "Assigned",
+        "country": "India",
+        "source": "Srinagar, Jammu and Kashmir, India",
+        "destination": "Jammu, Jammu and Kashmir, India"
+    },
+    {
+        "tripId": "TRPAA20",
+        "status": "Not Assigned",
+        "country": "India",
+        "source": "Vadodara, Gujarat, India",
+        "destination": "Rajkot, Gujarat, India"
+    }
+]
