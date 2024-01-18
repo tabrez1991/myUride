@@ -10,6 +10,10 @@ const Notification = () => {
     const [pageSize, setPageSize] = React.useState<number>(10)
     const [rows, setRows] = React.useState<any[]>([])
     const [loader, setLoader] = React.useState<boolean>(false);
+    const [containerHeight, setContainerHeight] = React.useState<string>('')
+    const [finish, setFinish] = React.useState<boolean>(false)
+
+    const containerRef = React.useRef<HTMLDivElement>(null);
 
     const getNotificationsDetails = async () => {
         setLoader(true)
@@ -37,13 +41,26 @@ const Notification = () => {
         getNotificationsDetails()
     }, [page, pageSize]);
 
+    React.useEffect(() => {
+        if (containerRef.current) {
+            // Access the height of the container after the component has been rendered
+            const containerHeight = containerRef.current.offsetHeight;
+            if (containerHeight && !finish) {
+                setContainerHeight(((containerHeight / 2) + 200).toString())
+                setFinish(true)
+            }
+        } else {
+            console.warn("containerRef.current is null");
+          }
+    }, [rows]);
+
     return (
         <Box sx={{ height: "100vh", overflowY: "scroll" }}>
             <Typography variant='h5'>Notifications</Typography>
             <Box sx={{ mt: 2 }}></Box>
             {loader ? <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
                 <CircularProgress />
-            </Box> : <Box sx={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(600px, 1fr))", gap: "20px" }}>{rows.map((item, i) => (
+            </Box> : <Box sx={{ display: "inline-flex", flexDirection: "column", flexWrap: "wrap", alignContent: "flex-start", gap: "20px", height: `${containerHeight}px` }} ref={containerRef}>{rows.map((item, i) => (
                 <Box key={item.date}>
                     <Typography variant='h6' sx={{ padding: "0px 30px", fontWeight: 500 }}>{i === 0 ? "Today" : item.date}</Typography>
                     <Card sx={{ width: "600px", margin: "5px 10px", padding: "0px 20px 0px 20px", borderRadius: "20px", border: "1px solid #989393", boxShadow: "none" }}>

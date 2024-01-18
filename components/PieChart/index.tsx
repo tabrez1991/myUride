@@ -1,142 +1,67 @@
 "use client"
 
-import { Box } from '@mui/material'
+import { Box, Typography } from '@mui/material'
 import React from 'react'
 import { ResponsivePieCanvas } from '@nivo/pie'
 
-const data = [
-    {
-        "id": "java",
-        "label": "java",
-        "value": 510,
-        "color": "hsl(231, 62%, 34%, 1)"
-    },
-    {
-        "id": "rust",
-        "label": "rust",
-        "value": 94,
-        "color": "hsl(34, 70%, 50%)"
-    },
-];
+// const data = [
+//     {
+//         "id": "totalUser",
+//         "label": "Total Users",
+//         "value": 99,
+//         "color": "hsl(231, 62%, 34%, 1)"
+//     },
+//     {
+//         "id": "currentMonth",
+//         "label": "Current Month",
+//         "value": 33,
+//         "color": "hsl(34, 70%, 50%)"
+//     },
+// ]
 
-const LineGraph = () => {
-
+const LineGraph = (props: any) => {
+    const { data } = props
+    console.log("Dagagaga",data)
     return (
-        <Box sx={{ height: 200, background: "#fff" }}>
+        <Box sx={{ height: 200, background: "#fff", position: "relative" }}>
             <ResponsivePieCanvas
                 data={data}
-                enableArcLinkLabels = {false}
+                enableArcLinkLabels={false}
                 enableArcLabels={false}
                 margin={{ top: 40, right: 80, bottom: 40, left: 80 }}
                 innerRadius={0.8}
-                // padAngle={0.7}
-                // cornerRadius={3}
-                // activeOuterRadiusOffset={8}
+                borderWidth={1}
                 colors={{ scheme: 'paired' }}
-                // borderColor={{
-                //     from: 'color',
-                //     modifiers: [
-                //         [
-                //             'darker',
-                //             0.6
-                //         ]
-                //     ]
-                // }}
-                arcLinkLabelsSkipAngle={45}
-                // arcLinkLabelsTextColor="#333333"
-                arcLinkLabelsThickness={0}
-                // arcLinkLabelsColor={{ from: 'color' }}
-                // arcLabelsSkipAngle={10}
-                // arcLabelsTextColor="#333333"
-                // defs={[
-                //     {
-                //         id: 'dots',
-                //         type: 'patternDots',
-                //         background: 'inherit',
-                //         color: 'rgba(255, 255, 255, 0.3)',
-                //         size: 4,
-                //         padding: 1,
-                //         stagger: true
-                //     },
-                //     {
-                //         id: 'lines',
-                //         type: 'patternLines',
-                //         background: 'inherit',
-                //         color: 'rgba(255, 255, 255, 0.3)',
-                //         rotation: -45,
-                //         lineWidth: 6,
-                //         spacing: 10
-                //     }
-                // ]}
-                // fill={[
-                //     {
-                //         match: {
-                //             id: 'ruby'
-                //         },
-                //         id: 'dots'
-                //     },
-                //     {
-                //         match: {
-                //             id: 'c'
-                //         },
-                //         id: 'dots'
-                //     },
-                //     {
-                //         match: {
-                //             id: 'go'
-                //         },
-                //         id: 'dots'
-                //     },
-                //     {
-                //         match: {
-                //             id: 'python'
-                //         },
-                //         id: 'dots'
-                //     },
-                //     {
-                //         match: {
-                //             id: 'scala'
-                //         },
-                //         id: 'lines'
-                //     },
-                //     {
-                //         match: {
-                //             id: 'lisp'
-                //         },
-                //         id: 'lines'
-                //     },
-                //     {
-                //         match: {
-                //             id: 'elixir'
-                //         },
-                //         id: 'lines'
-                //     },
-                //     {
-                //         match: {
-                //             id: 'javascript'
-                //         },
-                //         id: 'lines'
-                //     }
-                // ]}
-                // legends={[
-                //     {
-                //         anchor: 'right',
-                //         direction: 'column',
-                //         justify: false,
-                //         translateX: 140,
-                //         translateY: 0,
-                //         itemsSpacing: 2,
-                //         itemWidth: 60,
-                //         itemHeight: 14,
-                //         itemTextColor: '#999',
-                //         itemDirection: 'left-to-right',
-                //         itemOpacity: 1,
-                //         symbolSize: 14,
-                //         symbolShape: 'circle'
-                //     }
-                // ]}
+                borderColor={{
+                    from: 'color',
+                    modifiers: [
+                        [
+                            'darker',
+                            0.6
+                        ]
+                    ]
+                }}
+                arcLinkLabelsSkipAngle={10}
+                arcLinkLabelsTextColor="#333333"
+                arcLinkLabelsThickness={2}
+                arcLinkLabelsColor={{ from: 'color' }}
+                arcLabelsSkipAngle={10}
+                arcLabelsTextColor={{
+                    from: 'color',
+                    modifiers: [
+                        [
+                            'darker',
+                            2
+                        ]
+                    ]
+                }}
             />
-        </Box>
+            <Box sx={{ border: "1px solid #000", display: "inline-block", borderRadius: "50%", p: 2, textAlign: "center", background: "hsl(231, 62%, 34%, 1)", color: "#fff", position: "absolute", top: 59, left: 126 }}>
+                <Typography>{Math.round((data[1]?.value / data[0]?.value) * 100)}%</Typography>
+                <Typography>growth</Typography>
+            </Box>
+            <Typography sx={{ position: "absolute", top: 170, left: 146 }}>{data[0]?.label}</Typography>
+        </Box >
     )
 }
 

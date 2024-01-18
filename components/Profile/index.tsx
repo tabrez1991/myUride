@@ -1,10 +1,11 @@
-import { editUser, getUsersById } from '@/utils';
+import { editUser } from '@/utils';
 import { Avatar, Box, Button, CircularProgress, Drawer, FormControl, FormHelperText, Grid, IconButton, InputAdornment, MenuItem, Select, Snackbar, TextField, Typography, styled } from '@mui/material'
 import React from 'react'
 import MuiAlert, { AlertColor, AlertProps } from '@mui/material/Alert';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { ERROR, SUCCESS, UserRole } from '@/lib/constants';
+import { setCookie } from 'cookies-next';
 
 const Alert = React.forwardRef<HTMLDivElement, AlertProps>((
   props,
@@ -24,11 +25,10 @@ const VisuallyHiddenInput = styled('input')({
 });
 
 
-const EditDetails = (props: any) => {
-  const { handleClose, isEdit, id, handleSuccess } = props;
+const Profile = (props: any) => {
+  const { handleClose, isEdit, data } = props;
 
-  const [loader, setLoader] = React.useState<boolean>(false);
-  const [editData, setEditData] = React.useState<any>();
+
   const [event, setEvent] = React.useState<any>();
   const [submitLoader, setSubmitLoader] = React.useState<boolean>(false);
   const [openAlert, setOpenAlert] = React.useState(false);
@@ -37,14 +37,13 @@ const EditDetails = (props: any) => {
   const [showPassword, setShowPassword] = React.useState(false);
   const [isProfilePic, setIsProfilePic] = React.useState<boolean>(false);
   const [previewUrl, setPreviewUrl] = React.useState<any>(null);
+  const [isEditable, setIsEditable] = React.useState<boolean>(false);
 
   const validation = useFormik({
     enableReinitialize: true,
 
     initialValues: {
       name: (event && event.name) || '',
-      middleName: (event && event.middleName) || '',
-      lastName: (event && event.lastName) || '',
       email: (event && event.email) || '',
       password: (event && event.password) || '',
       confirmPassword: (event && event.confirmPassword) || '',
@@ -62,8 +61,6 @@ const EditDetails = (props: any) => {
       try {
         const formData = new FormData();
         formData.append('name', values.name);
-        formData.append('middleName', values.middleName);
-        formData.append('lastName', values.lastName);
         formData.append('email', values.email);
         formData.append('password', values.password === '******' ? '' : values.password);
         formData.append('mobile', values.mobile);
@@ -75,7 +72,7 @@ const EditDetails = (props: any) => {
         if (data) {
           handleAlert(data.userId, "Update Successfull", SUCCESS);
           setSubmitLoader(false);
-          handleSuccess();
+          setCookie('name', data.name, { maxAge: 24 * 60 * 60 * 1000 });
           handleClose()
         } else {
           handleAlert(error.statusCode, error.message, ERROR);
@@ -116,40 +113,22 @@ const EditDetails = (props: any) => {
     reader.readAsDataURL(file);
   }
 
-  const getUserDetailsById = async (id: string) => {
-    setLoader(true)
-    try {
-      const tempRow: any = [];
-      const result = await getUsersById(id);
-      const { data, error } = result;
-      if (data) {
-        setEditData(data);
-        setEvent({
-          name: data.name,
-          middleName: data.middleName,
-          lastName: data.lastName,
-          email: data.email,
-          password: '******',
-          mobile: data.mobile,
-          roles: data.roles[0],
-          profile_picture: `${process.env.NEXT_PUBLIC_BASE_URL}/uploads/${data.profile_picture}`
-        })
-        setPreviewUrl(`${process.env.NEXT_PUBLIC_BASE_URL}/uploads/${data.profile_picture}`);
-        setLoader(false);
-      } else {
-        handleAlert(error.statusCode, error.message, ERROR);
-        setLoader(false)
-      }
-    } catch (error) {
-      console.error(error);
-      setLoader(false);
-    }
-
+  const hanldeEdit = () => {
+    setIsEditable(!isEditable);
   }
 
   React.useEffect(() => {
-    getUserDetailsById(id)
-  }, [id])
+    setEvent({
+      name: data.name,
+      email: data.email,
+      password: '******',
+      mobile: data.mobile,
+      roles: data.roles[0],
+      profile_picture: `${process.env.NEXT_PUBLIC_BASE_URL}/uploads/${data.profile_picture}`
+    })
+    setPreviewUrl(`${process.env.NEXT_PUBLIC_BASE_URL}/uploads/${data.profile_picture}`);
+  }, [data])
+
 
   return (
     <Drawer
@@ -163,14 +142,16 @@ const EditDetails = (props: any) => {
         </Alert>
       </Snackbar>
       <Box sx={{ width: 400, p: 2 }}>
-        <Typography>Edit User</Typography>
+        <Box sx={{ width: "100%", display: "flex", justifyContent: "flex-end" }}>
+          <Button variant='outlined' onClick={hanldeEdit}><i className="ri-edit-line" style={{ marginRight: "10px" }}></i>Edit</Button>
+        </Box>
 
         <Box sx={{ textAlign: "center", margin: "auto" }}>
-          <Avatar alt="John" src={previewUrl} id="avatar" sx={{ width: 100, height: 100, margin: "auto", mb: 1, }} />
-          <Button component="label" variant="contained" >
+          <Avatar alt={data?.name} src={previewUrl} id="avatar" sx={{ width: 100, height: 100, margin: "auto", mb: 1, }} />
+          {isEditable && <Button component="label" variant="contained" >
             Upload
             <VisuallyHiddenInput type="file" name='profile_picture' onChange={handleProfilePic} />
-          </Button>
+          </Button>}
         </Box>
 
         <FormControl
@@ -183,6 +164,7 @@ const EditDetails = (props: any) => {
           <TextField
             variant="outlined"
             name='name'
+            disabled={!isEditable}
             fullWidth
             size='small'
             value={validation.values.name || ''}
@@ -195,47 +177,6 @@ const EditDetails = (props: any) => {
 
         <FormControl
           fullWidth
-          error={!!(validation.touched.middleName && validation.errors.middleName)}
-        >
-          <Typography sx={{ fontWeight: 400, color: "#666666", fontSize: '0.875rem', mt: 2 }}>
-            Middle Name
-          </Typography>
-          <TextField
-            variant="outlined"
-            name='middleName'
-            fullWidth
-            size='small'
-            value={validation.values.middleName || ''}
-            onChange={validation.handleChange}
-          />
-          {validation.touched.middleName && validation.errors.middleName ? (
-            <FormHelperText>{validation.errors.middleName.toString()}</FormHelperText>
-          ) : null}
-        </FormControl>
-
-        <FormControl
-          fullWidth
-          error={!!(validation.touched.lastName && validation.errors.lastName)}
-        >
-          <Typography sx={{ fontWeight: 400, color: "#666666", fontSize: '0.875rem', mt: 2 }}>
-            Last Name
-          </Typography>
-          <TextField
-            variant="outlined"
-            name='lastName'
-            fullWidth
-            size='small'
-            value={validation.values.lastName || ''}
-            onChange={validation.handleChange}
-          />
-          {validation.touched.lastName && validation.errors.lastName ? (
-            <FormHelperText>{validation.errors.lastName.toString()}</FormHelperText>
-          ) : null}
-        </FormControl>
-        
-
-        <FormControl
-          fullWidth
           error={!!(validation.touched.email && validation.errors.email)}
         >
           <Typography sx={{ fontWeight: 400, color: "#666666", fontSize: '0.875rem', mt: 2 }}>
@@ -244,6 +185,7 @@ const EditDetails = (props: any) => {
           <TextField
             variant="outlined"
             name='email'
+            disabled
             fullWidth
             size='small'
             value={validation.values.email || ''}
@@ -264,6 +206,7 @@ const EditDetails = (props: any) => {
           <TextField
             variant="outlined"
             name='password'
+            disabled={!isEditable}
             fullWidth
             size='small'
             type={showPassword ? 'text' : 'password'}
@@ -294,6 +237,7 @@ const EditDetails = (props: any) => {
           <TextField
             variant="outlined"
             name='mobile'
+            disabled={!isEditable}
             fullWidth
             size='small'
             value={validation.values.mobile || ''}
@@ -314,6 +258,7 @@ const EditDetails = (props: any) => {
           <Select
             id="demo-simple-select"
             name="roles"
+            disabled
             value={validation.values.roles || ''}
             onChange={validation.handleChange}
           >
@@ -324,7 +269,7 @@ const EditDetails = (props: any) => {
           ) : null}
         </FormControl>
         <Box sx={{ position: 'absolute', bottom: 10, right: 10 }}>
-          <Button
+          {isEditable && <Button
             variant="contained"
             sx={{ textTransform: 'none', mt: 2 }}
             disabled={submitLoader}
@@ -332,11 +277,11 @@ const EditDetails = (props: any) => {
           >
             Submit
             {submitLoader && <CircularProgress size={20} sx={{ ml: 1 }} />}
-          </Button>
+          </Button>}
         </Box>
       </Box>
     </Drawer>
   )
 }
 
-export default EditDetails
+export default Profile

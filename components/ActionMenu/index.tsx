@@ -4,9 +4,10 @@ import React from 'react'
 interface ActionMenuProps {
 	id: string;
 	options: any
+	close?: any
 }
 const ActionsMenu = (props: ActionMenuProps) => {
-	const { id, options } = props;
+	const { id, options, close } = props;
 
 	const [anchorEl, setAnchorEl] = React.useState(null);
 
@@ -17,6 +18,10 @@ const ActionsMenu = (props: ActionMenuProps) => {
 	const handleClose = () => {
 		setAnchorEl(null);
 	};
+
+	React.useEffect(() => {
+		handleClose()
+	}, [close])
 
 	return (
 		<div>
@@ -29,7 +34,7 @@ const ActionsMenu = (props: ActionMenuProps) => {
 				onClose={handleClose}
 			>
 				{options.map((item: any) => (
-					<MenuItem onClick={()=>item.handler(id)}>{item.label}</MenuItem>
+					<MenuItem onClick={() => item.handler(id)}>{item.label}</MenuItem>
 				))}
 			</Menu>
 		</div>

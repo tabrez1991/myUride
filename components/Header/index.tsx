@@ -1,10 +1,15 @@
 "use client"; // This is a client component
 
-import { AppBar, Avatar, Badge, Box, IconButton, InputBase, Menu, MenuItem, Toolbar, Tooltip, Typography, alpha, styled } from '@mui/material'
+import { AppBar, Avatar, Badge, Box, IconButton, InputBase, Menu, MenuItem, Snackbar, Toolbar, Tooltip, Typography, alpha, styled } from '@mui/material'
 import Image from 'next/image'
+import MuiAlert, { AlertColor, AlertProps } from '@mui/material/Alert';
 import React from 'react'
-import avataar from '../../assets/images/ertugul.jpg'
 import logo from '../../assets/images/myUride.png'
+import { getUsersById, logout } from '@/utils';
+import { deleteCookie, getCookie } from 'cookies-next';
+import { ERROR, SUCCESS } from '@/lib/constants';
+import { useRouter } from 'next/navigation';
+import Profile from '../Profile';
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -54,14 +59,27 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
+const Alert = React.forwardRef<HTMLDivElement, AlertProps>((
+  props,
+  ref,
+) => <MuiAlert elevation={6} ref={ref} variant="standard" {...props} />);
+
 const Header = (props: any) => {
   const { handleNavBar } = props;
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const [openAlert, setOpenAlert] = React.useState(false);
+  const [alertType, setAlertType] = React.useState<AlertColor>('success')
+  const [alertMsg, setAlertMsg] = React.useState('')
+  const [isProfile, setIsProfile] = React.useState<boolean>(false);
+  const [loader, setLoader] = React.useState<boolean>(false);
+  const [profileData, setProfileData] = React.useState<any>();
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] =
     React.useState<null | HTMLElement>(null);
 
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
+
+  const router = useRouter()
 
   const handleProfileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -80,6 +98,36 @@ const Header = (props: any) => {
     setMobileMoreAnchorEl(event.currentTarget);
   };
 
+  const handleAlert = (id: string, msg: string, type: AlertColor) => {
+    setOpenAlert(true)
+    setAlertType(type)
+    setAlertMsg(msg)
+  }
+
+  const handleCloseAlert = (event?: React.SyntheticEvent | Event, reason?: string) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setOpenAlert(false);
+  };
+
+  const handleProfile = () => {
+    setIsProfile(true);
+  }
+
+  const handleLogout = async () => {
+    const result = await logout();
+    const { data, error } = result;
+    if (data) {
+      deleteCookie('accessToken');
+      deleteCookie('refreshToken');
+      deleteCookie('email');
+      handleAlert(data.userId, "Logout Successfully", SUCCESS);
+      router.push('/login')
+    } else {
+      handleAlert(error.statusCode, error.message, ERROR);
+    }
+  }
 
   const menuId = 'primary-search-account-menu';
 
@@ -100,8 +148,8 @@ const Header = (props: any) => {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-      <MenuItem onClick={handleMenuClose}>Logout</MenuItem>
+      <MenuItem onClick={handleProfile}>Profile</MenuItem>
+      <MenuItem onClick={handleLogout}>Logout</MenuItem>
     </Menu>
   );
 
@@ -147,15 +195,38 @@ const Header = (props: any) => {
           aria-haspopup="true"
           color="inherit"
         >
-          <Avatar alt="John" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRQ3HtlVi9cQRsMJTtkiVl8uKl_amljJNVJFw&usqp=CAU" />
+          <Avatar alt={profileData?.name} src={`${process.env.NEXT_PUBLIC_BASE_URL}/uploads/${profileData?.profile_picture}`} />
         </IconButton>
         <p>Profile</p>
       </MenuItem>
     </Menu>
   );
-  console.log(`${process.env.NEXT_PUBLIC_BASE_PATH}/ertugul.jpg`)
+
+  const getUserDetailsById = async (id: string) => {
+    setLoader(true)
+    const result = await getUsersById(id);
+    const { data, error } = result;
+    if (data) {
+      setProfileData(data);
+      setLoader(false);
+    } else {
+      handleAlert(error.statusCode, error.message, ERROR);
+      setLoader(false)
+    }
+  }
+
+  React.useEffect(() => {
+    const userid = getCookie('userid') || '';
+    getUserDetailsById(userid)
+  }, [])
+
   return (
     <Box sx={{ flexGrow: 1 }}>
+      <Snackbar open={openAlert} anchorOrigin={{ vertical: 'top', horizontal: 'right' }} autoHideDuration={3000} onClose={handleCloseAlert}>
+        <Alert onClose={handleCloseAlert} severity={alertType} sx={{ width: '338px', background: '#404040', color: '#fff', alignItems: 'center' }}>
+          {alertMsg}
+        </Alert>
+      </Snackbar>
       <AppBar position="absolute" sx={{ background: "#fff", color: "#000", left: 0 }}>
         <Toolbar>
           <Box sx={{ display: { xs: 'none', sm: 'none', md: 'flex' }, }}>
@@ -179,7 +250,7 @@ const Header = (props: any) => {
               marginLeft: '125px'
             }}
           >
-            Welcome Back, John
+            Welcome Back, {profileData?.name}
           </Typography>
 
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
@@ -219,8 +290,8 @@ const Header = (props: any) => {
           <Box sx={{ flexGrow: 0, width: "270px", display: { xs: 'none', md: 'flex' }, justifyContent: "space-between", alignItems: 'center' }}>
             <Tooltip title="Open settings">
               <Box sx={{ display: "flex", alignItems: "center" }}>
-                <Avatar alt="John" src="/ertugul.jpg" id="avatar" />
-                <Typography sx={{ color: "#000", fontWeight: 400, ml: "0.875rem", display: { xs: 'none', sm: 'block' } }}>John</Typography>
+              <Avatar alt={profileData?.name} src={`${process.env.NEXT_PUBLIC_BASE_URL}/uploads/${profileData?.profile_picture}`} />
+                <Typography sx={{ color: "#000", fontWeight: 400, ml: "0.875rem", display: { xs: 'none', sm: 'block' } }}>{profileData?.name}</Typography>
                 <IconButton onClick={handleProfileMenuOpen} sx={{ p: 0, ml: "5px" }}>
                   <i className="ri-arrow-down-s-line"></i>
                 </IconButton>
@@ -257,6 +328,7 @@ const Header = (props: any) => {
       </AppBar>
       {renderMobileMenu}
       {renderMenu}
+      {isProfile && profileData && <Profile handleClose={() => setIsProfile(false)} isEdit={isProfile} data={profileData}/>}
     </Box>
   )
 }

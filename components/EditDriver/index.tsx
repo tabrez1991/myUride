@@ -1,10 +1,10 @@
-import { editUser, getUsersById } from '@/utils';
+import { editDriver, editUser, getUsersById } from '@/utils';
 import { Avatar, Box, Button, CircularProgress, Drawer, FormControl, FormHelperText, Grid, IconButton, InputAdornment, MenuItem, Select, Snackbar, TextField, Typography, styled } from '@mui/material'
 import React from 'react'
 import MuiAlert, { AlertColor, AlertProps } from '@mui/material/Alert';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import { ERROR, SUCCESS, UserRole } from '@/lib/constants';
+import { ERROR, SUCCESS, AppRole } from '@/lib/constants';
 
 const Alert = React.forwardRef<HTMLDivElement, AlertProps>((
   props,
@@ -24,8 +24,8 @@ const VisuallyHiddenInput = styled('input')({
 });
 
 
-const EditDetails = (props: any) => {
-  const { handleClose, isEdit, id, handleSuccess } = props;
+const EditDriver = (props: any) => {
+  const { handleClose, isEdit, data, handleSuccess } = props;
 
   const [loader, setLoader] = React.useState<boolean>(false);
   const [editData, setEditData] = React.useState<any>();
@@ -70,7 +70,7 @@ const EditDetails = (props: any) => {
         formData.append('roles', values.roles);
         formData.append('profile_picture', isProfilePic ? values.profile_picture.files[0] : '');
 
-        const result = await editUser(formData);
+        const result = await editDriver(formData);
         const { data, error } = result;
         if (data) {
           handleAlert(data.userId, "Update Successfull", SUCCESS);
@@ -116,40 +116,20 @@ const EditDetails = (props: any) => {
     reader.readAsDataURL(file);
   }
 
-  const getUserDetailsById = async (id: string) => {
-    setLoader(true)
-    try {
-      const tempRow: any = [];
-      const result = await getUsersById(id);
-      const { data, error } = result;
-      if (data) {
-        setEditData(data);
-        setEvent({
-          name: data.name,
-          middleName: data.middleName,
-          lastName: data.lastName,
-          email: data.email,
-          password: '******',
-          mobile: data.mobile,
-          roles: data.roles[0],
-          profile_picture: `${process.env.NEXT_PUBLIC_BASE_URL}/uploads/${data.profile_picture}`
-        })
-        setPreviewUrl(`${process.env.NEXT_PUBLIC_BASE_URL}/uploads/${data.profile_picture}`);
-        setLoader(false);
-      } else {
-        handleAlert(error.statusCode, error.message, ERROR);
-        setLoader(false)
-      }
-    } catch (error) {
-      console.error(error);
-      setLoader(false);
-    }
-
-  }
-
   React.useEffect(() => {
-    getUserDetailsById(id)
-  }, [id])
+    setEditData(data);
+    setEvent({
+      name: data.driver,
+      middleName: data.middleName,
+      lastName: data.lastName,
+      email: data.email,
+      password: '******',
+      mobile: data.mobileNumber,
+      roles: '1',
+      profile_picture: `${process.env.NEXT_PUBLIC_BASE_URL}/uploads/${data.avatar}`
+    })
+    setPreviewUrl(`${process.env.NEXT_PUBLIC_BASE_URL}/uploads/${data.avatar}`);
+  }, [data])
 
   return (
     <Drawer
@@ -163,7 +143,7 @@ const EditDetails = (props: any) => {
         </Alert>
       </Snackbar>
       <Box sx={{ width: 400, p: 2 }}>
-        <Typography>Edit User</Typography>
+        <Typography>Edit Driver</Typography>
 
         <Box sx={{ textAlign: "center", margin: "auto" }}>
           <Avatar alt="John" src={previewUrl} id="avatar" sx={{ width: 100, height: 100, margin: "auto", mb: 1, }} />
@@ -232,7 +212,7 @@ const EditDetails = (props: any) => {
             <FormHelperText>{validation.errors.lastName.toString()}</FormHelperText>
           ) : null}
         </FormControl>
-        
+
 
         <FormControl
           fullWidth
@@ -317,7 +297,7 @@ const EditDetails = (props: any) => {
             value={validation.values.roles || ''}
             onChange={validation.handleChange}
           >
-            {UserRole.map(item => <MenuItem key={item.id} value={item.value}>{item.id}</MenuItem>)}
+            {AppRole.map(item => <MenuItem key={item.id} value={item.value}>{item.id}</MenuItem>)}
           </Select>
           {validation.touched.roles && validation.errors.roles ? (
             <FormHelperText>{validation.errors.roles.toString()}</FormHelperText>
@@ -339,4 +319,4 @@ const EditDetails = (props: any) => {
   )
 }
 
-export default EditDetails
+export default EditDriver
