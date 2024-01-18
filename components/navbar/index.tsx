@@ -42,46 +42,54 @@ const NavBar = (props: NavProps) => {
     setActive(menu);
     switch (menu) {
       case "dashboard":
-        router.push('/');
+        router.push('/admin');
         break;
       case "user":
-        router.push('/user-management');
+        router.push('/admin/user-management');
         break;
       case "driver":
-        router.push('/driver-management');
+        router.push('/admin/driver-management');
         break;
-      case "ride":
-        router.push('/ride-management');
+      case "rider":
+        router.push('/admin/rider-management');
+        break;
+      case "trip":
+        router.push('/admin/trip-management');
         break;
       case "payments-rider":
-        router.push('/payments-rider');
+        router.push('/admin/payments-rider');
         break;
       case "payments-driver":
-        router.push('/payments-driver');
+        router.push('/admin/payments-driver');
         break;
       case "notifications":
-        router.push('/notifications');
+        router.push('/admin/notifications');
         break;
       case "settings":
-        router.push('/settings');
+        router.push('/admin/settings');
         break;
       case "marketing":
-        router.push('/promotion-marketing');
+        router.push('/admin/promotion-marketing');
         break;
       case "support":
-        router.push('/support');
+        router.push('/admin/support');
         break;
       case "feedback":
-        router.push('/feedback');
+        router.push('/admin/feedback');
         break;
       default:
-        router.push('/');
+        router.push('/admin');
         break;
     }
   }
 
   React.useEffect(() => {
-    setActive(window.location.pathname.split('-')[0].replace('/', ''))
+    console.log(window.location.pathname.split('-')[0].replace('/admin/', ''))
+    if (window.location.pathname.split('-')[0].replace('/admin/', '') === '/admin') {
+      setActive('dashboard')
+    } else {
+      setActive(window.location.pathname.split('-')[0].replace('/admin/', ''))
+    }
   }, [])
 
   return (
@@ -108,7 +116,7 @@ const NavBar = (props: NavProps) => {
             <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: "100%" }}>
               <Box sx={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'center' }}>
                 <Typography sx={active === 'user' ? activeIcon : inactiveIcon}><i className="ri-user-add-line"></i></Typography>
-                <Typography sx={active === 'user' ? { fontSize: '0.875rem', fontWeight: 400 } : { fontSize: '0.875rem', color: '#989393' }}>User Management</Typography>
+                <Typography sx={active === 'user' ? { fontSize: '0.875rem', fontWeight: 400 } : { fontSize: '0.875rem', color: '#989393' }}>Admin Users Management</Typography>
               </Box>
               <Typography sx={{ color: '#21328d', fontSize: '1.5rem', }}> <i className="ri-arrow-right-s-line"></i></Typography>
             </Box>
@@ -126,11 +134,22 @@ const NavBar = (props: NavProps) => {
           </ListItemButton>
         </ListItem>
         <ListItem>
-          <ListItemButton onClick={() => handleRoute('ride')}>
+          <ListItemButton onClick={() => handleRoute('rider')}>
             <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: "100%" }}>
               <Box sx={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'center' }}>
-                <Typography sx={active === 'ride' ? activeIcon : inactiveIcon}><i className="ri-phone-lock-line"></i></Typography>
-                <Typography sx={active === 'ride' ? { fontSize: '0.875rem', fontWeight: 400 } : { fontSize: '0.875rem', color: '#989393' }}>Ride Management</Typography>
+                <Typography sx={active === 'rider' ? activeIcon : inactiveIcon}><i className="ri-user-settings-line"></i></Typography>
+                <Typography sx={active === 'rider' ? { fontSize: '0.875rem', fontWeight: 400 } : { fontSize: '0.875rem', color: '#989393' }}>Rider Management</Typography>
+              </Box>
+              <Typography sx={{ color: '#21328d', fontSize: '1.5rem', }}> <i className="ri-arrow-right-s-line"></i></Typography>
+            </Box>
+          </ListItemButton>
+        </ListItem>
+        <ListItem>
+          <ListItemButton onClick={() => handleRoute('trip')}>
+            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: "100%" }}>
+              <Box sx={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'center' }}>
+                <Typography sx={active === 'trip' ? activeIcon : inactiveIcon}><i className="ri-phone-lock-line"></i></Typography>
+                <Typography sx={active === 'trip' ? { fontSize: '0.875rem', fontWeight: 400 } : { fontSize: '0.875rem', color: '#989393' }}>Trip Management</Typography>
               </Box>
               <Typography sx={{ color: '#21328d', fontSize: '1.5rem', }}> <i className="ri-arrow-right-s-line"></i></Typography>
             </Box>
@@ -201,7 +220,7 @@ const NavBar = (props: NavProps) => {
             </Box>
           </ListItemButton>
         </ListItem>
-        <ListItem>
+        {/* <ListItem>
           <ListItemButton onClick={() => handleRoute('feedback')}>
             <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: "100%" }}>
               <Box sx={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'center' }}>
@@ -211,7 +230,7 @@ const NavBar = (props: NavProps) => {
               <Typography sx={{ color: '#21328d', fontSize: '1.5rem', }}> <i className="ri-arrow-right-s-line"></i></Typography>
             </Box>
           </ListItemButton>
-        </ListItem>
+        </ListItem> */}
       </List>
     </Card>
   )

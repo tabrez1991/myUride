@@ -26,7 +26,7 @@ export const tempPaymentRider = Array.from({ length: 30 }, (_, index) => ({
     fare: getRandomFare(),
     conenience: getRandomCon(),
     rating: getRandomRating(),
-    paymentType: index % 3 === 0 ? 'Cash' : 'Online',
+    paymentType: index % 3 === 0 ? 'Credit card' : 'Apple pay',
 }));
 
 
@@ -41,7 +41,7 @@ export const tempNotifications = Array.from({ length: 30 }, (_, index) => ({
 
 function getRandomAddress() {
     const randomPair = statesList[Math.floor(Math.random() * statesList.length)];
-    return randomPair.capital + ", " + randomPair.name + ", " + "India"
+    return randomPair.capital + ", " + randomPair?.name + ", " + "India"
 }
 
 function getTransactionId() {
@@ -51,19 +51,19 @@ function getTransactionId() {
 }
 
 function getRandomAmount() {
-    const prefix = '₹';
+    const prefix = '$';
     const randomNumbers = Math.floor(1000 + Math.random() * 900);
     return `${prefix}${randomNumbers}`;
 }
 
 function getRandomFare() {
-    const prefix = '₹';
+    const prefix = '$';
     const randomNumbers = Math.floor(100 + Math.random() * 90);
     return `${prefix}${randomNumbers}`;
 }
 
 function getRandomCon() {
-    const prefix = '₹';
+    const prefix = '$';
     const randomNumbers = Math.floor(10 + Math.random() * 10);
     return `${prefix}${randomNumbers}`;
 }

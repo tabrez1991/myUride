@@ -1,114 +1,114 @@
 export const statesList = [
     {
-        "name": "Andhra Pradesh",
+        "state": "Andhra Pradesh",
         "capital": "Amaravati"
     },
     {
-        "name": "Arunachal Pradesh",
+        "state": "Arunachal Pradesh",
         "capital": "Itanagar"
     },
     {
-        "name": "Assam",
+        "state": "Assam",
         "capital": "Dispur"
     },
     {
-        "name": "Bihar",
+        "state": "Bihar",
         "capital": "Patna"
     },
     {
-        "name": "Chhattisgarh",
+        "state": "Chhattisgarh",
         "capital": "Raipur"
     },
     {
-        "name": "Goa",
+        "state": "Goa",
         "capital": "Panaji"
     },
     {
-        "name": "Gujarat",
+        "state": "Gujarat",
         "capital": "Gandhinagar"
     },
     {
-        "name": "Haryana",
+        "state": "Haryana",
         "capital": "Chandigarh"
     },
     {
-        "name": "Himachal Pradesh",
+        "state": "Himachal Pradesh",
         "capital": "Shimla"
     },
     {
-        "name": "Jharkhand",
+        "state": "Jharkhand",
         "capital": "Ranchi"
     },
     {
-        "name": "Karnataka",
+        "state": "Karnataka",
         "capital": "Bengaluru"
     },
     {
-        "name": "Kerala",
+        "state": "Kerala",
         "capital": "Thiruvananthapuram"
     },
     {
-        "name": "Madhya Pradesh",
+        "state": "Madhya Pradesh",
         "capital": "Bhopal"
     },
     {
-        "name": "Maharashtra",
+        "state": "Maharashtra",
         "capital": "Mumbai"
     },
     {
-        "name": "Manipur",
+        "state": "Manipur",
         "capital": "Imphal"
     },
     {
-        "name": "Meghalaya",
+        "state": "Meghalaya",
         "capital": "Shillong"
     },
     {
-        "name": "Mizoram",
+        "state": "Mizoram",
         "capital": "Aizawl"
     },
     {
-        "name": "Nagaland",
+        "state": "Nagaland",
         "capital": "Kohima"
     },
     {
-        "name": "Odisha",
+        "state": "Odisha",
         "capital": "Bhubaneswar"
     },
     {
-        "name": "Punjab",
+        "state": "Punjab",
         "capital": "Chandigarh"
     },
     {
-        "name": "Rajasthan",
+        "state": "Rajasthan",
         "capital": "Jaipur"
     },
     {
-        "name": "Sikkim",
+        "state": "Sikkim",
         "capital": "Gangtok"
     },
     {
-        "name": "Tamil Nadu",
+        "state": "Tamil Nadu",
         "capital": "Chennai"
     },
     {
-        "name": "Telangana",
+        "state": "Telangana",
         "capital": "Hyderabad"
     },
     {
-        "name": "Tripura",
+        "state": "Tripura",
         "capital": "Agartala"
     },
     {
-        "name": "Uttar Pradesh",
+        "state": "Uttar Pradesh",
         "capital": "Lucknow"
     },
     {
-        "name": "Uttarakhand",
+        "state": "Uttarakhand",
         "capital": "Dehradun"
     },
     {
-        "name": "West Bengal",
+        "state": "West Bengal",
         "capital": "Kolkata"
     }
 ]

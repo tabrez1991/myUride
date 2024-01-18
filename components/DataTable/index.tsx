@@ -1,4 +1,5 @@
 "use client"
+
 import React from 'react'
 import { DataGrid, GridColDef, GridValueGetterParams } from '@mui/x-data-grid';
 import { Box } from '@mui/material';
@@ -22,6 +23,8 @@ interface DataTableProps {
 const DataTable = (props: DataTableProps) => {
 	const { columns, rows, page, pageSize, loader, checkboxEnables } = props;
 
+	const [api, setApi] = React.useState();
+
 	return (
 		<Box sx={{ width: "100%", background: "#fff" }}>
 			<DataGrid
@@ -32,7 +35,8 @@ const DataTable = (props: DataTableProps) => {
 						paginationModel: { page, pageSize },
 					},
 				}}
-				pageSizeOptions={[5, 10]}
+				// onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
+				pageSizeOptions={[5, 10, 20]}
 				checkboxSelection={checkboxEnables}
 				loading={loader}
 				style={loader ? { height: "80vh" } : { height: "100%" }}

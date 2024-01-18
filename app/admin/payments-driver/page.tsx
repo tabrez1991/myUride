@@ -22,7 +22,7 @@ const style = {
 };
 
 
-const Payments = () => {
+const PaymentsDriver = () => {
     const [searchValue, setSearchValue] = React.useState<string>('');
     const [page, setPage] = React.useState<number>(0);
     const [pageSize, setPageSize] = React.useState<number>(10)
@@ -50,7 +50,7 @@ const Payments = () => {
         { field: 'transactionId', headerName: 'Transaction Id', flex: 1 },
         { field: 'paymentDate', headerName: 'Date', flex: 1 },
         {
-            field: 'rider', headerName: 'Rider', flex: 1.5,
+            field: 'rider', headerName: 'Driver', flex: 1.5,
             renderCell: (params) => (
                 <div style={{ display: 'flex', alignItems: 'center' }}>
                     <Avatar alt="John" src={params.row.avatar} id="avatar" sx={{ mr: 2 }} />
@@ -60,14 +60,6 @@ const Payments = () => {
         },
         { field: 'amount', headerName: 'Amount', flex: 1 },
         { field: 'paymentType', headerName: 'Payment Type', flex: 1 },
-        {
-            field: 'invoice', headerName: '', flex: 1,
-            renderCell: (params) => (
-                <div style={{ display: 'flex', alignItems: 'center' }}>
-                    <Link href="https://slicedinvoices.com/pdf/wordpress-pdf-invoice-plugin-sample.pdf" target="_blank" sx={{ textDecoration: "none", color: "#000" }}>Invoice</Link>
-                </div>
-            ),
-        },
         {
             field: 'actions',
             headerName: 'Actions',
@@ -122,7 +114,7 @@ const Payments = () => {
                         <Box>
                             <Typography>{selectedDetails && formatDate(selectedDetails?.paymentDate)}</Typography>
                             <Box sx={{ display: "flex", alignItems: "center" }}>
-                                <Typography>You rated {selectedDetails?.driver}</Typography>
+                                <Typography>You have rated by {selectedDetails?.driver}</Typography>
                                 <div style={{ display: 'flex', alignItems: 'center', marginLeft: "10px" }}>
                                     {Array.from({ length: selectedDetails?.rating }, (_, index) => (
                                         <Typography key={index} sx={{ color: '#ffd700', fontSize: '15px' }}>
@@ -157,7 +149,7 @@ const Payments = () => {
                         </Box>
                         <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                             <Typography>Subtotal</Typography>
-                            <Typography>₹{Number(selectedDetails?.amount.split('₹')[1]) - (Number(selectedDetails?.fare.split('₹')[1]) + Number(selectedDetails?.conenience.split('₹')[1]) + 20)}</Typography>
+                            <Typography>${Number(selectedDetails?.amount.split('$')[1]) - (Number(selectedDetails?.fare.split('$')[1]) + Number(selectedDetails?.conenience.split('$')[1]) + 20)}</Typography>
                         </Box>
                         <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                             <Typography>Transaction convenience fee</Typography>
@@ -178,4 +170,4 @@ const Payments = () => {
     )
 }
 
-export default Payments
+export default PaymentsDriver
