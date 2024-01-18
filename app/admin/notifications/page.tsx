@@ -13,7 +13,7 @@ const Notification = () => {
     const [containerHeight, setContainerHeight] = React.useState<string>('')
     const [finish, setFinish] = React.useState<boolean>(false)
 
-    const containerRef = React.useRef(null);
+    const containerRef = React.useRef<HTMLDivElement>(null);
 
     const getNotificationsDetails = async () => {
         setLoader(true)
@@ -42,13 +42,16 @@ const Notification = () => {
     }, [page, pageSize]);
 
     React.useEffect(() => {
-        // Access the height of the container after the component has been rendered
-        const containerHeight = containerRef.current.offsetHeight;
-        console.log('Container Height:', containerHeight);
-        if (containerHeight && !finish) {
-            setContainerHeight(((containerHeight / 2) + 200).toString())
-            setFinish(true)
-        }
+        if (containerRef.current) {
+            // Access the height of the container after the component has been rendered
+            const containerHeight = containerRef.current.offsetHeight;
+            if (containerHeight && !finish) {
+                setContainerHeight(((containerHeight / 2) + 200).toString())
+                setFinish(true)
+            }
+        } else {
+            console.warn("containerRef.current is null");
+          }
     }, [rows]);
 
     return (

@@ -41,7 +41,7 @@ export const tempNotifications = Array.from({ length: 30 }, (_, index) => ({
 
 function getRandomAddress() {
     const randomPair = statesList[Math.floor(Math.random() * statesList.length)];
-    return randomPair.capital + ", " + randomPair?.name + ", " + "India"
+    return randomPair.capital + ", " + randomPair?.state + ", " + "India"
 }
 
 function getTransactionId() {
