@@ -4,7 +4,7 @@ import SearchBox from '@/components/SearchBox'
 import TripDetails from '@/components/TripDetails'
 import { tempRideData } from '@/lib/tempData'
 import { getStates, getTrips, logout } from '@/utils'
-import { Box, CircularProgress, FormControl, InputLabel, MenuItem, Select, Snackbar, Typography } from '@mui/material'
+import { Box, Chip, CircularProgress, FormControl, InputLabel, MenuItem, Paper, Select, Snackbar, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow, Typography } from '@mui/material'
 import React from 'react'
 import MuiAlert, { AlertColor, AlertProps } from '@mui/material/Alert';
 import { ERROR } from '@/lib/constants'
@@ -12,6 +12,9 @@ import { deleteCookie } from 'cookies-next'
 import { useRouter } from 'next/navigation'
 import { statesList } from '@/lib/statesList'
 import { InView } from "react-intersection-observer";
+import { DataGrid, GridColDef } from '@mui/x-data-grid'
+import PaginatedTable from '@/components/table/PaginatedTable'
+import { HeadCell } from '@/components/table/table'
 
 
 const Alert = React.forwardRef<HTMLDivElement, AlertProps>((
@@ -22,7 +25,8 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>((
 const RideManagement = () => {
 	const [searchValue, setSearchValue] = React.useState<string>('');
 	const [page, setPage] = React.useState<number>(1);
-	const [pageSize, setPageSize] = React.useState<number>(9)
+	const [pageSize, setPageSize] = React.useState<number>(10)
+	const [pageTotal, setPageTotal] = React.useState<number>(100)
 	const [tripData, setTripData] = React.useState<any[]>([])
 	const [loader, setLoader] = React.useState<boolean>(false);
 	const [stateDetails, setStateDetails] = React.useState<string>(' ')
@@ -87,37 +91,57 @@ const RideManagement = () => {
 		}
 	};
 
+	const handleChangePage = (
+		event: React.MouseEvent<HTMLButtonElement> | null,
+		newPage: number,
+	) => {
+		setPage(newPage + 1);
+	};
+
+	const handleChangeRowsPerPage = (
+		event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+	) => {
+		setPageSize(parseInt(event.target.value, 10));
+		setPage(1);
+	};
+
+
+	const calculateStartingSerialNumber = () => {
+		return (page - 1) * pageSize + 1;
+	};
 
 	const getTripDetails = async () => {
 		setLoader(true)
+		setTripData([])
 		try {
-			const tempRow: any = changeHappened ? [] : [...tripData];
-			const result = await getTrips(page, pageSize, stateDetails, searchValue);
+			const tempRow: any = [];
+			const result = await getTrips(page, pageSize, stateDetails.trim(), searchValue.trim());
 			const { data, error } = result;
 			if (data) {
 				if (data.data.length > 0) {
-					data.data.forEach((element: any) => {
+					data.data.forEach((element: any, i: number) => {
 						tempRow.push({
+							id: calculateStartingSerialNumber() + i,
 							tripId: element?._id,
 							status: element?.status,
-							country: 'India',
+							country: 'USA',
 							source: element?.pickup_location,
 							destination: element?.destination_location,
-							seatsLeft: element?.seat_left_need
+							seatsLeft: element?.seat_left_need,
+							trip: element?.trip,
+							amount: element?.amount
 						})
 					});
+					setPageTotal(data?.metadata?.total)
 					setTripData(tempRow)
 					setLoader(false);
-					setChangedHappened(false)
 				} else {
 					setTripData(tempRow)
 					setLoader(false);
-					setFinish(true)
-					setChangedHappened(false)
 				}
 			} else {
 				handleAlert(error.statusCode, error.message, ERROR);
-				handleLogout()
+				// handleLogout()
 			}
 		} catch (error) {
 			console.error(error);
@@ -147,7 +171,7 @@ const RideManagement = () => {
 
 	React.useEffect(() => {
 		getTripDetails()
-	}, [stateDetails, searchValue, page]);
+	}, [stateDetails, searchValue, page, pageSize]);
 
 	React.useEffect(() => {
 		getStatesList()
@@ -179,21 +203,51 @@ const RideManagement = () => {
 			<Box sx={{ mt: 2 }}>
 				{loader ? <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
 					<CircularProgress />
-				</Box> : tripData && tripData.length > 0 ? <>
-					<Box sx={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(400px, 1fr))", gap: "20px" }}>{tripData.map(item => (
-						<TripDetails key={item.tripId} data={item} />
-					))}
-					</Box>
-					{tripData.length > 0 && !finish && (
-						<InView
-							as="div"
-							style={{ textAlign: "center" }}
-							onChange={(inView, entry) => handleInView(inView)}
-						>
-							<CircularProgress />
-						</InView>
-					)}</>
-					: <Box>No Data</Box>}
+				</Box> : <>
+					<TableContainer component={Paper}>
+						<Table sx={{ minWidth: 650 }} aria-label="simple table">
+							<TableHead>
+								<TableRow>
+									<TableCell>S No</TableCell>
+									<TableCell>Trip Id</TableCell>
+									<TableCell>Pickup Location</TableCell>
+									<TableCell>Destination</TableCell>
+									<TableCell>Status</TableCell>
+									<TableCell>Number of Seat Left</TableCell>
+									<TableCell>Trip</TableCell>
+									<TableCell>Amount</TableCell>
+								</TableRow>
+							</TableHead>
+							<TableBody>
+								{tripData.map((row, i) => (
+									<TableRow
+										key={row._id}
+										sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+									>
+										<TableCell>{row.id}</TableCell>
+										<TableCell component="th" scope="row">
+											{row.tripId}
+										</TableCell>
+										<TableCell>{row.source}</TableCell>
+										<TableCell>{row.destination}</TableCell>
+										<TableCell>{row.status}</TableCell>
+										<TableCell>{row.seatsLeft}</TableCell>
+										<TableCell>{<Chip label={row.trip.toString().toUpperCase()} color={row.trip === 'oneway' ? 'primary' : 'success'} />}</TableCell>
+										<TableCell>{row.amount}</TableCell>
+									</TableRow>
+								))}
+							</TableBody>
+						</Table>
+						<TablePagination
+							component="div"
+							count={pageTotal}
+							page={page - 1}
+							onPageChange={handleChangePage}
+							rowsPerPage={pageSize}
+							onRowsPerPageChange={handleChangeRowsPerPage}
+						/>
+					</TableContainer>
+				</>}
 			</Box>
 		</Box>
 	)

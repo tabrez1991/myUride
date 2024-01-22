@@ -1,0 +1,9 @@
+.stickyRight, .stickyLeft{
+    position: sticky;
+    z-index: 5;
+}
+td{
+    &.stickyLeft, &.stickyRight{
+        background-color: #ffffff;
+    }
+}
