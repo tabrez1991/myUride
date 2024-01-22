@@ -4,7 +4,7 @@ import SearchBox from '@/components/SearchBox'
 import TripDetails from '@/components/TripDetails'
 import { tempRideData } from '@/lib/tempData'
 import { getStates, getTrips, logout } from '@/utils'
-import { Box, CircularProgress, FormControl, InputLabel, MenuItem, Paper, Select, Snackbar, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow, Typography } from '@mui/material'
+import { Box, Chip, CircularProgress, FormControl, InputLabel, MenuItem, Paper, Select, Snackbar, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow, Typography } from '@mui/material'
 import React from 'react'
 import MuiAlert, { AlertColor, AlertProps } from '@mui/material/Alert';
 import { ERROR } from '@/lib/constants'
@@ -13,6 +13,8 @@ import { useRouter } from 'next/navigation'
 import { statesList } from '@/lib/statesList'
 import { InView } from "react-intersection-observer";
 import { DataGrid, GridColDef } from '@mui/x-data-grid'
+import PaginatedTable from '@/components/table/PaginatedTable'
+import { HeadCell } from '@/components/table/table'
 
 
 const Alert = React.forwardRef<HTMLDivElement, AlertProps>((
@@ -76,7 +78,7 @@ const RideManagement = () => {
 			handleAlert(error.statusCode, error.message, ERROR);
 		}
 	}
-	
+
 	const handleInView = async (inView: any) => {
 		if (inView && !finish) {
 			const newPage = Number(page) + 1;
@@ -103,32 +105,26 @@ const RideManagement = () => {
 		setPage(1);
 	};
 
-	const columns: GridColDef[] = [
-		{ field: 'id', headerName: 'S. No.', width: 70 },
-		{ field: 'tripId', headerName: 'Trip Id', width: 130 },
-		{ field: 'source', headerName: 'Pickup Location', width: 130 },
-		{ field: 'destination', headerName: 'Destination', width: 90 },
-		{ field: 'status', headerName: 'Status', width: 90 },
-		{ field: 'seatsLeft', headerName: 'Number of Seat Left', width: 90 },
-		{ field: 'trip', headerName: 'Trip', width: 90 },
-		{ field: 'amount', headerName: 'Amount', width: 90 },
-	];
 
+	const calculateStartingSerialNumber = () => {
+		return (page - 1) * pageSize + 1;
+	};
 
 	const getTripDetails = async () => {
 		setLoader(true)
+		setTripData([])
 		try {
-			const tempRow: any = changeHappened ? [] : [...tripData];
-			const result = await getTrips(page, pageSize, stateDetails, searchValue);
+			const tempRow: any = [];
+			const result = await getTrips(page, pageSize, stateDetails.trim(), searchValue.trim());
 			const { data, error } = result;
 			if (data) {
 				if (data.data.length > 0) {
-					data.data.forEach((element: any) => {
+					data.data.forEach((element: any, i: number) => {
 						tempRow.push({
-							id: element?._id,
+							id: calculateStartingSerialNumber() + i,
 							tripId: element?._id,
 							status: element?.status,
-							country: 'India',
+							country: 'USA',
 							source: element?.pickup_location,
 							destination: element?.destination_location,
 							seatsLeft: element?.seat_left_need,
@@ -136,20 +132,16 @@ const RideManagement = () => {
 							amount: element?.amount
 						})
 					});
-					console.log("data", data)
 					setPageTotal(data?.metadata?.total)
 					setTripData(tempRow)
 					setLoader(false);
-					setChangedHappened(false)
 				} else {
 					setTripData(tempRow)
 					setLoader(false);
-					setFinish(true)
-					setChangedHappened(false)
 				}
 			} else {
 				handleAlert(error.statusCode, error.message, ERROR);
-				handleLogout()
+				// handleLogout()
 			}
 		} catch (error) {
 			console.error(error);
@@ -211,22 +203,8 @@ const RideManagement = () => {
 			<Box sx={{ mt: 2 }}>
 				{loader ? <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
 					<CircularProgress />
-				</Box> : tripData && tripData.length > 0 ? <>
-					<DataGrid
-						rows={tripData}
-						columns={columns}
-						initialState={{
-							pagination: {
-								paginationModel: { page: page, pageSize: pageSize},
-							},
-						}}
-						// onPageChange={handleChangePage}
-						// onPageSizeChange={handleChangeRowsPerPage}
-						onPaginationModelChange={handleTestChangePage}
-						pageSizeOptions={[5, 10, 25]}
-						checkboxSelection
-					/>
-					{/* <TableContainer component={Paper}>
+				</Box> : <>
+					<TableContainer component={Paper}>
 						<Table sx={{ minWidth: 650 }} aria-label="simple table">
 							<TableHead>
 								<TableRow>
@@ -246,7 +224,7 @@ const RideManagement = () => {
 										key={row._id}
 										sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
 									>
-										<TableCell>{i + 1}</TableCell>
+										<TableCell>{row.id}</TableCell>
 										<TableCell component="th" scope="row">
 											{row.tripId}
 										</TableCell>
@@ -254,7 +232,7 @@ const RideManagement = () => {
 										<TableCell>{row.destination}</TableCell>
 										<TableCell>{row.status}</TableCell>
 										<TableCell>{row.seatsLeft}</TableCell>
-										<TableCell>{row.trip}</TableCell>
+										<TableCell>{<Chip label={row.trip.toString().toUpperCase()} color={row.trip === 'oneway' ? 'primary' : 'success'} />}</TableCell>
 										<TableCell>{row.amount}</TableCell>
 									</TableRow>
 								))}
@@ -268,23 +246,8 @@ const RideManagement = () => {
 							rowsPerPage={pageSize}
 							onRowsPerPageChange={handleChangeRowsPerPage}
 						/>
-					</TableContainer> */}
-
-					{/* <Box sx={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(400px, 1fr))", gap: "20px" }}>{tripData.map(item => (
-						<TripDetails key={item.tripId} data={item} />
-					))}
-					</Box>
-					{tripData.length > 0 && !finish && (
-						<InView
-							as="div"
-							style={{ textAlign: "center" }}
-							onChange={(inView, entry) => handleInView(inView)}
-						>
-							<CircularProgress />
-						</InView>
-					)} */}
-				</>
-					: <Box>No Data</Box>}
+					</TableContainer>
+				</>}
 			</Box>
 		</Box>
 	)
