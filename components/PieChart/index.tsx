@@ -21,7 +21,6 @@ import { ResponsivePieCanvas } from '@nivo/pie'
 
 const LineGraph = (props: any) => {
     const { data } = props
-    console.log("Dagagaga",data)
     return (
         <Box sx={{ height: 200, background: "#fff", position: "relative" }}>
             <ResponsivePieCanvas

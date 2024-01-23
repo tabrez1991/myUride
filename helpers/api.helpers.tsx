@@ -12,6 +12,8 @@ apiHelper.interceptors.request.use(
   async (config: any) => {
     config.headers = {
       Authorization: `Bearer ${getCookie('accessToken')}`,
+      "Content-Type": "application/json",
+      Accept: "*/*",
       // Sessionid: getCookie('sessionID'),
       // //security headers
       // 'Content-Security-Policy': "default-src 'self'; script-src 'self'; style-src 'self'; font-src 'self'; img-src 'self' data:; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; block-all-mixed-content; upgrade-insecure-requests; -cache--control no-cache no-store; no-store; object-src 'none'; script-src-attr 'none'",
@@ -29,7 +31,7 @@ apiHelper.interceptors.request.use(
 );
 
 apiHelper.interceptors.response.use(
-  (response)=>{
+  (response) => {
     return response;
   },
   async function (error) {
