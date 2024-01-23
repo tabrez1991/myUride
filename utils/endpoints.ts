@@ -28,3 +28,6 @@ export const ACTIVATE_RIDER = '/auth/activate-rider';
 export const STATES_LIST = '/auth/states-list';
 export const TRIPS_LIST = '/auth/trips-list';
 
+// Feedback
+export const FEEDBACK_LIST = '/auth/feedback-list';
+

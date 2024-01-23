@@ -1,5 +1,5 @@
 import apiHelper from "@/helpers/api.helpers";
-import { ACTIVATE_DRIVER, ACTIVATE_RIDER, ACTIVATE_USER, DELETE_DRIVER, DELETE_RIDER, DELETE_USER, DRIVERS_LIST, EDIT_DRIVER, EDIT_RIDER, EDIT_USER, GET_USERS, LOGIN, LOGOUT, MONTH_WISE_DATA, MONTH_WISE_GROWTH, REGISTER, RESET_PASSWORD, RIDERS_LIST, STATES_LIST, TOTAL_DATA, TRIPS_LIST } from "./endpoints";
+import { ACTIVATE_DRIVER, ACTIVATE_RIDER, ACTIVATE_USER, DELETE_DRIVER, DELETE_RIDER, DELETE_USER, DRIVERS_LIST, EDIT_DRIVER, EDIT_RIDER, EDIT_USER, FEEDBACK_LIST, GET_USERS, LOGIN, LOGOUT, MONTH_WISE_DATA, MONTH_WISE_GROWTH, REGISTER, RESET_PASSWORD, RIDERS_LIST, STATES_LIST, TOTAL_DATA, TRIPS_LIST } from "./endpoints";
 import { getCookie } from "cookies-next";
 import axios from "axios";
 
@@ -206,6 +206,15 @@ export const getStates = async () => {
 export const getTrips = async (page: number, pageSize: number, state: string, searchQuery: string) => {
   try {
     const response = await apiHelper.get(`${BASE_URL}${TRIPS_LIST}?page=${page}&limit=${pageSize}&state=${state}&searchQuery=${searchQuery}`);
+    return { data: response.data, error: null };
+  } catch (error: any) {
+    return { data: null, error: error.response.data };
+  }
+};
+
+export const getFeedback = async (page: number, pageSize: number, searchQuery: string) => {
+  try {
+    const response = await apiHelper.get(`${BASE_URL}${FEEDBACK_LIST}?page=${page}&limit=${pageSize}&searchQuery=${searchQuery}`);
     return { data: response.data, error: null };
   } catch (error: any) {
     return { data: null, error: error.response.data };

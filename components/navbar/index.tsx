@@ -198,7 +198,7 @@ const NavBar = (props: NavProps) => {
             </Box>
           </ListItemButton>
         </ListItem> */}
-        <ListItem>
+        {/* <ListItem>
           <ListItemButton onClick={() => handleRoute('marketing')}>
             <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: "100%" }}>
               <Box sx={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'center' }}>
@@ -208,8 +208,8 @@ const NavBar = (props: NavProps) => {
               <Typography sx={{ color: '#21328d', fontSize: '1.5rem', }}><i className="ri-arrow-right-s-line"></i></Typography>
             </Box>
           </ListItemButton>
-        </ListItem>
-        <ListItem>
+        </ListItem> */}
+        {/* <ListItem>
           <ListItemButton onClick={() => handleRoute('support')}>
             <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: "100%" }}>
               <Box sx={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'center' }}>
@@ -219,8 +219,8 @@ const NavBar = (props: NavProps) => {
               <Typography sx={{ color: '#21328d', fontSize: '1.5rem', }}><i className="ri-arrow-right-s-line"></i></Typography>
             </Box>
           </ListItemButton>
-        </ListItem>
-        {/* <ListItem>
+        </ListItem> */}
+        <ListItem>
           <ListItemButton onClick={() => handleRoute('feedback')}>
             <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: "100%" }}>
               <Box sx={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'center' }}>
@@ -230,7 +230,7 @@ const NavBar = (props: NavProps) => {
               <Typography sx={{ color: '#21328d', fontSize: '1.5rem', }}> <i className="ri-arrow-right-s-line"></i></Typography>
             </Box>
           </ListItemButton>
-        </ListItem> */}
+        </ListItem>
       </List>
     </Card>
   )
