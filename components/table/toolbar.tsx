@@ -14,7 +14,7 @@ const EnhancedTableToolbar = (props: EnhancedTableToolbarProps) => {
         mb: '1rem',
         borderRadius: '2px',
         bgcolor: (theme) => alpha(
-          theme.palette.primary.main60,
+          theme.palette.primary.main,
           theme.palette.action.activatedOpacity,
         ),
       }}
@@ -22,7 +22,7 @@ const EnhancedTableToolbar = (props: EnhancedTableToolbarProps) => {
       <Typography
         sx={{
           flex: '1 1 100%',
-          color: (theme) => theme.palette.primary.main80,
+          color: (theme) => theme.palette.primary.main,
         }}
         variant="body1"
         component="div"

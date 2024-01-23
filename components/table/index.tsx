@@ -24,7 +24,7 @@ import Row from './collapsible_row';
 import { getComparator, getSum, Item, stableSort } from './helpers';
 import EnhancedTableToolbar from './toolbar';
 import HtmlTable from './html_table';
-import NoData from '../NoData';
+
 export default function EnhancedTable(props: EnhancedTableProps) {
   const [order, setOrder] = React.useState<Order>('asc');
   const [orderBy, setOrderBy] = React.useState<string>('');
@@ -53,7 +53,6 @@ export default function EnhancedTable(props: EnhancedTableProps) {
     order: orderProps,
     orderBy: orderByProps,
     showTotal,
-    stickyAt,
   } = props;
 
   React.useEffect(() => {
@@ -318,11 +317,7 @@ export default function EnhancedTable(props: EnhancedTableProps) {
                   }}
                 >
                   <TableCell colSpan={headCells.length} sx={{ textAlign: 'center' }}>
-                    <NoData
-                      image="./images/no-data.png"
-                      msgHead="No Data Available"
-                      msgSubHead=""
-                    />
+                   No Data
                   </TableCell>
                 </TableRow>
               )}
@@ -350,7 +345,7 @@ export default function EnhancedTable(props: EnhancedTableProps) {
                   }}
                 >
                   <TableCell colSpan={totalColSpan} sx={{ pt: '1rem', pb: '1rem' }}>
-                    <Typography variant="button2">Total</Typography>
+                    <Typography>Total</Typography>
                   </TableCell>
                   {React.Children.toArray(
                     headCells.map((headCell, i) => {

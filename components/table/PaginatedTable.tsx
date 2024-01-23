@@ -420,7 +420,7 @@ const PaginatedTable = (props: PaginatedTableProps) => {
                   }}
                 >
                   <TableCell colSpan={totalColSpan} sx={{ pt: '1rem', pb: '1rem' }}>
-                    <Typography variant="button2">Total</Typography>
+                    <Typography>Total</Typography>
                   </TableCell>
                   {React.Children.toArray(
                     headCells.map((headCell, i) => {
