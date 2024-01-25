@@ -15,6 +15,7 @@ import { InView } from "react-intersection-observer";
 import { DataGrid, GridColDef } from '@mui/x-data-grid'
 import PaginatedTable from '@/components/table/PaginatedTable'
 import { HeadCell } from '@/components/table/table'
+import { formatDate, formatDateTime } from '@/lib/formatDate'
 
 
 const Alert = React.forwardRef<HTMLDivElement, AlertProps>((
@@ -129,7 +130,15 @@ const RideManagement = () => {
 							destination: element?.destination_location,
 							seatsLeft: element?.seat_left_need,
 							trip: element?.trip,
-							amount: element?.amount
+							amount: element?.amount,
+							tripDistance: element?.trip_distance,
+							tripTime: element?.trip_time,
+							departDateTime: element?.depart_date_time,
+							returnDateTime: element?.return_date_time,
+							numbersOfRiders: element?.number_of_riders,
+							numberOfBags: element?.number_of_bags,
+							specialRequest: element?.special_request,
+							createdDate: element?.created_date
 						})
 					});
 					setPageTotal(data?.metadata?.total)
@@ -203,19 +212,27 @@ const RideManagement = () => {
 			<Box sx={{ mt: 2 }}>
 				{loader ? <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
 					<CircularProgress />
-				</Box> : <>
+				</Box> : <Box>
 					<TableContainer component={Paper}>
 						<Table sx={{ minWidth: 650 }} aria-label="simple table">
 							<TableHead>
 								<TableRow>
-									<TableCell>S No</TableCell>
-									<TableCell>Trip Id</TableCell>
-									<TableCell>Pickup Location</TableCell>
-									<TableCell>Drop Location</TableCell>
-									<TableCell>Status</TableCell>
-									<TableCell>Number of Seat Left</TableCell>
-									<TableCell>Trip</TableCell>
-									<TableCell>Amount</TableCell>
+									<TableCell sx={{ whiteSpace: "nowrap" }}>S No</TableCell>
+									<TableCell sx={{ whiteSpace: "nowrap" }}>Trip Id</TableCell>
+									<TableCell sx={{ whiteSpace: "nowrap" }} >Pickup Location</TableCell>
+									<TableCell sx={{ whiteSpace: "nowrap" }}>Drop Location</TableCell>
+									<TableCell sx={{ whiteSpace: "nowrap" }}>Status</TableCell>
+									<TableCell sx={{ whiteSpace: "nowrap" }}>No. of Seat Left</TableCell>
+									<TableCell sx={{ whiteSpace: "nowrap" }}>Trip</TableCell>
+									<TableCell sx={{ whiteSpace: "nowrap" }}>Amount</TableCell>
+									<TableCell sx={{ whiteSpace: "nowrap" }}>Trip Distance</TableCell>
+									<TableCell sx={{ whiteSpace: "nowrap" }}>Trip Time</TableCell>
+									<TableCell sx={{ whiteSpace: "nowrap" }}>Depart</TableCell>
+									<TableCell sx={{ whiteSpace: "nowrap" }}>Return</TableCell>
+									<TableCell sx={{ whiteSpace: "nowrap" }}>No. of Riders</TableCell>
+									<TableCell sx={{ whiteSpace: "nowrap" }}>No. of Bags</TableCell>
+									<TableCell sx={{ whiteSpace: "nowrap" }}>Special Request</TableCell>
+									<TableCell sx={{ whiteSpace: "nowrap" }}>Created Date</TableCell>
 								</TableRow>
 							</TableHead>
 							<TableBody>
@@ -226,14 +243,26 @@ const RideManagement = () => {
 									>
 										<TableCell>{row.id}</TableCell>
 										<TableCell component="th" scope="row">
-											{row.tripId}
+											{row.tripId?.trim()}
 										</TableCell>
-										<TableCell>{row.source}</TableCell>
-										<TableCell>{row.destination}</TableCell>
-										<TableCell>{row.status}</TableCell>
-										<TableCell>{row.seatsLeft}</TableCell>
-										<TableCell>{<Chip label={row.trip.toString().toUpperCase()} color={row.trip === 'oneway' ? 'primary' : 'success'} />}</TableCell>
-										<TableCell>{row.amount}</TableCell>
+										<TableCell sx={{ whiteSpace: "nowrap" }}>{row.source?.trim()}</TableCell>
+										<TableCell sx={{ whiteSpace: "nowrap" }}>{row.destination?.trim()}</TableCell>
+										<TableCell sx={{ whiteSpace: "nowrap" }}>{<Chip label={row.status === 5 ? 'completed'.toLocaleUpperCase() : row.status === 4 ? 'cancelled'.toLocaleUpperCase() : 'upcoming'.toLocaleUpperCase()} color={row.status === 5 ? 'success' : row.status === 4 ? 'error' : 'primary'} />}</TableCell>
+										<TableCell sx={{ whiteSpace: "nowrap" }}>{row.seatsLeft}</TableCell>
+										<TableCell sx={{ whiteSpace: "nowrap" }}>{<Chip label={row.trip.toString().toUpperCase()} style={{
+											backgroundColor: row.trip === 'oneway' ? 'orange' : 'purple',
+											color: 'white',
+										}}
+										/>}</TableCell>
+										<TableCell sx={{ whiteSpace: "nowrap" }}>{row.amount}</TableCell>
+										<TableCell sx={{ whiteSpace: "nowrap" }}>{row.tripDistance?.trim()}</TableCell>
+										<TableCell sx={{ whiteSpace: "nowrap" }}>{row.trip_time?.trim()}</TableCell>
+										<TableCell sx={{ whiteSpace: "nowrap" }}>{formatDateTime(row.departDateTime)}</TableCell>
+										<TableCell sx={{ whiteSpace: "nowrap" }}>{formatDateTime(row.returnDateTime)}</TableCell>
+										<TableCell sx={{ whiteSpace: "nowrap" }}>{row.numbersOfRiders}</TableCell>
+										<TableCell sx={{ whiteSpace: "nowrap" }}>{row.numberOfBags}</TableCell>
+										<TableCell sx={{ whiteSpace: "nowrap" }}>{row.specialRequest?.trim()}</TableCell>
+										<TableCell sx={{ whiteSpace: "nowrap" }}>{formatDateTime(row.createdDate)}</TableCell>
 									</TableRow>
 								))}
 							</TableBody>
@@ -247,7 +276,7 @@ const RideManagement = () => {
 							onRowsPerPageChange={handleChangeRowsPerPage}
 						/>
 					</TableContainer>
-				</>}
+				</Box>}
 			</Box>
 		</Box>
 	)
