@@ -151,7 +151,6 @@ const Feedback = () => {
                   <TableCell>Name</TableCell>
                   <TableCell>Mobile</TableCell>
                   <TableCell>Description</TableCell>
-                  <TableCell>Status</TableCell>
                   <TableCell>Date</TableCell>
                 </TableRow>
               </TableHead>
@@ -168,7 +167,6 @@ const Feedback = () => {
                     <TableCell>{row.name}</TableCell>
                     <TableCell>{row.mobile}</TableCell>
                     <TableCell>{row.description}</TableCell>
-                    <TableCell><Rating name="read-only" value={row.rating} readOnly /> </TableCell>
                     <TableCell>{formatDateTime(row.created_date)}</TableCell>
                   </TableRow>
                 ))}
