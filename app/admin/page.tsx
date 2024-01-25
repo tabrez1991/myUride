@@ -199,7 +199,7 @@ export default function Home() {
             <Skeleton variant="rounded" width={"100%"} height={130} sx={{ mt: 1 }} />
             <Skeleton variant="circular" width={40} height={40} sx={{ mt: 1 }} />
             <Skeleton variant="rounded" width={"100%"} height={130} sx={{ mt: 1 }} />
-            <Skeleton variant="circular" width={40} height={40} sx={{ mt: 1}} />
+            <Skeleton variant="circular" width={40} height={40} sx={{ mt: 1 }} />
             <Skeleton variant="rounded" width={"100%"} height={130} sx={{ mt: 1 }} />
           </Box> : <Box>
             <PieChart data={usersGrowth} />

@@ -211,7 +211,7 @@ const RideManagement = () => {
 									<TableCell>S No</TableCell>
 									<TableCell>Trip Id</TableCell>
 									<TableCell>Pickup Location</TableCell>
-									<TableCell>Destination</TableCell>
+									<TableCell>Drop Location</TableCell>
 									<TableCell>Status</TableCell>
 									<TableCell>Number of Seat Left</TableCell>
 									<TableCell>Trip</TableCell>
