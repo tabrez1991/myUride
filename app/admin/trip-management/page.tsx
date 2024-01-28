@@ -3,11 +3,11 @@
 import SearchBox from '@/components/SearchBox'
 import TripDetails from '@/components/TripDetails'
 import { tempRideData } from '@/lib/tempData'
-import { getStates, getTrips, logout } from '@/utils'
-import { Box, Chip, CircularProgress, FormControl, InputLabel, MenuItem, Paper, Select, Snackbar, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow, Typography } from '@mui/material'
+import { activateTrip, deactivateTrip, getStates, getTrips, logout } from '@/utils'
+import { Box, Button, Chip, CircularProgress, FormControl, InputLabel, MenuItem, Modal, Paper, Select, Snackbar, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow, Typography } from '@mui/material'
 import React from 'react'
 import MuiAlert, { AlertColor, AlertProps } from '@mui/material/Alert';
-import { ERROR } from '@/lib/constants'
+import { ERROR, SUCCESS } from '@/lib/constants'
 import { deleteCookie } from 'cookies-next'
 import { useRouter } from 'next/navigation'
 import { statesList } from '@/lib/statesList'
@@ -16,12 +16,28 @@ import { DataGrid, GridColDef } from '@mui/x-data-grid'
 import PaginatedTable from '@/components/table/PaginatedTable'
 import { HeadCell } from '@/components/table/table'
 import { formatDate, formatDateTime } from '@/lib/formatDate'
+import ActionsMenu from '@/components/ActionMenu'
 
 
 const Alert = React.forwardRef<HTMLDivElement, AlertProps>((
 	props,
 	ref,
 ) => <MuiAlert elevation={6} ref={ref} variant="standard" {...props} />);
+
+const style = {
+	position: 'absolute' as 'absolute',
+	top: '50%',
+	left: '50%',
+	transform: 'translate(-50%, -50%)',
+	maxHeight: '90vh',
+	width: '580px',
+	height: '174px',
+	bgcolor: 'background.paper',
+	borderRadius: '10px',
+	border: 'none !important',
+	p: 4,
+	outline: 'none',
+};
 
 const RideManagement = () => {
 	const [searchValue, setSearchValue] = React.useState<string>('');
@@ -35,22 +51,61 @@ const RideManagement = () => {
 	const [openAlert, setOpenAlert] = React.useState(false);
 	const [alertType, setAlertType] = React.useState<AlertColor>('success')
 	const [alertMsg, setAlertMsg] = React.useState('')
-	const [finish, setFinish] = React.useState(false);
-	const [loading, setLoading] = React.useState(false);
-	const [changeHappened, setChangedHappened] = React.useState<boolean>(false);
+	const [isDelete, setIsDelete] = React.useState<boolean>(false);
+	const [deletedDetails, setDeletedDetails] = React.useState<any>()
+	const [selectedId, setSelectedId] = React.useState<string>('')
+	const [render, setRender] = React.useState<boolean>(false);
+
 
 	const router = useRouter()
+
+	const handleActive = async (dataDetails: any) => {
+		setLoader(true)
+		try {
+			const result = await activateTrip(dataDetails.tripId);
+			const { data, error } = result;
+			if (data) {
+				setRender(!render)
+				setLoader(false);
+				handleDenied();
+				handleAlert(data.userId, "Trip Completed Successfully", SUCCESS);
+			} else {
+				handleAlert(error.statusCode, error.message, ERROR);
+				// handleLogout()
+			}
+		} catch (error) {
+			console.error(error);
+			setLoader(false);
+		}
+	}
+
+
+	const handleDeactive = (data: any) => {
+		setDeletedDetails(data);
+		setSelectedId(data.username);
+		setIsDelete(true);
+	}
+
+	const options = [
+		{
+			label: "Complete Trip",
+			handler: handleActive
+		},
+		{
+			label: "Cancel Trip",
+			handler: handleDeactive
+		}
+	]
+
 
 	const handleSearch = (value: string) => {
 		setPage(1)
 		setSearchValue(value);
-		setChangedHappened(true);
 	}
 
 	const handleStateDetails = (e: any) => {
 		setPage(1)
 		setStateDetails(e.target.value);
-		setChangedHappened(true);
 	}
 
 
@@ -80,18 +135,6 @@ const RideManagement = () => {
 		}
 	}
 
-	const handleInView = async (inView: any) => {
-		if (inView && !finish) {
-			const newPage = Number(page) + 1;
-			setPage(newPage);
-		} else {
-			if (finish) {
-			} else {
-				setLoading(true);
-			}
-		}
-	};
-
 	const handleChangePage = (
 		event: React.MouseEvent<HTMLButtonElement> | null,
 		newPage: number,
@@ -106,6 +149,31 @@ const RideManagement = () => {
 		setPage(1);
 	};
 
+	const handleDenied = () => {
+		setDeletedDetails(null);
+		setSelectedId('');
+		setIsDelete(false);
+	}
+
+	const handleAccept = async () => {
+		setLoader(true)
+		try {
+			const result = await deactivateTrip(deletedDetails.tripId);
+			const { data, error } = result;
+			if (data) {
+				setRender(!render)
+				setLoader(false);
+				handleDenied();
+				handleAlert(data.userId, "Trip Cancelled Successfully", SUCCESS);
+			} else {
+				handleAlert(error.statusCode, error.message, ERROR);
+				// handleLogout()
+			}
+		} catch (error) {
+			console.error(error);
+			setLoader(false);
+		}
+	}
 
 	const calculateStartingSerialNumber = () => {
 		return (page - 1) * pageSize + 1;
@@ -180,7 +248,7 @@ const RideManagement = () => {
 
 	React.useEffect(() => {
 		getTripDetails()
-	}, [stateDetails, searchValue, page, pageSize]);
+	}, [stateDetails, searchValue, page, pageSize, render]);
 
 	React.useEffect(() => {
 		getStatesList()
@@ -233,6 +301,7 @@ const RideManagement = () => {
 									<TableCell sx={{ whiteSpace: "nowrap" }}>No. of Bags</TableCell>
 									<TableCell sx={{ whiteSpace: "nowrap" }}>Special Request</TableCell>
 									<TableCell sx={{ whiteSpace: "nowrap" }}>Created Date</TableCell>
+									<TableCell sx={{ whiteSpace: "nowrap" }}>Action</TableCell>
 								</TableRow>
 							</TableHead>
 							<TableBody>
@@ -263,6 +332,9 @@ const RideManagement = () => {
 										<TableCell sx={{ whiteSpace: "nowrap" }}>{row.numberOfBags}</TableCell>
 										<TableCell sx={{ whiteSpace: "nowrap" }}>{row.specialRequest?.trim()}</TableCell>
 										<TableCell sx={{ whiteSpace: "nowrap" }}>{formatDateTime(row.createdDate)}</TableCell>
+										<TableCell sx={{ whiteSpace: "nowrap" }}>
+											{row.status === 0 && <ActionsMenu id={row} options={options} close={!isDelete} />}
+										</TableCell>
 									</TableRow>
 								))}
 							</TableBody>
@@ -277,9 +349,46 @@ const RideManagement = () => {
 						/>
 					</TableContainer>
 				</Box>}
+
+				{isDelete && <Modal
+					open={isDelete}
+					onClose={() => setIsDelete(false)}
+					aria-labelledby="modal-modal-title"
+					aria-describedby="modal-modal-description"
+					sx={{ border: 'none' }}
+				>
+					<Box sx={style}>
+						<Typography
+							color="info.main"
+							sx={{
+								fontSize: '1.5rem',
+								textAlign: 'right',
+								position: 'fixed',
+								right: '15px',
+								top: '10px',
+							}}
+							onClick={() => setIsDelete(false)}
+						>
+							<i className="ri-close-fill" style={{ cursor: 'pointer' }} />
+						</Typography>
+						<Box sx={{ textAlign: 'left' }}>
+							<Typography sx={{ fontFamily: 'Source Sans Pro', fontWeight: 400, fontSize: '1.25rem', mt: 2 }}>Do you want to deactivate user {deletedDetails?.fullname}</Typography>
+							<Box sx={{ display: 'flex', mt: 3, justifyContent: 'flex-end' }}>
+								<Button variant='outlined' sx={{ textTransform: 'none' }} onClick={handleDenied}>No</Button>
+								<Button variant='contained' sx={{ ml: 2, textTransform: 'none' }} onClick={handleAccept}>Yes</Button>
+							</Box>
+						</Box>
+						<br />
+						<br />
+					</Box>
+				</Modal>}
 			</Box>
 		</Box>
 	)
 }
 
 export default RideManagement
+
+function deleteTrip(tripId: any) {
+	throw new Error('Function not implemented.')
+}

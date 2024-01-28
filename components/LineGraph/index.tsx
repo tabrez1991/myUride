@@ -7,6 +7,16 @@ import { ResponsiveLine } from '@nivo/line'
 const LineGraph = (props: any) => {
 	const { data } = props
 
+	const tooltipFormatter = (value: any, { point }: any) => {
+		console.log("point", value)
+    return (
+      <div>
+        <strong>Month:</strong> {value?.point?.data?.xFormatted}<br />
+        <strong>Users:</strong> {value?.point?.data?.yFormatted}
+      </div>
+    );
+  };
+
 	return (
 		<Box sx={{ height: 600, background: "#fff" }}>
 			<ResponsiveLine
@@ -15,6 +25,7 @@ const LineGraph = (props: any) => {
 				xScale={{
 					type: "point"
 				}}
+				tooltip={tooltipFormatter}
 				yScale={{
 					type: 'linear',
 					min: 'auto',

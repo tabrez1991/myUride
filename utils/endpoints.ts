@@ -27,6 +27,8 @@ export const ACTIVATE_RIDER = '/auth/activate-rider';
 // Trip
 export const STATES_LIST = '/auth/states-list';
 export const TRIPS_LIST = '/auth/trips-list';
+export const DEACTIVATE_TRIP = '/auth/deactivate-trip';
+export const ACTIVATE_TRIP = '/auth/activate-trip';
 
 // Feedback
 export const FEEDBACK_LIST = '/auth/feedback-list';
