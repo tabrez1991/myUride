@@ -1,6 +1,6 @@
 "use client"
 
-import { Box, Container, Grid, Skeleton, Snackbar } from '@mui/material'
+import { Box, Container, Grid, Skeleton, Snackbar, Typography } from '@mui/material'
 import CustomCard from '@/components/CustomCard'
 import LineGraph from '@/components/LineGraph'
 import PieChart from '@/components/PieChart'
@@ -201,7 +201,8 @@ export default function Home() {
             <Skeleton variant="rounded" width={"100%"} height={130} sx={{ mt: 1 }} />
             <Skeleton variant="circular" width={40} height={40} sx={{ mt: 1 }} />
             <Skeleton variant="rounded" width={"100%"} height={130} sx={{ mt: 1 }} />
-          </Box> : <Box>
+          </Box> : <Box sx={{ background: "#fff" }}>
+            <Typography sx={{p:1, pl:2, fontWeight: 700, pb:0}}>Current month growth</Typography>
             <PieChart data={usersGrowth} />
             <PieChart data={driverGrowth} />
             <PieChart data={riderGrowth} />
