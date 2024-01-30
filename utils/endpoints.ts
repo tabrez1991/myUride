@@ -3,6 +3,7 @@ export const LOGIN = '/auth/login';
 export const LOGOUT = '/auth/logout';
 export const RESET_PASSWORD = '/auth/reset-password';
 export const GET_USERS = "/auth";
+export const ADD_USER = '/auth/add-user';
 export const EDIT_USER = '/auth/edit-user';
 export const DELETE_USER = '/auth/delete-user';
 export const ACTIVATE_USER = '/auth/activate-user';

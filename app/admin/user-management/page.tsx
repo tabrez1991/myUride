@@ -13,6 +13,7 @@ import { deleteCookie } from 'cookies-next'
 import { useRouter } from 'next/navigation'
 import React from 'react'
 import MuiAlert, { AlertColor, AlertProps } from '@mui/material/Alert';
+import AddDetails from '@/components/AddDetails'
 
 const style = {
   position: 'absolute' as 'absolute',
@@ -44,6 +45,7 @@ const UserManagement = () => {
   const [selectedId, setSelectedId] = React.useState<string>('')
   const [deletedDetails, setDeletedDetails] = React.useState<any>()
   const [isEdit, setIsEdit] = React.useState<boolean>(false);
+  const [isAdd, setIsAdd] = React.useState<boolean>(false);
   const [render, setRender] = React.useState<boolean>(false);
   const [isDelete, setIsDelete] = React.useState<boolean>(false);
   const [openAlert, setOpenAlert] = React.useState(false);
@@ -55,6 +57,10 @@ const UserManagement = () => {
   const handleEditUser = (data: any) => {
     setSelectedId(data.username);
     setIsEdit(true);
+  }
+
+  const handleAddUser = () => {
+    setIsAdd(true);
   }
 
   const handleDeleteUser = (data: any) => {
@@ -134,7 +140,7 @@ const UserManagement = () => {
       headerName: 'Actions',
       width: 120,
       renderCell: (params) => (
-        <ActionsMenu id={params.row} options={params.row.status === 'ACTIVE' ? options : options2} close={!isEdit && !isDelete} />
+        <ActionsMenu id={params.row} options={params.row.status === 'ACTIVE' ? options : options2} close={!isEdit && !isDelete && !isAdd} />
       ),
     },
   ];
@@ -246,13 +252,17 @@ const UserManagement = () => {
           {alertMsg}
         </Alert>
       </Snackbar>
-      <Typography variant='h5'>Admin Users Management</Typography>
+      <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+        <Typography variant='h5'>Admin Users Management</Typography>
+        <Button variant='contained' sx={{ textTransform: "none" }} onClick={handleAddUser}>Add Admin User</Button>
+      </Box>
       <Box sx={{ mt: 2 }}>
         <SearchBox placeholder='Search...' value={searchValue} onChange={handleSearch} autoFocus={true} />
       </Box>
       <Box sx={{ mt: 2 }}></Box>
       <DataTable columns={columns} rows={rows} page={page} pageSize={pageSize} loader={loader} checkboxEnables={false} />
       {isEdit && <EditDetails isEdit={isEdit} handleClose={() => setIsEdit(false)} id={selectedId} handleSuccess={() => setRender(!render)} />}
+      {isAdd && <AddDetails isAdd={isAdd} handleClose={() => setIsAdd(false)} handleSuccess={() => setRender(!render)} />}
       {isDelete && <Modal
         open={isDelete}
         onClose={() => setIsDelete(false)}
