@@ -1,4 +1,4 @@
-import { editUser, getUsersById } from '@/utils';
+import { addUser, editUser, getUsersById } from '@/utils';
 import { Avatar, Box, Button, CircularProgress, Drawer, FormControl, FormHelperText, Grid, IconButton, InputAdornment, MenuItem, Select, Snackbar, TextField, Typography, styled } from '@mui/material'
 import React from 'react'
 import MuiAlert, { AlertColor, AlertProps } from '@mui/material/Alert';
@@ -24,8 +24,8 @@ const VisuallyHiddenInput = styled('input')({
 });
 
 
-const EditDetails = (props: any) => {
-  const { handleClose, isEdit, id, handleSuccess } = props;
+const AddDetails = (props: any) => {
+  const { handleClose, isAdd, handleSuccess } = props;
 
   const [loader, setLoader] = React.useState<boolean>(false);
   const [editData, setEditData] = React.useState<any>();
@@ -58,6 +58,7 @@ const EditDetails = (props: any) => {
 
 
     onSubmit: async (values) => {
+      console.log(isProfilePic, values.profile_picture)
       setSubmitLoader(true);
       try {
         const formData = new FormData();
@@ -68,12 +69,12 @@ const EditDetails = (props: any) => {
         formData.append('password', values.password === '******' ? '' : values.password);
         formData.append('mobile', values.mobile);
         formData.append('roles', values.roles);
-        formData.append('profile_picture', isProfilePic ? values.profile_picture.files[0] : '');
+        formData.append('profile_picture', isProfilePic ? values.profile_picture : '');
 
-        const result = await editUser(formData);
+        const result = await addUser(formData);
         const { data, error } = result;
         if (data) {
-          handleAlert(data.userId, "Update Successfull", SUCCESS);
+          handleAlert(data.userId, "Added Successfull", SUCCESS);
           setSubmitLoader(false);
           handleSuccess();
           handleClose()
@@ -108,7 +109,7 @@ const EditDetails = (props: any) => {
   const handleProfilePic = (event: any) => {
     const file = event.target.files[0];
     setIsProfilePic(true);
-    validation.setFieldValue('profile_picture', event.target)
+    validation.setFieldValue('profile_picture', file)
     const reader = new FileReader();
     reader.onloadend = () => {
       setPreviewUrl(reader.result);
@@ -116,44 +117,10 @@ const EditDetails = (props: any) => {
     reader.readAsDataURL(file);
   }
 
-  const getUserDetailsById = async (id: string) => {
-    setLoader(true)
-    try {
-      const result = await getUsersById(id);
-      const { data, error } = result;
-      if (data) {
-        setEditData(data);
-        setEvent({
-          name: data.name,
-          middleName: data.middleName,
-          lastName: data.lastName,
-          email: data.email,
-          password: '******',
-          mobile: data.mobile,
-          roles: data.roles[0],
-          profile_picture: `${process.env.NEXT_PUBLIC_BASE_URL}/uploads/${data.profile_picture}`
-        })
-        setPreviewUrl(`${process.env.NEXT_PUBLIC_BASE_URL}/uploads/${data.profile_picture}`);
-        setLoader(false);
-      } else {
-        handleAlert(error.statusCode, error.message, ERROR);
-        setLoader(false)
-      }
-    } catch (error) {
-      console.error(error);
-      setLoader(false);
-    }
-
-  }
-
-  React.useEffect(() => {
-    getUserDetailsById(id)
-  }, [id])
-
   return (
     <Drawer
       anchor='right'
-      open={isEdit}
+      open={isAdd}
       onClose={handleClose}
     >
       <Snackbar open={openAlert} anchorOrigin={{ vertical: 'top', horizontal: 'right' }} autoHideDuration={3000} onClose={handleCloseAlert}>
@@ -162,7 +129,7 @@ const EditDetails = (props: any) => {
         </Alert>
       </Snackbar>
       <Box sx={{ width: 400, p: 2 }}>
-        <Typography>Edit User</Typography>
+        <Typography>Add User</Typography>
 
         <Box sx={{ textAlign: "center", margin: "auto" }}>
           <Avatar alt="John" src={previewUrl} id="avatar" sx={{ width: 100, height: 100, margin: "auto", mb: 1, }} />
@@ -231,7 +198,7 @@ const EditDetails = (props: any) => {
             <FormHelperText>{validation.errors.lastName.toString()}</FormHelperText>
           ) : null}
         </FormControl>
-        
+
 
         <FormControl
           fullWidth
@@ -338,4 +305,4 @@ const EditDetails = (props: any) => {
   )
 }
 
-export default EditDetails
+export default AddDetails
