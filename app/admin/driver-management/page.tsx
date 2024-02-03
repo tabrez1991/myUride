@@ -12,6 +12,7 @@ import { ERROR, SUCCESS } from '@/lib/constants'
 import { deleteCookie } from 'cookies-next'
 import { useRouter } from 'next/navigation'
 import EditDriver from '@/components/EditDriver'
+import AddDriver from '@/components/AddDriver'
 
 const style = {
 	position: 'absolute' as 'absolute',
@@ -46,11 +47,17 @@ const DriverManagement = () => {
 	const [render, setRender] = React.useState<boolean>(false);
 	const [isEdit, setIsEdit] = React.useState<boolean>(false);
 	const [editData, setEditData] = React.useState<any>();
+	const [isAdd, setIsAdd] = React.useState<boolean>(false);
 	const [selectedId, setSelectedId] = React.useState<string>('')
 	const [deletedDetails, setDeletedDetails] = React.useState<any>()
 	const [isDelete, setIsDelete] = React.useState<boolean>(false);
 
 	const router = useRouter()
+
+
+	const handleAddDriver = () => {
+		setIsAdd(true);
+	}
 
 	const handleDenied = () => {
 		setDeletedDetails(null);
@@ -175,7 +182,7 @@ const DriverManagement = () => {
 			headerName: '',
 			width: 1,
 			renderCell: (params) => (
-				<ActionsMenu id={params.row} options={params.row.status === 1 ? options : options2} close={!isEdit && !isDelete}/>
+				<ActionsMenu id={params.row} options={params.row.status === 1 ? options : options2} close={!isEdit && !isDelete} />
 			),
 		},
 	];
@@ -291,7 +298,10 @@ const DriverManagement = () => {
 					{alertMsg}
 				</Alert>
 			</Snackbar>
-			<Typography variant='h5'>Driver Management</Typography>
+			<Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+				<Typography variant='h5'>Driver Management</Typography>
+				<Button variant='contained' sx={{ textTransform: "none" }} onClick={handleAddDriver}>Add Driver</Button>
+			</Box>
 			<Box sx={{ mt: 2 }}>
 				<SearchBox placeholder='Search...' value={searchValue} onChange={handleSearch} autoFocus={true} />
 			</Box>
@@ -305,6 +315,7 @@ const DriverManagement = () => {
 					checkboxEnables={false} />
 			</Box>
 			{isEdit && <EditDriver isEdit={isEdit} handleClose={() => setIsEdit(false)} data={editData} handleSuccess={() => setRender(!render)} />}
+			{isAdd && <AddDriver isAdd={isAdd} handleClose={() => setIsAdd(false)} handleSuccess={() => setRender(!render)} />}
 			{isDelete && <Modal
 				open={isDelete}
 				onClose={() => setIsDelete(false)}

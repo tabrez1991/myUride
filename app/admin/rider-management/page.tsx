@@ -3,7 +3,7 @@
 import ActionsMenu from '@/components/ActionMenu'
 import DataTable from '@/components/DataTable'
 import SearchBox from '@/components/SearchBox'
-import { activateRider, deleteRider, getDrivers, getRiders, logout } from '@/utils'
+import { activateRider, deleteRider, getRiders, logout } from '@/utils'
 import { Avatar, Box, Button, Chip, Modal, Snackbar, Typography } from '@mui/material'
 import { GridColDef } from '@mui/x-data-grid'
 import React from 'react'
@@ -12,6 +12,7 @@ import { ERROR, SUCCESS } from '@/lib/constants'
 import { deleteCookie } from 'cookies-next'
 import { useRouter } from 'next/navigation'
 import EditRider from '@/components/EditRider'
+import AddRider from '@/components/AddRider'
 
 const style = {
 	position: 'absolute' as 'absolute',
@@ -45,12 +46,17 @@ const RiderManagement = () => {
 	const [alertMsg, setAlertMsg] = React.useState('')
 	const [render, setRender] = React.useState<boolean>(false);
 	const [isEdit, setIsEdit] = React.useState<boolean>(false);
+	const [isAdd, setIsAdd] = React.useState<boolean>(false);
 	const [editData, setEditData] = React.useState<any>();
 	const [selectedId, setSelectedId] = React.useState<string>('')
 	const [deletedDetails, setDeletedDetails] = React.useState<any>()
 	const [isDelete, setIsDelete] = React.useState<boolean>(false);
 
 	const router = useRouter()
+
+	const handleAddDriver = () => {
+		setIsAdd(true);
+	}
 
 	const handleDenied = () => {
 		setDeletedDetails(null);
@@ -77,7 +83,7 @@ const RiderManagement = () => {
 			setLoader(false);
 		}
 	}
-	
+
 	const handleEditRider = (data: any) => {
 		setSelectedId(data.driverId);
 		setEditData(data);
@@ -174,7 +180,7 @@ const RiderManagement = () => {
 			headerName: '',
 			width: 1,
 			renderCell: (params) => (
-				<ActionsMenu id={params.row} options={params.row.status === 1 ? options : options2} close={!isEdit && !isDelete}/>
+				<ActionsMenu id={params.row} options={params.row.status === 1 ? options : options2} close={!isEdit && !isDelete} />
 			),
 		},
 	];
@@ -290,7 +296,10 @@ const RiderManagement = () => {
 					{alertMsg}
 				</Alert>
 			</Snackbar>
-			<Typography variant='h5'>Rider Management</Typography>
+			<Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+				<Typography variant='h5'>Rider Management</Typography>
+				<Button variant='contained' sx={{ textTransform: "none" }} onClick={handleAddDriver}>Add Rider</Button>
+			</Box>
 			<Box sx={{ mt: 2 }}>
 				<SearchBox placeholder='Search...' value={searchValue} onChange={handleSearch} autoFocus={true} />
 			</Box>
@@ -304,6 +313,7 @@ const RiderManagement = () => {
 					checkboxEnables={false} />
 			</Box>
 			{isEdit && <EditRider isEdit={isEdit} handleClose={() => setIsEdit(false)} data={editData} handleSuccess={() => setRender(!render)} />}
+			{isAdd && <AddRider isAdd={isAdd} handleClose={() => setIsAdd(false)} handleSuccess={() => setRender(!render)} />}
 			{isDelete && <Modal
 				open={isDelete}
 				onClose={() => setIsDelete(false)}

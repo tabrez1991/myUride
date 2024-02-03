@@ -15,12 +15,14 @@ export const MONTH_WISE_GROWTH = '/auth/month-growth';
 
 // Drivers
 export const DRIVERS_LIST = '/auth/drivers-list';
+export const ADD_DRIVER = '/auth/add-driver';
 export const EDIT_DRIVER = '/auth/edit-driver';
 export const DELETE_DRIVER = '/auth/delete-driver';
 export const ACTIVATE_DRIVER = '/auth/activate-driver';
 
 // Riderss
 export const RIDERS_LIST = '/auth/riders-list';
+export const ADD_RIDER = '/auth/add-rider';
 export const EDIT_RIDER = '/auth/edit-rider';
 export const DELETE_RIDER = '/auth/delete-rider';
 export const ACTIVATE_RIDER = '/auth/activate-rider';
