@@ -27,8 +27,7 @@ const VisuallyHiddenInput = styled('input')({
 const AddDetails = (props: any) => {
   const { handleClose, isAdd, handleSuccess } = props;
 
-  const [loader, setLoader] = React.useState<boolean>(false);
-  const [editData, setEditData] = React.useState<any>();
+
   const [event, setEvent] = React.useState<any>();
   const [submitLoader, setSubmitLoader] = React.useState<boolean>(false);
   const [openAlert, setOpenAlert] = React.useState(false);
