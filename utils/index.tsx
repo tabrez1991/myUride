@@ -1,5 +1,5 @@
 import apiHelper from "@/helpers/api.helpers";
-import { ACTIVATE_DRIVER, ACTIVATE_RIDER, ACTIVATE_TRIP, ACTIVATE_USER, ADD_DRIVER, ADD_RIDER, ADD_USER, DEACTIVATE_TRIP, DELETE_DRIVER, DELETE_RIDER, DELETE_USER, DRIVERS_LIST, EDIT_DRIVER, EDIT_RIDER, EDIT_USER, FEEDBACK_LIST, GET_USERS, LOGIN, LOGOUT, MONTH_WISE_DATA, MONTH_WISE_GROWTH, REGISTER, RESET_PASSWORD, RIDERS_LIST, STATES_LIST, TOTAL_DATA, TRIPS_LIST } from "./endpoints";
+import { ACTIVATE_DRIVER, ACTIVATE_RIDER, ACTIVATE_TRIP, ACTIVATE_USER, ADD_DRIVER, ADD_DRIVERS_AGREEMENT, ADD_FAQ, ADD_PRIVACY_POLICY, ADD_RIDER, ADD_USER, ADD_USER_AGREEMENT, ADD_USER_GUIDLINES, DEACTIVATE_TRIP, DELETE_DRIVER, DELETE_DRIVERS_AGREEMENT, DELETE_FAQ, DELETE_PRIVACY_POLICY, DELETE_RIDER, DELETE_USER, DELETE_USER_AGREEMENT, DELETE_USER_GUIDLINES, DRIVERS_LIST, EDIT_DRIVER, EDIT_RIDER, EDIT_USER, FEEDBACK_LIST, GET_FAQS, GET_SETTINGS, GET_USERS, LOGIN, LOGOUT, MONTH_WISE_DATA, MONTH_WISE_GROWTH, REGISTER, RESET_PASSWORD, RIDERS_LIST, STATES_LIST, TOTAL_DATA, TRIPS_LIST, UPDATE_DRIVERS_AGREEMENT, UPDATE_FAQ, UPDATE_PRIVACY_POLICY, UPDATE_USER_AGREEMENT, UPDATE_USER_GUIDLINES } from "./endpoints";
 import { getCookie } from "cookies-next";
 import axios from "axios";
 
@@ -262,6 +262,170 @@ export const activateTrip = async (tripId: string) => {
 export const getFeedback = async (page: number, pageSize: number, searchQuery: string) => {
   try {
     const response = await apiHelper.get(`${BASE_URL}${FEEDBACK_LIST}?page=${page}&limit=${pageSize}&searchQuery=${searchQuery}`);
+    return { data: response.data, error: null };
+  } catch (error: any) {
+    return { data: null, error: error.response.data };
+  }
+};
+
+// Settings
+
+export const getSettings = async () => {
+  try {
+    const response = await apiHelper.get(`${BASE_URL}${GET_SETTINGS}`);
+    return { data: response.data, error: null };
+  } catch (error: any) {
+    return { data: null, error: error.response.data };
+  }
+};
+
+//  privacy policy
+export const addPrivacyPolicy = async (body: any) => {
+  try {
+    const response = await apiHelper.post(`${BASE_URL}${ADD_PRIVACY_POLICY}`, body);
+    return { data: response.data, error: null };
+  } catch (error: any) {
+    return { data: null, error: error.response.data };
+  }
+};
+
+export const updatePrivacyPolicy = async (body: any) => {
+  try {
+    const response = await apiHelper.post(`${BASE_URL}${UPDATE_PRIVACY_POLICY}`, body);
+    return { data: response.data, error: null };
+  } catch (error: any) {
+    return { data: null, error: error.response.data };
+  }
+};
+
+export const deletePrivacyPolicy = async (body: any) => {
+  try {
+    const response = await apiHelper.post(`${BASE_URL}${DELETE_PRIVACY_POLICY}`, body);
+    return { data: response.data, error: null };
+  } catch (error: any) {
+    return { data: null, error: error.response.data };
+  }
+};
+
+// user agreeemets
+export const addUserAgreement = async (body: any) => {
+  try {
+    const response = await apiHelper.post(`${BASE_URL}${ADD_USER_AGREEMENT}`, body);
+    return { data: response.data, error: null };
+  } catch (error: any) {
+    return { data: null, error: error.response.data };
+  }
+};
+
+export const updateUserAgreement = async (body: any) => {
+  try {
+    const response = await apiHelper.post(`${BASE_URL}${UPDATE_USER_AGREEMENT}`, body);
+    return { data: response.data, error: null };
+  } catch (error: any) {
+    return { data: null, error: error.response.data };
+  }
+};
+
+export const deleteUserAgreement = async (body: any) => {
+  try {
+    const response = await apiHelper.post(`${BASE_URL}${DELETE_USER_AGREEMENT}`, body);
+    return { data: response.data, error: null };
+  } catch (error: any) {
+    return { data: null, error: error.response.data };
+  }
+};
+
+// user guidlines
+export const addUserGuidlines = async (body: any) => {
+  try {
+    const response = await apiHelper.post(`${BASE_URL}${ADD_USER_GUIDLINES}`, body);
+    return { data: response.data, error: null };
+  } catch (error: any) {
+    return { data: null, error: error.response.data };
+  }
+};
+
+export const updateUserGuidlines = async (body: any) => {
+  try {
+    const response = await apiHelper.post(`${BASE_URL}${UPDATE_USER_GUIDLINES}`, body);
+    return { data: response.data, error: null };
+  } catch (error: any) {
+    return { data: null, error: error.response.data };
+  }
+};
+
+export const deleteUserGuidlines = async (body: any) => {
+  try {
+    const response = await apiHelper.post(`${BASE_URL}${DELETE_USER_GUIDLINES}`, body);
+    return { data: response.data, error: null };
+  } catch (error: any) {
+    return { data: null, error: error.response.data };
+  }
+};
+
+// drivers agreement
+
+export const addDriversAgreement = async (body: any) => {
+  try {
+    const response = await apiHelper.post(`${BASE_URL}${ADD_DRIVERS_AGREEMENT}`, body);
+    return { data: response.data, error: null };
+  } catch (error: any) {
+    return { data: null, error: error.response.data };
+  }
+};
+
+export const updateDriversAgreement = async (body: any) => {
+  try {
+    const response = await apiHelper.post(`${BASE_URL}${UPDATE_DRIVERS_AGREEMENT}`, body);
+    return { data: response.data, error: null };
+  } catch (error: any) {
+    return { data: null, error: error.response.data };
+  }
+};
+
+export const deleteDriversAgreement = async (body: any) => {
+  try {
+    const response = await apiHelper.post(`${BASE_URL}${DELETE_DRIVERS_AGREEMENT}`, body);
+    return { data: response.data, error: null };
+  } catch (error: any) {
+    return { data: null, error: error.response.data };
+  }
+};
+
+// Faqs
+
+export const getFaqsList = async (page: number, pageSize: number, searchQuery: string) => {
+  try {
+    const response = await apiHelper.get(`${BASE_URL}${GET_FAQS}?page=${page}&limit=${pageSize}&searchQuery=${searchQuery}`);
+    return { data: response.data, error: null };
+  } catch (error: any) {
+    return { data: null, error: error.response.data };
+  }
+};
+
+export const addFaq = async (body: any) => {
+  try {
+    const response = await apiHelper.post(`${BASE_URL}${ADD_FAQ}`, body);
+    return { data: response.data, error: null };
+  } catch (error: any) {
+    return { data: null, error: error.response.data };
+  }
+};
+
+
+export const updateFaq = async (body: any) => {
+  try {
+    const response = await apiHelper.post(`${BASE_URL}${UPDATE_FAQ}`, body);
+    return { data: response.data, error: null };
+  } catch (error: any) {
+    return { data: null, error: error.response.data };
+  }
+};
+
+
+export const deleteFaq = async (body: any) => {
+  try {
+    const response = await apiHelper.post(`${BASE_URL}${DELETE_FAQ}`, body);
     return { data: response.data, error: null };
   } catch (error: any) {
     return { data: null, error: error.response.data };

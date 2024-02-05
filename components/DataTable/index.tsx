@@ -18,16 +18,20 @@ interface DataTableProps {
 	pageSize: number;
 	checkboxEnables?: boolean;
 	loader: boolean;
+	paginationHandleChange?: any
+	count?: number
 }
 
 const DataTable = (props: DataTableProps) => {
-	const { columns, rows, page, pageSize, loader, checkboxEnables } = props;
+	const { columns, rows, count, page, pageSize, loader, checkboxEnables, paginationHandleChange } = props;
 
-	const [api, setApi] = React.useState();
+	console.log("DataTable", page, pageSize,)
 
 	return (
 		<Box sx={{ width: "100%", background: "#fff" }}>
 			<DataGrid
+				disableRowSelectionOnClick={true}
+				onPaginationModelChange={paginationHandleChange}
 				rows={rows}
 				columns={columns}
 				initialState={{
@@ -35,8 +39,9 @@ const DataTable = (props: DataTableProps) => {
 						paginationModel: { page, pageSize },
 					},
 				}}
-				// onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
-				pageSizeOptions={[5, 10, 20]}
+				hideFooterPagination={true}
+				paginationMode='server'
+				pageSizeOptions={[]}
 				checkboxSelection={checkboxEnables}
 				loading={loader}
 				style={loader ? { height: "80vh" } : { height: "100%" }}

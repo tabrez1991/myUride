@@ -1,10 +1,9 @@
 "use client"
 
 import ActionsMenu from '@/components/ActionMenu'
-import DataTable from '@/components/DataTable'
 import SearchBox from '@/components/SearchBox'
 import { activateDriver, deleteDriver, getDrivers, logout } from '@/utils'
-import { Avatar, Box, Button, Chip, Modal, Snackbar, Typography } from '@mui/material'
+import { Avatar, Box, Button, CardMedia, Chip, Collapse, Divider, Grid, IconButton, Modal, Paper, Snackbar, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow, Typography } from '@mui/material'
 import { GridColDef } from '@mui/x-data-grid'
 import React from 'react'
 import MuiAlert, { AlertColor, AlertProps } from '@mui/material/Alert';
@@ -37,8 +36,9 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>((
 
 const DriverManagement = () => {
 	const [searchValue, setSearchValue] = React.useState<string>('');
-	const [page, setPage] = React.useState<number>(0);
+	const [page, setPage] = React.useState<number>(1);
 	const [pageSize, setPageSize] = React.useState<number>(10)
+	const [pageTotal, setPageTotal] = React.useState<number>(100)
 	const [rows, setRows] = React.useState<any[]>([])
 	const [loader, setLoader] = React.useState<boolean>(false);
 	const [openAlert, setOpenAlert] = React.useState(false);
@@ -51,6 +51,7 @@ const DriverManagement = () => {
 	const [selectedId, setSelectedId] = React.useState<string>('')
 	const [deletedDetails, setDeletedDetails] = React.useState<any>()
 	const [isDelete, setIsDelete] = React.useState<boolean>(false);
+	const [metaData, setMetaData] = React.useState<any>({})
 
 	const router = useRouter()
 
@@ -58,6 +59,21 @@ const DriverManagement = () => {
 	const handleAddDriver = () => {
 		setIsAdd(true);
 	}
+
+	const handleChangePage = (
+		event: React.MouseEvent<HTMLButtonElement> | null,
+		newPage: number,
+	) => {
+		setPage(newPage + 1);
+	};
+
+	const handleChangeRowsPerPage = (
+		event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+	) => {
+		setPageSize(parseInt(event.target.value, 10));
+		setPage(1);
+	};
+
 
 	const handleDenied = () => {
 		setDeletedDetails(null);
@@ -139,87 +155,6 @@ const DriverManagement = () => {
 		}
 	]
 
-	const columns: GridColDef[] = [
-		{ field: 'driverId', headerName: 'Driver Id', width: 250 },
-		{
-			field: 'driver',
-			headerName: 'Firstname',
-			flex: 1.5,
-			renderCell: (params) => (
-				<div style={{ display: 'flex', alignItems: 'center' }}>
-					<Avatar alt={params.row.driver} src={params.row.avatar} id="avatar" sx={{ mr: 2 }} />
-					{params.row.driver}
-				</div>
-			),
-		},
-		{ field: 'middleName', headerName: 'Middle Name', flex: 1 },
-		{ field: 'lastName', headerName: 'Last Name', flex: 1 },
-		{ field: 'mobileNumber', headerName: 'Mobile Number', flex: 1 },
-		{
-			field: 'ratings',
-			headerName: 'Ratings',
-			flex: 1,
-			renderCell: (params) => (
-				<div style={{ display: 'flex', alignItems: 'center' }}>
-					{Array.from({ length: params.value }, (_, index) => (
-						<Typography key={index} sx={{ color: '#ffd700', fontSize: '20px' }}>
-							<i className="ri-star-fill" />
-						</Typography>
-					))}
-				</div>
-			),
-		},
-		{ field: 'totalTrips', headerName: 'Total Trips', flex: 1 },
-		{ field: 'totalEarnings', headerName: 'Total Earnings', flex: 1 },
-		{
-			field: 'status', headerName: 'Status', width: 120,
-			renderCell: (params) => (
-				<Chip label={params.row.status ? "ACTIVE" : "INACTIVE"} color={params.row.status === 1 ? 'success' : 'primary'} />
-			),
-		},
-		{
-			field: 'actions',
-			headerName: '',
-			width: 1,
-			renderCell: (params) => (
-				<ActionsMenu id={params.row} options={params.row.status === 1 ? options : options2} close={!isEdit && !isDelete} />
-			),
-		},
-	];
-
-	// const tempData = [
-	// 	{ id: "1", driverId: "DVR001", driver: 'Jon Snow', mobileNumber: "9876543210", ratings: 4, totalTrips: 10, totalEarnings: "₹ 2000", avatar: 'https://mighty.tools/mockmind-api/content/human/1.jpg' },
-	// 	{ id: "2", driverId: "DVR002", driver: 'Cersei Lannister', mobileNumber: "9876543120", ratings: 4.5, totalTrips: 20, totalEarnings: "₹ 30000", avatar: 'https://mighty.tools/mockmind-api/content/human/2.jpg' },
-	// 	{ id: "3", driverId: "DVR003", driver: 'Jaime Lannister', mobileNumber: "9876541230", ratings: 5, totalTrips: 12, totalEarnings: "₹ 5000", avatar: 'https://mighty.tools/mockmind-api/content/human/3.jpg' },
-	// 	{ id: "4", driverId: "DVR004", driver: 'Arya Stark', mobileNumber: "9876512345", ratings: 4, totalTrips: 15, totalEarnings: "₹ 20000", avatar: 'https://mighty.tools/mockmind-api/content/human/4.jpg' },
-	// 	{ id: "5", driverId: "DVR005", driver: 'Daenerys Targaryen', mobileNumber: "9876123450", ratings: 3.5, totalTrips: 30, totalEarnings: "₹ 3000", avatar: 'https://mighty.tools/mockmind-api/content/human/5.jpg' },
-	// 	{ id: "6", driverId: "DVR006", driver: 'Melisandre', mobileNumber: "9870123456", ratings: 4, totalTrips: 23, totalEarnings: "₹ 25000", avatar: 'https://mighty.tools/mockmind-api/content/human/6.jpg' },
-	// 	{ id: "7", driverId: "DVR007", driver: 'Ferrara Clifford', mobileNumber: "9812345670", ratings: 3, totalTrips: 55, totalEarnings: "₹ 23000", avatar: 'https://mighty.tools/mockmind-api/content/human/7.jpg' },
-	// 	{ id: "8", driverId: "DVR008", driver: 'Rossini Frances', mobileNumber: "9801234567", ratings: 5, totalTrips: 56, totalEarnings: "₹ 6000", avatar: 'https://mighty.tools/mockmind-api/content/human/8.jpg' },
-	// 	{ id: "9", driverId: "DVR009", driver: 'Harvey Roxie', mobileNumber: "9123456780", ratings: 4.9, totalTrips: 32, totalEarnings: "₹ 34000", avatar: 'https://mighty.tools/mockmind-api/content/human/9.jpg' },
-	// 	{ id: "10", driverId: "DVR010", driver: 'John Doe', mobileNumber: "9876543210", ratings: 4, totalTrips: 10, totalEarnings: "₹ 2000", avatar: 'https://mighty.tools/mockmind-api/content/human/10.jpg' },
-	// 	{ id: "11", driverId: "DVR011", driver: 'Alice Johnson', mobileNumber: "9876543120", ratings: 4.5, totalTrips: 20, totalEarnings: "₹ 30000", avatar: 'https://mighty.tools/mockmind-api/content/human/11.jpg' },
-	// 	{ id: "12", driverId: "DVR012", driver: 'Bob Smith', mobileNumber: "9876541230", ratings: 5, totalTrips: 12, totalEarnings: "₹ 5000", avatar: 'https://mighty.tools/mockmind-api/content/human/12.jpg' },
-	// 	{ id: "13", driverId: "DVR013", driver: 'Emma White', mobileNumber: "9876512345", ratings: 4, totalTrips: 15, totalEarnings: "₹ 20000", avatar: 'https://mighty.tools/mockmind-api/content/human/13.jpg' },
-	// 	{ id: "14", driverId: "DVR014", driver: 'David Brown', mobileNumber: "9876123450", ratings: 3.5, totalTrips: 30, totalEarnings: "₹ 3000", avatar: 'https://mighty.tools/mockmind-api/content/human/14.jpg' },
-	// 	{ id: "15", driverId: "DVR015", driver: 'Sophia Johnson', mobileNumber: "9870123456", ratings: 4, totalTrips: 23, totalEarnings: "₹ 25000", avatar: 'https://mighty.tools/mockmind-api/content/human/15.jpg' },
-	// 	{ id: "16", driverId: "DVR016", driver: 'Michael Lee', mobileNumber: "9812345670", ratings: 3, totalTrips: 55, totalEarnings: "₹ 23000", avatar: 'https://mighty.tools/mockmind-api/content/human/16.jpg' },
-	// 	{ id: "17", driverId: "DVR017", driver: 'Olivia Davis', mobileNumber: "9801234567", ratings: 5, totalTrips: 56, totalEarnings: "₹ 6000", avatar: 'https://mighty.tools/mockmind-api/content/human/17.jpg' },
-	// 	{ id: "18", driverId: "DVR018", driver: 'William Martin', mobileNumber: "9123456780", ratings: 4.9, totalTrips: 32, totalEarnings: "₹ 34000", avatar: 'https://mighty.tools/mockmind-api/content/human/18.jpg' },
-	// 	{ id: "19", driverId: "DVR019", driver: 'Ella Rodriguez', mobileNumber: "9876543210", ratings: 4, totalTrips: 10, totalEarnings: "₹ 2000", avatar: 'https://mighty.tools/mockmind-api/content/human/19.jpg' },
-	// 	{ id: "20", driverId: "DVR020", driver: 'Jackson Taylor', mobileNumber: "9876543120", ratings: 4.5, totalTrips: 20, totalEarnings: "₹ 30000", avatar: 'https://mighty.tools/mockmind-api/content/human/20.jpg' },
-	// 	{ id: "21", driverId: "DVR021", driver: 'Sophie Turner', mobileNumber: "9876541230", ratings: 5, totalTrips: 12, totalEarnings: "₹ 5000", avatar: 'https://mighty.tools/mockmind-api/content/human/21.jpg' },
-	// 	{ id: "22", driverId: "DVR022", driver: 'Daniel Evans', mobileNumber: "9876512345", ratings: 4, totalTrips: 15, totalEarnings: "₹ 20000", avatar: 'https://mighty.tools/mockmind-api/content/human/22.jpg' },
-	// 	{ id: "23", driverId: "DVR023", driver: 'Grace Moore', mobileNumber: "9876123450", ratings: 3.5, totalTrips: 30, totalEarnings: "₹ 3000", avatar: 'https://mighty.tools/mockmind-api/content/human/23.jpg' },
-	// 	{ id: "24", driverId: "DVR024", driver: 'Benjamin Foster', mobileNumber: "9870123456", ratings: 4, totalTrips: 23, totalEarnings: "₹ 25000", avatar: 'https://mighty.tools/mockmind-api/content/human/24.jpg' },
-	// 	{ id: "25", driverId: "DVR025", driver: 'Ava Peterson', mobileNumber: "9812345670", ratings: 3, totalTrips: 55, totalEarnings: "₹ 23000", avatar: 'https://mighty.tools/mockmind-api/content/human/25.jpg' },
-	// 	{ id: "26", driverId: "DVR026", driver: 'Henry Garcia', mobileNumber: "9801234567", ratings: 5, totalTrips: 56, totalEarnings: "₹ 6000", avatar: 'https://mighty.tools/mockmind-api/content/human/26.jpg' },
-	// 	{ id: "27", driverId: "DVR027", driver: 'Lily Ward', mobileNumber: "9123456780", ratings: 4.9, totalTrips: 32, totalEarnings: "₹ 34000", avatar: 'https://mighty.tools/mockmind-api/content/human/27.jpg' },
-	// 	{ id: "28", driverId: "DVR028", driver: 'Ethan Johnson', mobileNumber: "9876543210", ratings: 4, totalTrips: 10, totalEarnings: "₹ 2000", avatar: 'https://mighty.tools/mockmind-api/content/human/28.jpg' },
-	// 	{ id: "29", driverId: "DVR029", driver: 'Oliver Baker', mobileNumber: "9876543120", ratings: 4.5, totalTrips: 20, totalEarnings: "₹ 30000", avatar: 'https://mighty.tools/mockmind-api/content/human/29.jpg' },
-	// 	{ id: "30", driverId: "DVR030", driver: 'Charlotte Clark', mobileNumber: "9876541230", ratings: 5, totalTrips: 12, totalEarnings: "₹ 5000", avatar: 'https://mighty.tools/mockmind-api/content/human/30.jpg' }
-	// ];
-
 	const handleSearch = (value: string) => {
 		setSearchValue(value);
 	}
@@ -257,7 +192,7 @@ const DriverManagement = () => {
 			const result = await getDrivers(page, pageSize, searchValue);
 			const { data, error } = result;
 			if (data) {
-				data.forEach((element: any, index: number) => {
+				data?.data.forEach((element: any, index: number) => {
 					tempRow.push({
 						id: index + 1,
 						driverId: element?.profile_id,
@@ -270,26 +205,173 @@ const DriverManagement = () => {
 						ratings: element?.rating,
 						totalTrips: element?.totalTrips,
 						totalEarnings: element?.totalTripAmount,
-						status: element?.user?.status
+						status: element?.user?.status,
+						car_model: element?.car_model,
+						make: element?.make,
+						model: element?.model,
+						year: element?.year,
+						license_number: element?.backgroundCheck?.license_number,
+						license_state: element?.backgroundCheck?.license_state,
+						vehicle_license_plate_number: element?.vehicle_license_plate_number,
+						upload_vehicle_registration: element?.upload_vehicle_registration,
+						upload_driver_licence: element?.upload_driver_licence,
+						upload_inssurance_card: element?.upload_inssurance_card
 					})
 				});
+				setPageTotal(data?.metadata?.total)
+				setMetaData(data?.metadata)
 				setRows(tempRow)
 				setLoader(false);
 			} else {
 				handleAlert(error.statusCode, error.message, ERROR);
-				handleLogout()
 			}
 		} catch (error) {
 			console.error(error);
 			setLoader(false);
 		}
-
 	}
 
 	React.useEffect(() => {
 		getDriversDetails()
 	}, [page, pageSize, searchValue, render]);
 
+	function Row(props: { row: ReturnType<any> }) {
+		const { row } = props;
+		const [open, setOpen] = React.useState(false);
+
+		return (
+			<React.Fragment>
+				<TableRow sx={{ '& > *': { borderBottom: 'unset' } }}>
+					<TableCell size='small'>{row.driverId}</TableCell>
+					<TableCell size='small'>
+						<div style={{ display: 'flex', alignItems: 'center' }}>
+							<Avatar alt={row.driver} src={row.avatar} id="avatar" sx={{ mr: 2 }} />
+							{row.driver}
+						</div>
+					</TableCell>
+					<TableCell size='small'>
+						{row.middleName}
+					</TableCell>
+					<TableCell size='small'>
+						{row.lastName}
+					</TableCell>
+					<TableCell size='small'>
+						{row.mobileNumber}
+					</TableCell>
+					<TableCell size='small'>
+						<div style={{ display: 'flex', alignItems: 'center' }}>
+							{Array.from({ length: row.ratings }, (_, index) => (
+								<Typography key={index} sx={{ color: '#ffd700', fontSize: '20px' }}>
+									<i className="ri-star-fill" />
+								</Typography>
+							))}
+						</div>
+					</TableCell>
+					<TableCell size='small'>
+						{row.totalTrips}
+					</TableCell>
+					<TableCell size='small'>
+						{row.totalEarnings}
+					</TableCell>
+					<TableCell size='small'>
+						<Chip label={row.status ? "ACTIVE" : "INACTIVE"} color={row.status === 1 ? 'success' : 'primary'} />
+					</TableCell>
+					<TableCell size='small'>
+						<ActionsMenu id={row} options={row.status === 1 ? options : options2} close={!isEdit && !isDelete} />
+					</TableCell>
+					<TableCell size='small'>
+						<IconButton
+							aria-label="expand row"
+							size="small"
+							onClick={() => setOpen(!open)}
+						>
+							{open ? <Typography><i className="ri-arrow-up-s-line"></i></Typography> : <Typography><i className="ri-arrow-down-s-line"></i></Typography>}
+						</IconButton>
+					</TableCell>
+				</TableRow>
+				<TableRow>
+					<TableCell size='small' style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={11}>
+						<Collapse in={open} timeout="auto" unmountOnExit>
+							<Box sx={{ margin: 1 }}>
+								<Typography variant="h6" gutterBottom component="div">
+									Car Details
+								</Typography>
+								<Divider />
+								<Grid container>
+									<Grid item xs={12} sm={12} md={6} lg={3} xl={3}>
+										<Typography sx={{ fontWeight: 700 }}>Car Model :</Typography>
+									</Grid>
+									<Grid item xs={12} sm={12} md={6} lg={3} xl={3}>{row?.car_model}</Grid>
+									<Divider orientation="vertical" flexItem />
+									<Grid item xs={12} sm={12} md={6} lg={3} xl={3}>
+										<Typography sx={{ fontWeight: 700, pl: 1 }}>Maker :</Typography>
+									</Grid>
+									<Grid item xs={12} sm={12} md={6} lg={3} xl={3}>{row?.make}</Grid>
+								</Grid>
+								<Divider />
+								<Grid container>
+									<Grid item xs={12} sm={12} md={6} lg={2} xl={2}>
+										<Typography sx={{ fontWeight: 700 }}>Model : </Typography>
+									</Grid>
+									<Grid item xs={12} sm={12} md={6} lg={2} xl={2}>{row?.model}</Grid>
+									<Divider orientation="vertical" flexItem />
+									<Grid item xs={12} sm={12} md={6} lg={2} xl={2}>
+										<Typography sx={{ fontWeight: 700, pl: 1  }}>Year: </Typography>
+									</Grid>
+									<Grid item xs={12} sm={12} md={6} lg={2} xl={2}>{row?.year}</Grid>
+									<Divider orientation="vertical" flexItem />
+									<Grid item xs={12} sm={12} md={6} lg={2} xl={2}>
+										<Typography sx={{ fontWeight: 700, pl: 1  }}>Vehicle License Plate Number :</Typography>
+									</Grid>
+									<Grid item xs={12} sm={12} md={6} lg={2} xl={2}>{row?.vehicle_license_plate_number}</Grid>
+								</Grid>
+								<Divider />
+								<Grid container>
+									<Grid item xs={12} sm={12} md={6} lg={3} xl={3}>
+										<Typography sx={{ fontWeight: 700 }}>License Number :</Typography>
+									</Grid>
+									<Grid item xs={12} sm={12} md={6} lg={3} xl={3}>{row?.backgroundCheck?.license_number}</Grid>
+									<Divider orientation="vertical" flexItem />
+									<Grid item xs={12} sm={12} md={6} lg={3} xl={3}>
+										<Typography sx={{ fontWeight: 700, pl: 1 }}>License State :</Typography>
+									</Grid>
+									<Grid item xs={12} sm={12} md={6} lg={3} xl={3}>{row?.backgroundCheck?.license_number}</Grid>
+								</Grid>
+								<Divider />
+								<Grid container spacing={2}>
+									<Grid item xs={12} sm={12} md={4} lg={4} xl={4}>
+										<Typography sx={{ fontWeight: 700 }}>Vehicle Registration</Typography>
+										<CardMedia
+											sx={{ height: 140, mb: 1 }}
+											image={row?.upload_vehicle_registration}
+											title='previewUrlVehicleRegistration'
+										/>
+									</Grid>
+
+									<Grid item xs={12} sm={12} md={4} lg={4} xl={4}>
+										<Typography sx={{ fontWeight: 700 }}>Driver Licence</Typography>
+										<CardMedia
+											sx={{ height: 140, mb: 1 }}
+											image={row?.upload_driver_licence}
+											title='upload_inssurance_card'
+										/>
+									</Grid>
+									<Grid item xs={12} sm={12} md={4} lg={4} xl={4}>
+										<Typography sx={{ fontWeight: 700 }}>Inssurance Card</Typography>
+										<CardMedia
+											sx={{ height: 140, mb: 1 }}
+											image={row?.upload_inssurance_card}
+											title='upload_inssurance_card'
+										/>
+									</Grid>
+								</Grid>
+							</Box>
+						</Collapse>
+					</TableCell>
+				</TableRow>
+			</React.Fragment >
+		);
+	}
 
 	return (
 		<Box sx={{ height: "100vh", overflowY: "scroll" }}>
@@ -306,13 +388,38 @@ const DriverManagement = () => {
 				<SearchBox placeholder='Search...' value={searchValue} onChange={handleSearch} autoFocus={true} />
 			</Box>
 			<Box sx={{ mt: 2, width: "100%" }}>
-				<DataTable
-					columns={columns}
-					rows={rows}
-					page={page}
-					pageSize={pageSize}
-					loader={loader}
-					checkboxEnables={false} />
+				<TableContainer component={Paper}>
+					<Table aria-label="collapsible table">
+						<TableHead>
+							<TableRow>
+								<TableCell size='small'>Driver Id</TableCell>
+								<TableCell size='small'>Firstname</TableCell>
+								<TableCell size='small'>Middle Name</TableCell>
+								<TableCell size='small'>Last Name</TableCell>
+								<TableCell size='small'>Mobile Number</TableCell>
+								<TableCell size='small'>Ratings</TableCell>
+								<TableCell size='small'>Total Trips</TableCell>
+								<TableCell size='small'>Total Earnings</TableCell>
+								<TableCell size='small'>Status</TableCell>
+								<TableCell size='small'>Action</TableCell>
+								<TableCell size='small' />
+							</TableRow>
+						</TableHead>
+						<TableBody>
+							{rows.map((row) => (
+								<Row key={row.name} row={row} />
+							))}
+						</TableBody>
+					</Table>
+				</TableContainer>
+				<TablePagination
+					component="div"
+					count={pageTotal}
+					page={page - 1}
+					onPageChange={handleChangePage}
+					rowsPerPage={pageSize}
+					onRowsPerPageChange={handleChangeRowsPerPage}
+				/>
 			</Box>
 			{isEdit && <EditDriver isEdit={isEdit} handleClose={() => setIsEdit(false)} data={editData} handleSuccess={() => setRender(!render)} />}
 			{isAdd && <AddDriver isAdd={isAdd} handleClose={() => setIsAdd(false)} handleSuccess={() => setRender(!render)} />}
