@@ -1,4 +1,4 @@
-import { Accordion, AccordionDetails, AccordionSummary, Box, Skeleton, Button, Snackbar, Typography } from '@mui/material'
+import { Accordion, AccordionDetails, AccordionSummary, Box, Skeleton, Button, Snackbar, Typography, CircularProgress } from '@mui/material'
 import React from 'react'
 import StarterKit from "@tiptap/starter-kit";
 import {
@@ -11,7 +11,6 @@ import {
   MenuButtonStrikethrough,
   type RichTextEditorRef,
 } from "mui-tiptap";
-import EditorMenuControls from "./EditorMenuControls";
 import { addDriversAgreement, addPrivacyPolicy, addUserAgreement, addUserGuidlines, deleteDriversAgreement, deletePrivacyPolicy, deleteUserAgreement, deleteUserGuidlines, getSettings, updateDriversAgreement, updatePrivacyPolicy, updateUserAgreement, updateUserGuidlines } from '@/utils';
 import { ERROR, SUCCESS } from '@/lib/constants';
 import MuiAlert, { AlertColor, AlertProps } from '@mui/material/Alert';
@@ -307,234 +306,238 @@ const SettingsDetails = () => {
         </Alert>
       </Snackbar>
       <Typography variant='h5'>Settings</Typography>
-      {/* Privacy Policy */}
-      <Accordion
-        sx={{
-          mb: 3,
-          borderRadius: '5px',
-          outline: 'none',
-          p: 1,
-          '&:before': {
-            display: 'none',
-          },
-          mt: 3
-        }}
-        defaultExpanded
-      >
-        <AccordionSummary
-          expandIcon={<i className="ri-arrow-down-s-line"></i>}
-          aria-controls="panel1a-content"
-          id="panel1a-header"
+      {submitLoader ? <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+        <CircularProgress />
+      </Box> : <>
+        {/* Privacy Policy */}
+        <Accordion
+          sx={{
+            mb: 3,
+            borderRadius: '5px',
+            outline: 'none',
+            p: 1,
+            '&:before': {
+              display: 'none',
+            },
+            mt: 3
+          }}
+          defaultExpanded
         >
-          <Typography sx={{ fontWeight: 700 }}>
-            Privacy Policy
-          </Typography>
-        </AccordionSummary>
-        {submitLoader ? <>
-          <Skeleton variant="rounded" width={"100%"} height={60} />
-        </> : <AccordionDetails>
-          <RichTextEditor
-            ref={rteRef}
-            key={privacyPolicy}
-            extensions={[StarterKit]}
-            content={`<p>${privacyPolicy?.privacy_policy ? privacyPolicy?.privacy_policy : ''}</p>`}
-            renderControls={() => (
-              <MenuControlsContainer>
-                <MenuSelectHeading />
-                <MenuDivider />
-                <MenuButtonBold />
-                <MenuButtonItalic />
-                <MenuButtonStrikethrough />
-                <MenuDivider />
-              </MenuControlsContainer>
-            )}
-          />
+          <AccordionSummary
+            expandIcon={<i className="ri-arrow-down-s-line"></i>}
+            aria-controls="panel1a-content"
+            id="panel1a-header"
+          >
+            <Typography sx={{ fontWeight: 700 }}>
+              Privacy Policy
+            </Typography>
+          </AccordionSummary>
+          {submitLoader ? <>
+            <Skeleton variant="rounded" width={"100%"} height={60} />
+          </> : <AccordionDetails>
+            <RichTextEditor
+              ref={rteRef}
+              key={privacyPolicy}
+              extensions={[StarterKit]}
+              content={`<p>${privacyPolicy?.privacy_policy ? privacyPolicy?.privacy_policy : ''}</p>`}
+              renderControls={() => (
+                <MenuControlsContainer>
+                  <MenuSelectHeading />
+                  <MenuDivider />
+                  <MenuButtonBold />
+                  <MenuButtonItalic />
+                  <MenuButtonStrikethrough />
+                  <MenuDivider />
+                </MenuControlsContainer>
+              )}
+            />
 
-          {privacyPolicy?.privacy_policy ? <>
-            <Button variant='contained' sx={{ mt: 2, float: "right" }} onClick={() => handleUpdatePrivacyPolicy(privacyPolicy?._id, rteRef.current?.editor?.getHTML())}>
-              Update
-            </Button>
-            <Button variant='contained' color='error' sx={{ mt: 2, mr: 2, float: "right" }} onClick={() => handleDeletePrivacyPolicy({
-              deletePrivacyPolicyId: privacyPolicy?._id
-            })}>
-              Delete
-            </Button>
-          </> : <Button variant='contained' sx={{ mt: 2, float: "right" }} onClick={() => handleAddPrivacyPolicy(rteRef.current?.editor?.getHTML())}>
-            Add
-          </Button>}
-        </AccordionDetails>}
-      </Accordion>
-      {/* User Agreement */}
-      <Accordion
-        sx={{
-          mb: 3,
-          borderRadius: '5px',
-          outline: 'none',
-          p: 1,
-          '&:before': {
-            display: 'none',
-          },
-          mt: 3
-        }}
-        defaultExpanded
-      >
-        <AccordionSummary
-          expandIcon={<i className="ri-arrow-down-s-line"></i>}
-          aria-controls="panel1a-content"
-          id="panel1a-header"
+            {privacyPolicy?.privacy_policy ? <>
+              <Button variant='contained' sx={{ mt: 2, float: "right" }} onClick={() => handleUpdatePrivacyPolicy(privacyPolicy?._id, rteRef.current?.editor?.getHTML())}>
+                Update
+              </Button>
+              <Button variant='contained' color='error' sx={{ mt: 2, mr: 2, float: "right" }} onClick={() => handleDeletePrivacyPolicy({
+                deletePrivacyPolicyId: privacyPolicy?._id
+              })}>
+                Delete
+              </Button>
+            </> : <Button variant='contained' sx={{ mt: 2, float: "right" }} onClick={() => handleAddPrivacyPolicy(rteRef.current?.editor?.getHTML())}>
+              Add
+            </Button>}
+          </AccordionDetails>}
+        </Accordion>
+        {/* User Agreement */}
+        <Accordion
+          sx={{
+            mb: 3,
+            borderRadius: '5px',
+            outline: 'none',
+            p: 1,
+            '&:before': {
+              display: 'none',
+            },
+            mt: 3
+          }}
+          defaultExpanded
         >
-          <Typography sx={{ fontWeight: 700 }}>
-            User Agreement
-          </Typography>
-        </AccordionSummary>
-        {submitLoader ? <>
-          <Skeleton variant="rounded" width={"100%"} height={60} />
-        </> : <AccordionDetails>
-          <RichTextEditor
-            ref={rteRef}
-            key={userAgreement}
-            extensions={[StarterKit]}
-            content={`<p>${userAgreement?.user_agreement ? userAgreement?.user_agreement : ''}</p>`}
-            renderControls={() => (
-              <MenuControlsContainer>
-                <MenuSelectHeading />
-                <MenuDivider />
-                <MenuButtonBold />
-                <MenuButtonItalic />
-                <MenuButtonStrikethrough />
-                <MenuDivider />
-              </MenuControlsContainer>
-            )}
-          />
+          <AccordionSummary
+            expandIcon={<i className="ri-arrow-down-s-line"></i>}
+            aria-controls="panel1a-content"
+            id="panel1a-header"
+          >
+            <Typography sx={{ fontWeight: 700 }}>
+              User Agreement
+            </Typography>
+          </AccordionSummary>
+          {submitLoader ? <>
+            <Skeleton variant="rounded" width={"100%"} height={60} />
+          </> : <AccordionDetails>
+            <RichTextEditor
+              ref={rteRef}
+              key={userAgreement}
+              extensions={[StarterKit]}
+              content={`<p>${userAgreement?.user_agreement ? userAgreement?.user_agreement : ''}</p>`}
+              renderControls={() => (
+                <MenuControlsContainer>
+                  <MenuSelectHeading />
+                  <MenuDivider />
+                  <MenuButtonBold />
+                  <MenuButtonItalic />
+                  <MenuButtonStrikethrough />
+                  <MenuDivider />
+                </MenuControlsContainer>
+              )}
+            />
 
-          {userAgreement?.user_agreement ? <>
-            <Button variant='contained' sx={{ mt: 2, float: "right" }} onClick={() => handleUpdateUserAgreement(userAgreement?._id, rteRef.current?.editor?.getHTML())}>
-              Update
-            </Button>
-            <Button variant='contained' color='error' sx={{ mt: 2, mr: 2, float: "right" }} onClick={() => handleDeleteUserAgreement({
-              user_agreement_id: userAgreement?._id
-            })}>
-              Delete
-            </Button>
-          </> : <Button variant='contained' sx={{ mt: 2, float: "right" }} onClick={() => handleAddUserAgreement(rteRef.current?.editor?.getHTML())}>
-            Add
-          </Button>}
-        </AccordionDetails>}
-      </Accordion>
-      {/* User Guidlines */}
-      <Accordion
-        sx={{
-          mb: 3,
-          borderRadius: '5px',
-          outline: 'none',
-          p: 1,
-          '&:before': {
-            display: 'none',
-          },
-          mt: 3
-        }}
-        defaultExpanded
-      >
-        <AccordionSummary
-          expandIcon={<i className="ri-arrow-down-s-line"></i>}
-          aria-controls="panel1a-content"
-          id="panel1a-header"
+            {userAgreement?.user_agreement ? <>
+              <Button variant='contained' sx={{ mt: 2, float: "right" }} onClick={() => handleUpdateUserAgreement(userAgreement?._id, rteRef.current?.editor?.getHTML())}>
+                Update
+              </Button>
+              <Button variant='contained' color='error' sx={{ mt: 2, mr: 2, float: "right" }} onClick={() => handleDeleteUserAgreement({
+                user_agreement_id: userAgreement?._id
+              })}>
+                Delete
+              </Button>
+            </> : <Button variant='contained' sx={{ mt: 2, float: "right" }} onClick={() => handleAddUserAgreement(rteRef.current?.editor?.getHTML())}>
+              Add
+            </Button>}
+          </AccordionDetails>}
+        </Accordion>
+        {/* User Guidlines */}
+        <Accordion
+          sx={{
+            mb: 3,
+            borderRadius: '5px',
+            outline: 'none',
+            p: 1,
+            '&:before': {
+              display: 'none',
+            },
+            mt: 3
+          }}
+          defaultExpanded
         >
-          <Typography sx={{ fontWeight: 700 }}>
-            User Guidlines
-          </Typography>
-        </AccordionSummary>
-        {submitLoader ? <>
-          <Skeleton variant="rounded" width={"100%"} height={60} />
-        </> : <AccordionDetails>
-          <RichTextEditor
-            ref={rteRef}
-            key={userGuidlines}
-            extensions={[StarterKit]}
-            content={`<p>${userGuidlines?.user_guidlines ? userGuidlines?.user_guidlines : ''}</p>`}
-            renderControls={() => (
-              <MenuControlsContainer>
-                <MenuSelectHeading />
-                <MenuDivider />
-                <MenuButtonBold />
-                <MenuButtonItalic />
-                <MenuButtonStrikethrough />
-                <MenuDivider />
-              </MenuControlsContainer>
-            )}
-          />
+          <AccordionSummary
+            expandIcon={<i className="ri-arrow-down-s-line"></i>}
+            aria-controls="panel1a-content"
+            id="panel1a-header"
+          >
+            <Typography sx={{ fontWeight: 700 }}>
+              User Guidlines
+            </Typography>
+          </AccordionSummary>
+          {submitLoader ? <>
+            <Skeleton variant="rounded" width={"100%"} height={60} />
+          </> : <AccordionDetails>
+            <RichTextEditor
+              ref={rteRef}
+              key={userGuidlines}
+              extensions={[StarterKit]}
+              content={`<p>${userGuidlines?.user_guidlines ? userGuidlines?.user_guidlines : ''}</p>`}
+              renderControls={() => (
+                <MenuControlsContainer>
+                  <MenuSelectHeading />
+                  <MenuDivider />
+                  <MenuButtonBold />
+                  <MenuButtonItalic />
+                  <MenuButtonStrikethrough />
+                  <MenuDivider />
+                </MenuControlsContainer>
+              )}
+            />
 
-          {userGuidlines?.user_guidlines ? <>
-            <Button variant='contained' sx={{ mt: 2, float: "right" }} onClick={() => handleUpdateUserGuidlines(userGuidlines?._id, rteRef.current?.editor?.getHTML())}>
-              Update
-            </Button>
-            <Button variant='contained' color='error' sx={{ mt: 2, mr: 2, float: "right" }} onClick={() => handleDeleteUserGuidlines({
-              user_guidlines_id: userGuidlines?._id
-            })}>
-              Delete
-            </Button>
-          </> : <Button variant='contained' sx={{ mt: 2, float: "right" }} onClick={() => handleAddUserGuidlines(rteRef.current?.editor?.getHTML())}>
-            Add
-          </Button>}
-        </AccordionDetails>}
-      </Accordion>
-      {/* User Agreement */}
-      <Accordion
-        sx={{
-          mb: 3,
-          borderRadius: '5px',
-          outline: 'none',
-          p: 1,
-          '&:before': {
-            display: 'none',
-          },
-          mt: 3
-        }}
-        defaultExpanded
-      >
-        <AccordionSummary
-          expandIcon={<i className="ri-arrow-down-s-line"></i>}
-          aria-controls="panel1a-content"
-          id="panel1a-header"
+            {userGuidlines?.user_guidlines ? <>
+              <Button variant='contained' sx={{ mt: 2, float: "right" }} onClick={() => handleUpdateUserGuidlines(userGuidlines?._id, rteRef.current?.editor?.getHTML())}>
+                Update
+              </Button>
+              <Button variant='contained' color='error' sx={{ mt: 2, mr: 2, float: "right" }} onClick={() => handleDeleteUserGuidlines({
+                user_guidlines_id: userGuidlines?._id
+              })}>
+                Delete
+              </Button>
+            </> : <Button variant='contained' sx={{ mt: 2, float: "right" }} onClick={() => handleAddUserGuidlines(rteRef.current?.editor?.getHTML())}>
+              Add
+            </Button>}
+          </AccordionDetails>}
+        </Accordion>
+        {/* User Agreement */}
+        <Accordion
+          sx={{
+            mb: 3,
+            borderRadius: '5px',
+            outline: 'none',
+            p: 1,
+            '&:before': {
+              display: 'none',
+            },
+            mt: 3
+          }}
+          defaultExpanded
         >
-          <Typography sx={{ fontWeight: 700 }}>
-            Drivers Agreement
-          </Typography>
-        </AccordionSummary>
-        {submitLoader ? <>
-          <Skeleton variant="rounded" width={"100%"} height={60} />
-        </> : <AccordionDetails>
-          <RichTextEditor
-            ref={rteRef}
-            key={driversAgreement}
-            extensions={[StarterKit]}
-            content={`<p>${driversAgreement?.driver_agreements ? driversAgreement?.driver_agreements : ''}</p>`}
-            renderControls={() => (
-              <MenuControlsContainer>
-                <MenuSelectHeading />
-                <MenuDivider />
-                <MenuButtonBold />
-                <MenuButtonItalic />
-                <MenuButtonStrikethrough />
-                <MenuDivider />
-              </MenuControlsContainer>
-            )}
-          />
+          <AccordionSummary
+            expandIcon={<i className="ri-arrow-down-s-line"></i>}
+            aria-controls="panel1a-content"
+            id="panel1a-header"
+          >
+            <Typography sx={{ fontWeight: 700 }}>
+              Drivers Agreement
+            </Typography>
+          </AccordionSummary>
+          {submitLoader ? <>
+            <Skeleton variant="rounded" width={"100%"} height={60} />
+          </> : <AccordionDetails>
+            <RichTextEditor
+              ref={rteRef}
+              key={driversAgreement}
+              extensions={[StarterKit]}
+              content={`<p>${driversAgreement?.driver_agreements ? driversAgreement?.driver_agreements : ''}</p>`}
+              renderControls={() => (
+                <MenuControlsContainer>
+                  <MenuSelectHeading />
+                  <MenuDivider />
+                  <MenuButtonBold />
+                  <MenuButtonItalic />
+                  <MenuButtonStrikethrough />
+                  <MenuDivider />
+                </MenuControlsContainer>
+              )}
+            />
 
-          {driversAgreement?.driver_agreements ? <>
-            <Button variant='contained' sx={{ mt: 2, float: "right" }} onClick={() => handleUpdateDriversAgrrement(driversAgreement?._id, rteRef.current?.editor?.getHTML())}>
-              Update
-            </Button>
-            <Button variant='contained' color='error' sx={{ mt: 2, mr: 2, float: "right" }} onClick={() => handleDeleteDriversAgrrement({
-              driver_agreements_id: driversAgreement?._id
-            })}>
-              Delete
-            </Button>
-          </> : <Button variant='contained' sx={{ mt: 2, float: "right" }} onClick={() => handleAddDriversAgrrement(rteRef.current?.editor?.getHTML())}>
-            Add
-          </Button>}
-        </AccordionDetails>}
-      </Accordion>
+            {driversAgreement?.driver_agreements ? <>
+              <Button variant='contained' sx={{ mt: 2, float: "right" }} onClick={() => handleUpdateDriversAgrrement(driversAgreement?._id, rteRef.current?.editor?.getHTML())}>
+                Update
+              </Button>
+              <Button variant='contained' color='error' sx={{ mt: 2, mr: 2, float: "right" }} onClick={() => handleDeleteDriversAgrrement({
+                driver_agreements_id: driversAgreement?._id
+              })}>
+                Delete
+              </Button>
+            </> : <Button variant='contained' sx={{ mt: 2, float: "right" }} onClick={() => handleAddDriversAgrrement(rteRef.current?.editor?.getHTML())}>
+              Add
+            </Button>}
+          </AccordionDetails>}
+        </Accordion>
+      </>}
     </Box>
   )
 }

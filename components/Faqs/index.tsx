@@ -194,21 +194,22 @@ const Faqs = () => {
             <Typography sx={{ fontWeight: 700, mr: 1 }}>Q:{i + 1}</Typography>{!(isEdit && selectedId === item?._id) ? <Typography sx={{ fontWeight: 700 }} dangerouslySetInnerHTML={{
               __html: ` ${item?.queston}`
             }}>
-            </Typography> : <Box sx={{ width: "100%" }}><RichTextEditor
-              ref={rteRef3}
-              extensions={[StarterKit]}
-              content={`<p>${item?.queston}</p>`}
-              renderControls={() => (
-                <MenuControlsContainer>
-                  <MenuSelectHeading />
-                  <MenuDivider />
-                  <MenuButtonBold />
-                  <MenuButtonItalic />
-                  <MenuButtonStrikethrough />
-                  <MenuDivider />
-                </MenuControlsContainer>
-              )}
-            />
+            </Typography> : <Box sx={{ width: "100%" }}>
+              <RichTextEditor
+                ref={rteRef3}
+                extensions={[StarterKit]}
+                content={`<p>${item?.queston}</p>`}
+                renderControls={() => (
+                  <MenuControlsContainer>
+                    <MenuSelectHeading />
+                    <MenuDivider />
+                    <MenuButtonBold />
+                    <MenuButtonItalic />
+                    <MenuButtonStrikethrough />
+                    <MenuDivider />
+                  </MenuControlsContainer>
+                )}
+              />
             </Box>}
           </Box>
         </AccordionSummary>
