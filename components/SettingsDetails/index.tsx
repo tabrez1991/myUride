@@ -10,6 +10,9 @@ import {
   RichTextEditor,
   MenuButtonStrikethrough,
   type RichTextEditorRef,
+  MenuButtonBulletedList,
+  MenuButtonOrderedList,
+  MenuButtonTaskList,
 } from "mui-tiptap";
 import { addDriversAgreement, addPrivacyPolicy, addUserAgreement, addUserGuidlines, deleteDriversAgreement, deletePrivacyPolicy, deleteUserAgreement, deleteUserGuidlines, getSettings, updateDriversAgreement, updatePrivacyPolicy, updateUserAgreement, updateUserGuidlines } from '@/utils';
 import { ERROR, SUCCESS } from '@/lib/constants';
@@ -32,6 +35,10 @@ const SettingsDetails = () => {
   const [userGuidlines, setUserGuidlines] = React.useState<any>()
   const [driversAgreement, setDriversAgreement] = React.useState<any>()
   const [render, setRender] = React.useState<boolean>(false);
+  const [editPrivacyPlicy, setEditPrivacyPolicy] = React.useState<boolean>(false);
+  const [editUserAgreement, setEditUserAgreement] = React.useState<boolean>(false);
+  const [editUserGuidlines, setEditUserGuidlines] = React.useState<boolean>(false);
+  const [editDriversAgreement, setEditDriversAgreement] = React.useState<boolean>(false);
 
   const rteRef = React.useRef<RichTextEditorRef>(null);
 
@@ -335,35 +342,49 @@ const SettingsDetails = () => {
           {submitLoader ? <>
             <Skeleton variant="rounded" width={"100%"} height={60} />
           </> : <AccordionDetails>
-            <RichTextEditor
-              ref={rteRef}
-              key={privacyPolicy}
-              extensions={[StarterKit]}
-              content={`<p>${privacyPolicy?.privacy_policy ? privacyPolicy?.privacy_policy : ''}</p>`}
-              renderControls={() => (
-                <MenuControlsContainer>
-                  <MenuSelectHeading />
-                  <MenuDivider />
-                  <MenuButtonBold />
-                  <MenuButtonItalic />
-                  <MenuButtonStrikethrough />
-                  <MenuDivider />
-                </MenuControlsContainer>
-              )}
-            />
+            {!editPrivacyPlicy ? <Box>
+              <Typography sx={{ padding: "10px 20px" }} dangerouslySetInnerHTML={{ __html: ` ${privacyPolicy?.privacy_policy}` }}></Typography>
+              <Button variant='contained' sx={{ mt: 2, float: "right" }} onClick={() => setEditPrivacyPolicy(true)}>
+                Edit
+              </Button>
+            </Box>
+              : <Box>
+                <RichTextEditor
+                  ref={rteRef}
+                  key={privacyPolicy}
+                  extensions={[StarterKit]}
+                  content={`<p>${privacyPolicy?.privacy_policy ? privacyPolicy?.privacy_policy : ''}</p>`}
+                  renderControls={() => (
+                    <MenuControlsContainer>
+                      <MenuSelectHeading />
+                      <MenuDivider />
+                      <MenuButtonBold />
+                      <MenuButtonItalic />
+                      <MenuButtonStrikethrough />
+                      <MenuDivider />
+                      <MenuButtonBulletedList />
+                      <MenuButtonOrderedList />
+                      <MenuDivider />
+                    </MenuControlsContainer>
+                  )}
+                />
 
-            {privacyPolicy?.privacy_policy ? <>
-              <Button variant='contained' sx={{ mt: 2, float: "right" }} onClick={() => handleUpdatePrivacyPolicy(privacyPolicy?._id, rteRef.current?.editor?.getHTML())}>
-                Update
-              </Button>
-              <Button variant='contained' color='error' sx={{ mt: 2, mr: 2, float: "right" }} onClick={() => handleDeletePrivacyPolicy({
-                deletePrivacyPolicyId: privacyPolicy?._id
-              })}>
-                Delete
-              </Button>
-            </> : <Button variant='contained' sx={{ mt: 2, float: "right" }} onClick={() => handleAddPrivacyPolicy(rteRef.current?.editor?.getHTML())}>
-              Add
-            </Button>}
+                {privacyPolicy?.privacy_policy ? <>
+                  <Button variant='outlined' sx={{ mt: 2, float: "right" }} onClick={() => setEditPrivacyPolicy(false)}>
+                    Cancel
+                  </Button>
+                  <Button variant='contained' sx={{ mt: 2, mr: 2, float: "right" }} onClick={() => handleUpdatePrivacyPolicy(privacyPolicy?._id, rteRef.current?.editor?.getHTML())}>
+                    Update
+                  </Button>
+                  <Button variant='contained' color='error' sx={{ mt: 2, mr: 2, float: "right" }} onClick={() => handleDeletePrivacyPolicy({
+                    deletePrivacyPolicyId: privacyPolicy?._id
+                  })}>
+                    Delete
+                  </Button>
+                </> : <Button variant='contained' sx={{ mt: 2, float: "right" }} onClick={() => handleAddPrivacyPolicy(rteRef.current?.editor?.getHTML())}>
+                  Add
+                </Button>}
+              </Box>}
           </AccordionDetails>}
         </Accordion>
         {/* User Agreement */}
@@ -392,35 +413,49 @@ const SettingsDetails = () => {
           {submitLoader ? <>
             <Skeleton variant="rounded" width={"100%"} height={60} />
           </> : <AccordionDetails>
-            <RichTextEditor
-              ref={rteRef}
-              key={userAgreement}
-              extensions={[StarterKit]}
-              content={`<p>${userAgreement?.user_agreement ? userAgreement?.user_agreement : ''}</p>`}
-              renderControls={() => (
-                <MenuControlsContainer>
-                  <MenuSelectHeading />
-                  <MenuDivider />
-                  <MenuButtonBold />
-                  <MenuButtonItalic />
-                  <MenuButtonStrikethrough />
-                  <MenuDivider />
-                </MenuControlsContainer>
-              )}
-            />
+            {!editUserAgreement ? <Box>
+              <Typography sx={{ padding: "10px 20px" }} dangerouslySetInnerHTML={{ __html: ` ${userAgreement?.user_agreement}` }}></Typography>
+              <Button variant='contained' sx={{ mt: 2, float: "right" }} onClick={() => setEditUserAgreement(true)}>
+                Edit
+              </Button>
+            </Box>
+              : <Box>
+                <RichTextEditor
+                  ref={rteRef}
+                  key={userAgreement}
+                  extensions={[StarterKit]}
+                  content={`<p>${userAgreement?.user_agreement ? userAgreement?.user_agreement : ''}</p>`}
+                  renderControls={() => (
+                    <MenuControlsContainer>
+                      <MenuSelectHeading />
+                      <MenuDivider />
+                      <MenuButtonBold />
+                      <MenuButtonItalic />
+                      <MenuButtonStrikethrough />
+                      <MenuDivider />
+                      <MenuButtonBulletedList />
+                      <MenuButtonOrderedList />
+                      <MenuDivider />
+                    </MenuControlsContainer>
+                  )}
+                />
 
-            {userAgreement?.user_agreement ? <>
-              <Button variant='contained' sx={{ mt: 2, float: "right" }} onClick={() => handleUpdateUserAgreement(userAgreement?._id, rteRef.current?.editor?.getHTML())}>
-                Update
-              </Button>
-              <Button variant='contained' color='error' sx={{ mt: 2, mr: 2, float: "right" }} onClick={() => handleDeleteUserAgreement({
-                user_agreement_id: userAgreement?._id
-              })}>
-                Delete
-              </Button>
-            </> : <Button variant='contained' sx={{ mt: 2, float: "right" }} onClick={() => handleAddUserAgreement(rteRef.current?.editor?.getHTML())}>
-              Add
-            </Button>}
+                {userAgreement?.user_agreement ? <>
+                  <Button variant='outlined' sx={{ mt: 2, float: "right" }} onClick={() => setEditUserAgreement(false)}>
+                    Cancel
+                  </Button>
+                  <Button variant='contained' sx={{ mt: 2, mr: 2, float: "right" }} onClick={() => handleUpdateUserAgreement(userAgreement?._id, rteRef.current?.editor?.getHTML())}>
+                    Update
+                  </Button>
+                  <Button variant='contained' color='error' sx={{ mt: 2, mr: 2, float: "right" }} onClick={() => handleDeleteUserAgreement({
+                    user_agreement_id: userAgreement?._id
+                  })}>
+                    Delete
+                  </Button>
+                </> : <Button variant='contained' sx={{ mt: 2, float: "right" }} onClick={() => handleAddUserAgreement(rteRef.current?.editor?.getHTML())}>
+                  Add
+                </Button>}
+              </Box>}
           </AccordionDetails>}
         </Accordion>
         {/* User Guidlines */}
@@ -449,35 +484,49 @@ const SettingsDetails = () => {
           {submitLoader ? <>
             <Skeleton variant="rounded" width={"100%"} height={60} />
           </> : <AccordionDetails>
-            <RichTextEditor
-              ref={rteRef}
-              key={userGuidlines}
-              extensions={[StarterKit]}
-              content={`<p>${userGuidlines?.user_guidlines ? userGuidlines?.user_guidlines : ''}</p>`}
-              renderControls={() => (
-                <MenuControlsContainer>
-                  <MenuSelectHeading />
-                  <MenuDivider />
-                  <MenuButtonBold />
-                  <MenuButtonItalic />
-                  <MenuButtonStrikethrough />
-                  <MenuDivider />
-                </MenuControlsContainer>
-              )}
-            />
+            {!editUserGuidlines ? <Box>
+              <Typography sx={{ padding: "10px 20px" }} dangerouslySetInnerHTML={{ __html: ` ${userGuidlines?.user_guidlines}` }}></Typography>
+              <Button variant='contained' sx={{ mt: 2, float: "right" }} onClick={() => setEditUserGuidlines(true)}>
+                Edit
+              </Button>
+            </Box>
+              : <Box>
+                <RichTextEditor
+                  ref={rteRef}
+                  key={userGuidlines}
+                  extensions={[StarterKit]}
+                  content={`<p>${userGuidlines?.user_guidlines ? userGuidlines?.user_guidlines : ''}</p>`}
+                  renderControls={() => (
+                    <MenuControlsContainer>
+                      <MenuSelectHeading />
+                      <MenuDivider />
+                      <MenuButtonBold />
+                      <MenuButtonItalic />
+                      <MenuButtonStrikethrough />
+                      <MenuDivider />
+                      <MenuButtonBulletedList />
+                      <MenuButtonOrderedList />
+                      <MenuDivider />
+                    </MenuControlsContainer>
+                  )}
+                />
 
-            {userGuidlines?.user_guidlines ? <>
-              <Button variant='contained' sx={{ mt: 2, float: "right" }} onClick={() => handleUpdateUserGuidlines(userGuidlines?._id, rteRef.current?.editor?.getHTML())}>
-                Update
-              </Button>
-              <Button variant='contained' color='error' sx={{ mt: 2, mr: 2, float: "right" }} onClick={() => handleDeleteUserGuidlines({
-                user_guidlines_id: userGuidlines?._id
-              })}>
-                Delete
-              </Button>
-            </> : <Button variant='contained' sx={{ mt: 2, float: "right" }} onClick={() => handleAddUserGuidlines(rteRef.current?.editor?.getHTML())}>
-              Add
-            </Button>}
+                {userGuidlines?.user_guidlines ? <>
+                  <Button variant='outlined' sx={{ mt: 2, float: "right" }} onClick={() => setEditUserGuidlines(false)}>
+                    Cancel
+                  </Button>
+                  <Button variant='contained' sx={{ mt: 2, mr: 2, float: "right" }} onClick={() => handleUpdateUserGuidlines(userGuidlines?._id, rteRef.current?.editor?.getHTML())}>
+                    Update
+                  </Button>
+                  <Button variant='contained' color='error' sx={{ mt: 2, mr: 2, float: "right" }} onClick={() => handleDeleteUserGuidlines({
+                    user_guidlines_id: userGuidlines?._id
+                  })}>
+                    Delete
+                  </Button>
+                </> : <Button variant='contained' sx={{ mt: 2, float: "right" }} onClick={() => handleAddUserGuidlines(rteRef.current?.editor?.getHTML())}>
+                  Add
+                </Button>}
+              </Box>}
           </AccordionDetails>}
         </Accordion>
         {/* User Agreement */}
@@ -506,35 +555,49 @@ const SettingsDetails = () => {
           {submitLoader ? <>
             <Skeleton variant="rounded" width={"100%"} height={60} />
           </> : <AccordionDetails>
-            <RichTextEditor
-              ref={rteRef}
-              key={driversAgreement}
-              extensions={[StarterKit]}
-              content={`<p>${driversAgreement?.driver_agreements ? driversAgreement?.driver_agreements : ''}</p>`}
-              renderControls={() => (
-                <MenuControlsContainer>
-                  <MenuSelectHeading />
-                  <MenuDivider />
-                  <MenuButtonBold />
-                  <MenuButtonItalic />
-                  <MenuButtonStrikethrough />
-                  <MenuDivider />
-                </MenuControlsContainer>
-              )}
-            />
+            {!editDriversAgreement ? <Box>
+              <Typography sx={{ padding: "10px 20px" }} dangerouslySetInnerHTML={{ __html: ` ${driversAgreement?.driver_agreements}` }}></Typography>
+              <Button variant='contained' sx={{ mt: 2, float: "right" }} onClick={() => setEditDriversAgreement(true)}>
+                Edit
+              </Button>
+            </Box>
+              : <Box>
+                <RichTextEditor
+                  ref={rteRef}
+                  key={driversAgreement}
+                  extensions={[StarterKit]}
+                  content={`<p>${driversAgreement?.driver_agreements ? driversAgreement?.driver_agreements : ''}</p>`}
+                  renderControls={() => (
+                    <MenuControlsContainer>
+                      <MenuSelectHeading />
+                      <MenuDivider />
+                      <MenuButtonBold />
+                      <MenuButtonItalic />
+                      <MenuButtonStrikethrough />
+                      <MenuDivider />
+                      <MenuButtonBulletedList />
+                      <MenuButtonOrderedList />
+                      <MenuDivider />
+                    </MenuControlsContainer>
+                  )}
+                />
 
-            {driversAgreement?.driver_agreements ? <>
-              <Button variant='contained' sx={{ mt: 2, float: "right" }} onClick={() => handleUpdateDriversAgrrement(driversAgreement?._id, rteRef.current?.editor?.getHTML())}>
-                Update
-              </Button>
-              <Button variant='contained' color='error' sx={{ mt: 2, mr: 2, float: "right" }} onClick={() => handleDeleteDriversAgrrement({
-                driver_agreements_id: driversAgreement?._id
-              })}>
-                Delete
-              </Button>
-            </> : <Button variant='contained' sx={{ mt: 2, float: "right" }} onClick={() => handleAddDriversAgrrement(rteRef.current?.editor?.getHTML())}>
-              Add
-            </Button>}
+                {driversAgreement?.driver_agreements ? <>
+                  <Button variant='outlined' sx={{ mt: 2, float: "right" }} onClick={() => setEditDriversAgreement(false)}>
+                    Cancel
+                  </Button>
+                  <Button variant='contained' sx={{ mt: 2, mr: 2, float: "right" }} onClick={() => handleUpdateDriversAgrrement(driversAgreement?._id, rteRef.current?.editor?.getHTML())}>
+                    Update
+                  </Button>
+                  <Button variant='contained' color='error' sx={{ mt: 2, mr: 2, float: "right" }} onClick={() => handleDeleteDriversAgrrement({
+                    driver_agreements_id: driversAgreement?._id
+                  })}>
+                    Delete
+                  </Button>
+                </> : <Button variant='contained' sx={{ mt: 2, float: "right" }} onClick={() => handleAddDriversAgrrement(rteRef.current?.editor?.getHTML())}>
+                  Add
+                </Button>}
+              </Box>}
           </AccordionDetails>}
         </Accordion>
       </>}

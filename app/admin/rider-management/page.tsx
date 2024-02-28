@@ -146,7 +146,7 @@ const RiderManagement = () => {
 			flex: 1.5,
 			renderCell: (params) => (
 				<div style={{ display: 'flex', alignItems: 'center' }}>
-					<Avatar alt={params.row.rider} src={params.row.avatar} id="avatar" sx={{ mr: 2 }} />
+					<Avatar alt={params.row.rider} src={`${process.env.NEXT_PUBLIC_BASE_URL}/uploads/${params.row.avatar}`} id="avatar" sx={{ mr: 2 }} />
 					{params.row.rider}
 				</div>
 			),

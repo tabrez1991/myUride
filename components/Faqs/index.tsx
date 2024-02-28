@@ -192,13 +192,13 @@ const Faqs = () => {
         >
           <Box sx={{ display: "flex", alignItems: "center", width: "100%" }}>
             <Typography sx={{ fontWeight: 700, mr: 1 }}>Q:{i + 1}</Typography>{!(isEdit && selectedId === item?._id) ? <Typography sx={{ fontWeight: 700 }} dangerouslySetInnerHTML={{
-              __html: ` ${item?.queston}`
+              __html: ` ${item?.title}`
             }}>
             </Typography> : <Box sx={{ width: "100%" }}>
               <RichTextEditor
                 ref={rteRef3}
                 extensions={[StarterKit]}
-                content={`<p>${item?.queston}</p>`}
+                content={`<p>${item?.title}</p>`}
                 renderControls={() => (
                   <MenuControlsContainer>
                     <MenuSelectHeading />
@@ -216,12 +216,12 @@ const Faqs = () => {
         <AccordionDetails>
           <Box sx={{ display: "flex", alignItems: "center" }}>
             <Typography sx={{ fontWeight: 700, mr: 1 }}>A:</Typography> {!(isEdit && selectedId === item?._id) ? <Typography sx={{ fontWeight: 400 }} dangerouslySetInnerHTML={{
-              __html: ` ${item?.answer}`
+              __html: ` ${item?.desc}`
             }}>
             </Typography> : <Box sx={{ width: "100%" }}><RichTextEditor
               ref={rteRef4}
               extensions={[StarterKit]}
-              content={`<p>${item?.answer}</p>`}
+              content={`<p>${item?.desc}</p>`}
               renderControls={() => (
                 <MenuControlsContainer>
                   <MenuSelectHeading />

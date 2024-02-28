@@ -19,6 +19,7 @@ export const ADD_DRIVER = '/auth/add-driver';
 export const EDIT_DRIVER = '/auth/edit-driver';
 export const DELETE_DRIVER = '/auth/delete-driver';
 export const ACTIVATE_DRIVER = '/auth/activate-driver';
+export const COMPLETE_BACKGROUND_CHECK = '/auth/complete-background-check';
 
 // Riderss
 export const RIDERS_LIST = '/auth/riders-list';

@@ -2,7 +2,7 @@
 
 import ActionsMenu from '@/components/ActionMenu'
 import SearchBox from '@/components/SearchBox'
-import { activateDriver, deleteDriver, getDrivers, logout } from '@/utils'
+import { activateDriver, completeBackgroundCheck, deleteDriver, getDrivers, logout } from '@/utils'
 import { Avatar, Box, Button, CardMedia, Chip, Collapse, Divider, Grid, IconButton, Modal, Paper, Snackbar, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow, Typography } from '@mui/material'
 import { GridColDef } from '@mui/x-data-grid'
 import React from 'react'
@@ -133,6 +133,25 @@ const DriverManagement = () => {
 		}
 	}
 
+	const handleCompleteBackgroundCheck = async (activeDetails: any) => {
+		setLoader(true)
+		try {
+			const result = await completeBackgroundCheck(activeDetails?.driverId);
+			const { data, error } = result;
+			if (data) {
+				setRender(!render)
+				setLoader(false);
+				handleAlert(data.userId, "Background check completed Successfully", SUCCESS);
+			} else {
+				handleAlert(error.statusCode, error.message, ERROR);
+				handleLogout()
+			}
+		} catch (error) {
+			console.error(error);
+			setLoader(false);
+		}
+	}
+
 	const options = [
 		{
 			label: "Edit Driver",
@@ -141,6 +160,10 @@ const DriverManagement = () => {
 		{
 			label: "Deactivate Driver",
 			handler: handleDeleteDriver
+		},
+		{
+			label: "Send Background Link",
+
 		}
 	]
 
@@ -152,6 +175,45 @@ const DriverManagement = () => {
 		{
 			label: "Activate Driver",
 			handler: handleActivate
+		},
+		{
+			label: "Send Background Link",
+		}
+	]
+
+	const options3 = [
+		{
+			label: "Edit Driver",
+			handler: handleEditDriver
+		},
+		{
+			label: "Activate Driver",
+			handler: handleActivate
+		},
+		{
+			label: "Send Background Link",
+		},
+		{
+			label: "Set Completed Background check",
+			handler: handleCompleteBackgroundCheck
+		}
+	]
+
+	const options4 = [
+		{
+			label: "Edit Driver",
+			handler: handleEditDriver
+		},
+		{
+			label: "Deactivate Driver",
+			handler: handleDeleteDriver
+		},
+		{
+			label: "Send Background Link",
+		},
+		{
+			label: "Set Completed Background check",
+			handler: handleCompleteBackgroundCheck
 		}
 	]
 
@@ -202,6 +264,7 @@ const DriverManagement = () => {
 						avatar: element?.profile_photo,
 						email: element?.user?.email,
 						mobileNumber: element?.mobile_no,
+						bgStatus: element?.backgroundCheck?.status,
 						ratings: element?.rating,
 						totalTrips: element?.totalTrips,
 						totalEarnings: element?.totalTripAmount,
@@ -245,7 +308,7 @@ const DriverManagement = () => {
 					<TableCell size='small'>{row.driverId}</TableCell>
 					<TableCell size='small'>
 						<div style={{ display: 'flex', alignItems: 'center' }}>
-							<Avatar alt={row.driver} src={row.avatar} id="avatar" sx={{ mr: 2 }} />
+							<Avatar alt={row.driver} src={`${process.env.NEXT_PUBLIC_BASE_URL}/uploads/${row.avatar}`} id="avatar" sx={{ mr: 2 }} />
 							{row.driver}
 						</div>
 					</TableCell>
@@ -257,6 +320,9 @@ const DriverManagement = () => {
 					</TableCell>
 					<TableCell size='small'>
 						{row.mobileNumber}
+					</TableCell>
+					<TableCell size='small'>
+						<Chip label={row.bgStatus ? "COMPLETED" : "PENDING"} color={row.bgStatus === 1 ? 'success' : 'warning'} />
 					</TableCell>
 					<TableCell size='small'>
 						<div style={{ display: 'flex', alignItems: 'center' }}>
@@ -277,7 +343,7 @@ const DriverManagement = () => {
 						<Chip label={row.status ? "ACTIVE" : "INACTIVE"} color={row.status === 1 ? 'success' : 'primary'} />
 					</TableCell>
 					<TableCell size='small'>
-						<ActionsMenu id={row} options={row.status === 1 ? options : options2} close={!isEdit && !isDelete} />
+						<ActionsMenu id={row} options={row.status === 1 ? row.bgStatus === 1 ? options : options4 : row.bgStatus === 1 ? options2 : options3} close={!isEdit && !isDelete} />
 					</TableCell>
 					<TableCell size='small'>
 						<IconButton
@@ -316,12 +382,12 @@ const DriverManagement = () => {
 									<Grid item xs={12} sm={12} md={6} lg={2} xl={2}>{row?.model}</Grid>
 									<Divider orientation="vertical" flexItem />
 									<Grid item xs={12} sm={12} md={6} lg={2} xl={2}>
-										<Typography sx={{ fontWeight: 700, pl: 1  }}>Year: </Typography>
+										<Typography sx={{ fontWeight: 700, pl: 1 }}>Year: </Typography>
 									</Grid>
 									<Grid item xs={12} sm={12} md={6} lg={2} xl={2}>{row?.year}</Grid>
 									<Divider orientation="vertical" flexItem />
 									<Grid item xs={12} sm={12} md={6} lg={2} xl={2}>
-										<Typography sx={{ fontWeight: 700, pl: 1  }}>Vehicle License Plate Number :</Typography>
+										<Typography sx={{ fontWeight: 700, pl: 1 }}>Vehicle License Plate Number :</Typography>
 									</Grid>
 									<Grid item xs={12} sm={12} md={6} lg={2} xl={2}>{row?.vehicle_license_plate_number}</Grid>
 								</Grid>
@@ -397,6 +463,7 @@ const DriverManagement = () => {
 								<TableCell size='small'>Middle Name</TableCell>
 								<TableCell size='small'>Last Name</TableCell>
 								<TableCell size='small'>Mobile Number</TableCell>
+								<TableCell size='small'>Bg Status</TableCell>
 								<TableCell size='small'>Ratings</TableCell>
 								<TableCell size='small'>Total Trips</TableCell>
 								<TableCell size='small'>Total Earnings</TableCell>

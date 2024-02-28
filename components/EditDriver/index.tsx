@@ -68,7 +68,7 @@ const EditDriver = (props: any) => {
         formData.append('password', values.password === '******' ? '' : values.password);
         formData.append('mobile', values.mobile);
         formData.append('roles', values.roles);
-        formData.append('profile_picture', isProfilePic ? values.profile_picture.files[0] : '');
+        formData.append('profile_picture', isProfilePic ? values.profile_picture.files[0] : null);
 
         const result = await editDriver(formData);
         const { data, error } = result;
