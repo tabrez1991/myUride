@@ -566,30 +566,6 @@ const AddDriver = (props: any) => {
               ) : null}
             </FormControl>
           </Grid>
-          <Grid item xs={12} sm={12} md={6} lg={4.4} xl={4.4}>
-            <FormControl
-              fullWidth
-              error={!!(validation.touched.rider_preference && validation.errors.rider_preference)}
-            >
-              <Typography sx={{ fontWeight: 400, color: "#666666", fontSize: '0.875rem', mt: 2 }}>
-                Rider Preferences
-              </Typography>
-              <RadioGroup
-                row
-                aria-labelledby="demo-radio-buttons-group-label"
-                defaultValue={validation.values.rider_preference}
-                name="rider_preference"
-                onChange={validation.handleChange}
-              >
-                <FormControlLabel value="female" control={<Radio />} label="Female" />
-                <FormControlLabel value="male" control={<Radio />} label="Male" />
-                <FormControlLabel value="other" control={<Radio />} label="Other" />
-              </RadioGroup>
-              {validation.touched.rider_preference && validation.errors.rider_preference ? (
-                <FormHelperText>{validation.errors.rider_preference.toString()}</FormHelperText>
-              ) : null}
-            </FormControl>
-          </Grid>
         </Grid>
 
         <Typography variant='h6' sx={{ mt: 2 }}>Car Details</Typography>

@@ -12,7 +12,7 @@ apiHelper.interceptors.request.use(
   async (config: any) => {
     config.headers = {
       Authorization: `Bearer ${getCookie('accessToken')}`,
-      "Content-Type": "application/json",
+      // "Content-Type": "application/json",
       Accept: "*/*",
       // Sessionid: getCookie('sessionID'),
       // //security headers

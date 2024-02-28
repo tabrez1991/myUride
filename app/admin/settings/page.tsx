@@ -30,7 +30,7 @@ const Settings = () => {
           <Tab label="Faqs" {...a11yProps(1)} />
         </Tabs>
       </Box>
-      {/* {value === 0 && <SettingsDetails />} */}
+      {value === 0 && <SettingsDetails />}
       {value === 1 && <Faqs />}
 
     </Box>
