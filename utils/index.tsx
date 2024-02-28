@@ -3,7 +3,9 @@ import { ACTIVATE_DRIVER, ACTIVATE_RIDER, ACTIVATE_TRIP, ACTIVATE_USER, ADD_DRIV
 import { getCookie } from "cookies-next";
 import axios from "axios";
 
-const BASE_URL = `${process.env.NEXT_PUBLIC_BASE_URL}`;
+// const BASE_URL = `${process.env.NEXT_PUBLIC_BASE_URL}`;
+
+const BASE_URL = 'https://my-uride-backend.vercel.app'
 
 export const registration = async (body: any) => {
   try {
