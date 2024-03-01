@@ -5,7 +5,7 @@ import axios from "axios";
 
 const BASE_URL = `${process.env.NEXT_PUBLIC_BASE_URL}`;
 
-// const BASE_URL = 'https://my-uride-backend.vercel.app'
+// const BASE_URL = 'http://13.201.94.169'
 
 export const registration = async (body: any) => {
   try {
