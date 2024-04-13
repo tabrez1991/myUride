@@ -4,14 +4,14 @@ import { deleteCookie, getCookie, setCookie } from 'cookies-next';
 import { useRouter } from 'next/router';
 
 const apiHelper = axios.create({ timeout: 60000 });
-apiHelper.defaults.headers.common['Authorization'] = `Bearer ${getCookie('accessToken')}`;
+apiHelper.defaults.headers.common['x-access-token'] = `${getCookie('accessToken')}`;
 // apiHelper.defaults.headers.common['Sessionid'] = `${getCookie('sessionID')}`;
 
 
 apiHelper.interceptors.request.use(
   async (config: any) => {
     config.headers = {
-      Authorization: `Bearer ${getCookie('accessToken')}`,
+      'x-access-token': `${getCookie('accessToken')}`,
       // "Content-Type": "application/json",
       Accept: "*/*",
       // Sessionid: getCookie('sessionID'),

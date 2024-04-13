@@ -1,12 +1,12 @@
-export const REGISTER = "/auth/register"
-export const LOGIN = '/auth/login';
-export const LOGOUT = '/auth/logout';
-export const RESET_PASSWORD = '/auth/reset-password';
-export const GET_USERS = "/auth";
-export const ADD_USER = '/auth/add-user';
-export const EDIT_USER = '/auth/edit-user';
-export const DELETE_USER = '/auth/delete-user';
-export const ACTIVATE_USER = '/auth/activate-user';
+export const REGISTER = "/v1/admin/register"
+export const LOGIN = '/v1/admin/login';
+export const LOGOUT = '/v1/admin/logout';
+export const RESET_PASSWORD = '/v1/admin/reset-password';
+export const GET_USERS = "/v1/admin";
+export const ADD_USER = '/v1/admin/add-user';
+export const EDIT_USER = '/v1/admin/edit-user';
+export const DELETE_USER = '/v1/admin/delete-user';
+export const ACTIVATE_USER = '/v1/admin/activate-user';
 
 // Dashboard
 export const TOTAL_DATA = '/auth/total';

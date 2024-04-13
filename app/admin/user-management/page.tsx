@@ -118,7 +118,7 @@ const UserManagement = () => {
       field: 'firstname', headerName: 'Firstname', flex: 1.5,
       renderCell: (params) => (
         <div style={{ display: 'flex', alignItems: 'center' }}>
-          <Avatar alt={params.row.fullName} src={`${process.env.NEXT_PUBLIC_BASE_URL}${params.row.avatar}`} id="avatar" sx={{ mr: 2 }} />
+          <Avatar alt={params.row.fullName} src={`${process.env.NEXT_PUBLIC_BASE_URL}/${params.row.avatar}`} id="avatar" sx={{ mr: 2 }} />
           {params.row.fullName}
         </div>
       ),
