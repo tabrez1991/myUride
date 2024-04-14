@@ -103,7 +103,7 @@ export const activateUser = async (email: string) => {
 export const getTotalData = async () => {
   try {
     const response = await apiHelper.get(`${BASE_URL}${TOTAL_DATA}`)
-    return { data: response.data, error: null };
+    return { data: response.data.data, error: null };
   } catch (error: any) {
     return { data: null, error: error.response.data };
   }
@@ -112,7 +112,7 @@ export const getTotalData = async () => {
 export const getMonthWise = async () => {
   try {
     const response = await apiHelper.get(`${BASE_URL}${MONTH_WISE_DATA}`)
-    return { data: response.data, error: null };
+    return { data: response.data.data, error: null };
   } catch (error: any) {
     return { data: null, error: error.response.data };
   }
@@ -121,7 +121,7 @@ export const getMonthWise = async () => {
 export const getMonthWiseGrowth = async () => {
   try {
     const response = await apiHelper.get(`${BASE_URL}${MONTH_WISE_GROWTH}`)
-    return { data: response.data, error: null };
+    return { data: response.data.data, error: null };
   } catch (error: any) {
     return { data: null, error: error.response.data };
   }
@@ -132,7 +132,7 @@ export const getMonthWiseGrowth = async () => {
 export const getDrivers = async (page: number, pageSize: number, searchQuery: string) => {
   try {
     const response = await apiHelper.get(`${BASE_URL}${DRIVERS_LIST}?page=${page}&limit=${pageSize}&searchQuery=${searchQuery}`);
-    return { data: response.data, error: null };
+    return { data: response.data?.data, error: null };
   } catch (error: any) {
     return { data: null, error: error.response.data };
   }
@@ -141,7 +141,7 @@ export const getDrivers = async (page: number, pageSize: number, searchQuery: st
 export const addDriver = async (body: any) => {
   try {
     const response = await apiHelper.post(`${BASE_URL}${ADD_DRIVER}`, body);
-    return { data: response.data, error: null };
+    return { data: response.data?.data, error: null };
   } catch (error: any) {
     return { data: null, error: error.response.data };
   }
@@ -150,7 +150,7 @@ export const addDriver = async (body: any) => {
 export const editDriver = async (body: any) => {
   try {
     const response = await apiHelper.post(`${BASE_URL}${EDIT_DRIVER}`, body);
-    return { data: response.data, error: null };
+    return { data: response.data?.data, error: null };
   } catch (error: any) {
     return { data: null, error: error.response.data };
   }
@@ -159,7 +159,7 @@ export const editDriver = async (body: any) => {
 export const deleteDriver = async (email: string) => {
   try {
     const response = await apiHelper.post(`${BASE_URL}${DELETE_DRIVER}`, { email: email });
-    return { data: response.data, error: null };
+    return { data: response.data?.data, error: null };
   } catch (error: any) {
     return { data: null, error: error.response.data };
   }
@@ -168,7 +168,7 @@ export const deleteDriver = async (email: string) => {
 export const activateDriver = async (email: string) => {
   try {
     const response = await apiHelper.post(`${BASE_URL}${ACTIVATE_DRIVER}`, { email: email });
-    return { data: response.data, error: null };
+    return { data: response.data?.data, error: null };
   } catch (error: any) {
     return { data: null, error: error.response.data };
   }
@@ -177,7 +177,7 @@ export const activateDriver = async (email: string) => {
 export const completeBackgroundCheck = async (driverId: string) => {
   try {
     const response = await apiHelper.post(`${BASE_URL}${COMPLETE_BACKGROUND_CHECK}`, { id: driverId });
-    return { data: response.data, error: null };
+    return { data: response.data?.data, error: null };
   } catch (error: any) {
     return { data: null, error: error.response.data };
   }
