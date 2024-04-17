@@ -124,9 +124,9 @@ const Profile = (props: any) => {
       password: '******',
       mobile: data.mobile,
       roles: data.roles[0],
-      profile_picture: `${process.env.NEXT_PUBLIC_BASE_URL}/uploads/${data.profile_picture}`
+      profile_picture: `${process.env.NEXT_PUBLIC_BASE_URL}/${data.profile_picture}`
     })
-    setPreviewUrl(`${process.env.NEXT_PUBLIC_BASE_URL}/uploads/${data.profile_picture}`);
+    setPreviewUrl(`${process.env.NEXT_PUBLIC_BASE_URL}/${data.profile_picture}`);
   }, [data])
 
 

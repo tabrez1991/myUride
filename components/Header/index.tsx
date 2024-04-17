@@ -195,7 +195,7 @@ const Header = (props: any) => {
           aria-haspopup="true"
           color="inherit"
         >
-          <Avatar alt={profileData?.name} src={`${process.env.NEXT_PUBLIC_BASE_URL}/uploads/${profileData?.profile_picture}`} />
+          <Avatar alt={profileData?.name} src={`${process.env.NEXT_PUBLIC_BASE_URL}/${profileData?.profile_picture}`} />
         </IconButton>
         <p>Profile</p>
       </MenuItem>
@@ -290,7 +290,7 @@ const Header = (props: any) => {
           <Box sx={{ flexGrow: 0, width: "270px", display: { xs: 'none', md: 'flex' }, justifyContent: "space-between", alignItems: 'center' }}>
             <Tooltip title="Open settings">
               <Box sx={{ display: "flex", alignItems: "center" }}>
-              <Avatar alt={profileData?.name} src={`${process.env.NEXT_PUBLIC_BASE_URL}/uploads/${profileData?.profile_picture}`} />
+              <Avatar alt={profileData?.name} src={`${process.env.NEXT_PUBLIC_BASE_URL}/${profileData?.profile_picture}`} />
                 <Typography sx={{ color: "#000", fontWeight: 400, ml: "0.875rem", display: { xs: 'none', sm: 'block' } }}>{profileData?.name}</Typography>
                 <IconButton onClick={handleProfileMenuOpen} sx={{ p: 0, ml: "5px" }}>
                   <i className="ri-arrow-down-s-line"></i>

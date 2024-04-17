@@ -1,25 +1,25 @@
-export const REGISTER = "/auth/register"
-export const LOGIN = '/auth/login';
-export const LOGOUT = '/auth/logout';
-export const RESET_PASSWORD = '/auth/reset-password';
-export const GET_USERS = "/auth";
-export const ADD_USER = '/auth/add-user';
-export const EDIT_USER = '/auth/edit-user';
-export const DELETE_USER = '/auth/delete-user';
-export const ACTIVATE_USER = '/auth/activate-user';
+export const REGISTER = "/v1/admin/register"
+export const LOGIN = '/v1/admin/login';
+export const LOGOUT = '/v1/admin/logout';
+export const RESET_PASSWORD = '/v1/admin/reset-password';
+export const GET_USERS = "/v1/admin";
+export const ADD_USER = '/v1/admin/add-user';
+export const EDIT_USER = '/v1/admin/edit-user';
+export const DELETE_USER = '/v1/admin/delete-user';
+export const ACTIVATE_USER = '/v1/admin/activate-user';
 
 // Dashboard
-export const TOTAL_DATA = '/auth/total';
-export const MONTH_WISE_DATA = '/auth/month-wise';
-export const MONTH_WISE_GROWTH = '/auth/month-growth';
+export const TOTAL_DATA = '/v1/common/total';
+export const MONTH_WISE_DATA = '/v1/common/month-wise';
+export const MONTH_WISE_GROWTH = '/v1/common/month-growth';
 
 // Drivers
-export const DRIVERS_LIST = '/auth/drivers-list';
-export const ADD_DRIVER = '/auth/add-driver';
-export const EDIT_DRIVER = '/auth/edit-driver';
-export const DELETE_DRIVER = '/auth/delete-driver';
-export const ACTIVATE_DRIVER = '/auth/activate-driver';
-export const COMPLETE_BACKGROUND_CHECK = '/auth/complete-background-check';
+export const DRIVERS_LIST = '/v1/user/drivers-list';
+export const ADD_DRIVER = '/v1/user/add-driver';
+export const EDIT_DRIVER = '/v1/user/edit-driver';
+export const DELETE_DRIVER = '/v1/user/delete-driver';
+export const ACTIVATE_DRIVER = '/v1/user/activate-driver';
+export const COMPLETE_BACKGROUND_CHECK = '/v1/user/complete-background-check';
 
 // Riderss
 export const RIDERS_LIST = '/auth/riders-list';

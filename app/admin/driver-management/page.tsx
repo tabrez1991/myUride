@@ -258,7 +258,7 @@ const DriverManagement = () => {
 					tempRow.push({
 						id: index + 1,
 						driverId: element?.profile_id,
-						driver: element?.backgroundCheck?.legal_first_name,
+						driver: element?.first_name,
 						middleName: element?.backgroundCheck?.legal_middle_name,
 						lastName: element?.backgroundCheck?.legal_last_name,
 						avatar: element?.profile_photo,
@@ -308,7 +308,7 @@ const DriverManagement = () => {
 					<TableCell size='small'>{row.driverId}</TableCell>
 					<TableCell size='small'>
 						<div style={{ display: 'flex', alignItems: 'center' }}>
-							<Avatar alt={row.driver} src={`${process.env.NEXT_PUBLIC_BASE_URL}/uploads/${row.avatar}`} id="avatar" sx={{ mr: 2 }} />
+							<Avatar alt={row.driver} src={`${process.env.NEXT_PUBLIC_BASE_URL}/${row.avatar}`} id="avatar" sx={{ mr: 2 }} />
 							{row.driver}
 						</div>
 					</TableCell>
