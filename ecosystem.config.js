@@ -1,13 +1,13 @@
 module.exports = {
   apps : [{
-    script: 'npm run dev'
+    script: 'npm start'
   }],
 
   deploy : {
     production : {
       key : 'myuride_server_chris.pem',
       user : 'ubuntu',
-      host : '18.222.174.91',
+      host : 'api.myuride.com',
       ref  : 'origin/main',
       repo : 'https://github.com/tabrez1991/myUride.git',
       path : '/home/ubuntu',
